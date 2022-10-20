@@ -294,7 +294,7 @@ const imgSearch = async (msg, bot) => {
     const palavraChave = msg.body.slice(4);
 
     if (palavraChave.length <= 0) {
-        msg.reply('Você deve usar !img [palavra chave]');
+        msg.reply('Você deve usar !img [palavra chave]\n(_sem o []_)');
         return;
     }
 
