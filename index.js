@@ -68,10 +68,19 @@ const list = new List(
       ],
       "teste3"
 )
-
-bot.on('message', async msg => {
-    if (msg.body.startsWith('!')){
-        for (value of commandsMap) {
+try {
+    bot.on('message', async msg => {
+        if (msg.body.startsWith('!')){
+            for (value of commandsMap) {
+                var key = value[0];
+                if (msg.body.toLowerCase().includes(key)) {
+                    var _callback = value[1];
+                    _callback(msg, bot);
+                    break;
+                }
+            }
+        }
+        for (value of callbackMap) {
             var key = value[0];
             if (msg.body.toLowerCase().includes(key)) {
                 var _callback = value[1];
@@ -79,70 +88,64 @@ bot.on('message', async msg => {
                 break;
             }
         }
-    }
-    for (value of callbackMap) {
-        var key = value[0];
-        if (msg.body.toLowerCase().includes(key)) {
-            var _callback = value[1];
-            _callback(msg, bot);
-            break;
+        if (msg.body.length >= 150) {
+            msg.reply('Desculpa parceiro, não leio textão');
         }
-    }
-    if (msg.body.length >= 150) {
-        msg.reply('Desculpa parceiro, não leio textão');
-    }
 
-    var group = await getGroup(msg);
-    if (group) {
-        var groupId = group.id._serialized;
-        var groupName = group.name;
-        let contact = await msg.getContact();
-        var userName = contact.name ? contact.name : contact.pushname;
+        var group = await getGroup(msg);
+        if (group) {
+            var groupId = group.id._serialized;
+            var groupName = group.name;
+            let contact = await msg.getContact();
+            var userName = contact.name ? contact.name : contact.pushname;
 
-        const Exp = db.getModel('Experiencia');
+            const Exp = db.getModel('Experiencia');
 
-        Exp.findOne({
-            id: msg.author,
-            group: groupId
-        }).then(async user => {
-            if (user) {
-                let newExp = user.exp + 1;
-                let level = user.level;
-                let nextLevelExp = user.nextLevelExp ? user.nextLevelExp : getNextLevelExp(user.level + 1);
-                if (newExp >= getNextLevelExp(user.level + 1)) {
-                    level = level + 1;
-                    newExp = 0;
-                    nextLevelExp = getNextLevelExp(level);
-                    bot.sendMessage(msg.from, `🌟*Parabéns! ${userName}*🌟\n\nVocê subiu para o *level ${level}*`)
+            Exp.findOne({
+                id: msg.author,
+                group: groupId
+            }).then(async user => {
+                if (user) {
+                    let newExp = user.exp + 1;
+                    let level = user.level;
+                    let nextLevelExp = user.nextLevelExp ? user.nextLevelExp : getNextLevelExp(user.level + 1);
+                    if (newExp >= getNextLevelExp(user.level + 1)) {
+                        level = level + 1;
+                        newExp = 0;
+                        nextLevelExp = getNextLevelExp(level);
+                        bot.sendMessage(msg.from, `🌟*Parabéns! ${userName}*🌟\n\nVocê subiu para o *level ${level}*`)
+                    }
+        
+                    Exp.updateOne({
+                        id: msg.author,
+                        group: groupId
+                    }, {
+                        exp: newExp, 
+                        level,
+                        userName,
+                        group: groupId,
+                        groupName,
+                        nextLevelExp
+                    }).then(newFodase => {}).catch(console.error);
                 }
-    
-                Exp.updateOne({
-                    id: msg.author,
-                    group: groupId
-                }, {
-                    exp: newExp, 
-                    level,
-                    userName,
-                    group: groupId,
-                    groupName,
-                    nextLevelExp
-                }).then(newFodase => {}).catch(console.error);
-            }
-            else {
-                Exp.create({ 
-                    id: msg.author,
-                    userName,
-                    exp: 1,
-                    level: 1,
-                    group: groupId,
-                    groupName,
-                    nextLevelExp: getNextLevelExp(2)
+                else {
+                    Exp.create({ 
+                        id: msg.author,
+                        userName,
+                        exp: 1,
+                        level: 1,
+                        group: groupId,
+                        groupName,
+                        nextLevelExp: getNextLevelExp(2)
 
-                }).catch(console.error);
-            }
-        })
-    }
-});
+                    }).catch(console.error);
+                }
+            })
+        }
+    });
+} catch (err) {
+    console.log('_____________________________________________________________\n' + err + '\n_____________________________________________________________\n');
+}
 
 
 bot.initialize();
