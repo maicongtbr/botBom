@@ -291,6 +291,8 @@ const freeGames = (bot, msg) => {
 }
 
 const imgSearch = async (msg, bot) => {
+    if (msg.body.slice(4).length < 0) return;
+    
     const image = await google.image(msg.body.slice(4), { safe: true });
     const foundImage = image[randomNumber(10)];
     const img = await MessageMedia.fromUrl(foundImage.url, {
