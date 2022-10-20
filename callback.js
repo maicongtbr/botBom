@@ -299,7 +299,7 @@ const imgSearch = async (msg, bot) => {
     }
 
     try {
-        const image = await google.image(palavraChave.replace(/[\u0300-\u036f]/g, ""), { safe: true });
+        const image = await google.image(palavraChave.replace(/[\u0300-\u036f]/g, ""));
         // da commit ai e testa
         const foundImage = image[randomNumber(10)];
         const img = await MessageMedia.fromUrl(foundImage.url, {
