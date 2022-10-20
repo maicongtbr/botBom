@@ -299,7 +299,8 @@ const imgSearch = async (msg, bot) => {
     }
 
     try {
-        const image = await google.image(palavraChave, { safe: true });
+        const image = await google.image(string.normalize(palavraChave).replace(/[\u0300-\u036f]/g, ""), { safe: true });
+        // da commit ai e testa
         const foundImage = image[randomNumber(10)];
         const img = await MessageMedia.fromUrl(foundImage.url, {
             unsafeMime: true
@@ -312,7 +313,6 @@ const imgSearch = async (msg, bot) => {
         bot.sendMessage(msg.from, "Deu ruim aqui mané");
         console.error(e);
         return;
-        // da commit ai e testa
     }
 }
 
@@ -440,7 +440,7 @@ const commands = [
     { name: '!s', callback: (msg) => makeSticker(msg)},
     { name: '!encaminhado', callback: (msg) => forwardingScore(msg)},
     { name: '!gratis', callback: (msg, bot) => freeGames(bot, msg)},
-    { name: '!tts', callback: (msg, bot) => tts(msg, bot)},
+    //{ name: '!tts', callback: (msg, bot) => tts(msg, bot)},
     { name: '!tabela', callback: (msg, bot) => getTabela(msg, bot)},
     { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
