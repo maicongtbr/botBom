@@ -294,6 +294,8 @@ const imgSearch = async (msg, bot) => {
     const image = await google.image(msg.body.slice(4), { safe: true });
     const foundImage = image[randomNumber(10)];
 
+    console.log(foundImage);
+
     bot.sendMessage(msg.from, foundImage, {
         caption: `Origem da Imagem: ${foundImage.origin?.title}`
     })
