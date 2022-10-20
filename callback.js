@@ -292,8 +292,11 @@ const freeGames = (bot, msg) => {
 
 const imgSearch = async (msg, bot) => {
     const palavraChave = msg.body.slice(4);
-    
-    if (palavraChave.length <= 0) return;
+
+    if (palavraChave.length <= 0) {
+        msg.reply('Você deve usar !img [palavra chave]');
+        return;
+    }
 
     const image = await google.image(palavraChave, { safe: true });
     const foundImage = image[randomNumber(10)];
