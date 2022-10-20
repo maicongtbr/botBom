@@ -292,9 +292,10 @@ const freeGames = (bot, msg) => {
 
 const imgSearch = async (msg, bot) => {
     const image = await google.image(msg.body.slice(4), { safe: true });
-    console.log(image[randomNumber(10)]);
-    bot.sendMessage(msg.from, image, {
-        caption: `Origem da Imagem: ${image.origin.title}`
+    const foundImage = image[randomNumber(10)];
+
+    bot.sendMessage(msg.from, foundImage, {
+        caption: `Origem da Imagem: ${foundImage.origin?.title}`
     })
 }
 
