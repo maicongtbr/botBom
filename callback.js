@@ -298,15 +298,22 @@ const imgSearch = async (msg, bot) => {
         return;
     }
 
-    const image = await google.image(palavraChave, { safe: true });
-    const foundImage = image[randomNumber(10)];
-    const img = await MessageMedia.fromUrl(foundImage.url, {
-        unsafeMime: true
-    });
+    try {
+        const image = await google.image(palavraChave, { safe: true });
+        const foundImage = image[randomNumber(10)];
+        const img = await MessageMedia.fromUrl(foundImage.url, {
+            unsafeMime: true
+        });
 
-    bot.sendMessage(msg.from, img, {
-        caption: `Origem da Imagem: ${foundImage.origin?.title}`
-    })
+        bot.sendMessage(msg.from, img, {
+            caption: `Origem da Imagem: ${foundImage.origin?.title}`
+        })
+    } catch(e) {
+        bot.sendMessage(msg.from, "Deu ruim aqui mané");
+        console.error(e);
+        return;
+        // da commit ai e testa
+    }
 }
 
 const getLevel = async (msg, bot) => {
