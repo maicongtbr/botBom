@@ -1,0 +1,584 @@
+const { MessageMedia, Client, List, Buttons } = require('whatsapp-web.js');
+const { getGames } = require ('epic-free-games');
+const fs = require ('fs');
+const Say = require ('say').Say;
+const superagent = require('superagent');
+const db = require('./database');
+const google = require('googlethis');
+
+const say = new Say('win32');
+const callbackMap = new Map();
+const commandsMap = new Map();
+
+
+const getNextLevelExp = (level) => {
+    if(level < 50) {
+        return Math.floor((Math.pow(level, 2) * ( 100 - level )) / 50);
+    } else if(level <= 68) {
+        return Math.floor((Math.pow(level, 2) * ( 150 - level )) / 100);
+    } else if(level <= 98) {
+        return Math.floor((Math.pow(level, 2) * ( (1911 - (10 * level)) / 3)) / 500);
+    } else if(level <= 100) {
+        return Math.floor((Math.pow(level, 2) * ( 160 - level )) / 100);
+    } else {
+        return 10000;
+    }
+}
+
+const getTabela = async (msg, bot) => {
+    var rodada = await superagent.get('https://api.api-futebol.com.br/v1/campeonatos/10/rodadas').set('Authorization', 'Bearer live_5da0f7f9ac2040f89d6bd1d862a39d');
+    for (element of rodada._body){
+        if(element.status === 'agendada'){
+            var rodadaAtual = element.rodada;
+            break;
+        }
+    }
+
+    var tabela = await superagent.get('https://api.api-futebol.com.br/v1/campeonatos/10/tabela').set('Authorization', 'Bearer live_5da0f7f9ac2040f89d6bd1d862a39d');
+    var teamStats = `⚽️Campeonato Brasileiro Série A⚽️\n\n🔘Rodada ${rodadaAtual}/${rodada._body.length}\n\n🔵${tabela._body[0].posicao}° - ${tabela._body[0].time.nome_popular} ▶️Pts: ${tabela._body[0].pontos}\n`;
+    for (let i = 1; i <= 19; i++) {
+        var team = tabela._body[i].time.nome_popular;
+        if(i <= 3){//libertadotabela
+            teamStats = teamStats + `🔵${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
+        }
+        else if(i > 3 && i <= 5){//pré-libertadotabela
+            teamStats = teamStats + `🟠${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
+        }
+        else if(i > 5 && i <= 11){//sulamericana
+            teamStats = teamStats + `🟢${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
+        }
+        else if(i >= 16 && i <19){//zona de rebaixamento
+            teamStats = teamStats + `🔴${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
+        }
+        else if(i >= 19){//pra não quebrar linha no ultimo colocado
+            teamStats = teamStats + `🔴${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}`;
+        }
+        else{//meio de tabela
+            teamStats = teamStats + `⚪️${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
+        }
+    }
+
+    bot.sendMessage(msg.from, teamStats);
+}
+
+//Teste TTS. Precisa converter o audio pra .OGG
+const tts = (msg, bot) => {
+    try {
+        say.getInstalledVoices(console.log);
+        say.export("It's just a test.", 'Microsoft Maria Desktop', 1.0, './test.wav', (err) => {
+            if (err){
+                return console.error(err);
+            }
+            try {
+                media = MessageMedia.fromFilePath('./test.wav');
+                bot.sendMessage(msg.from, media, {
+                    sendAudioAsVoice:true
+                });
+                //fs.unlinkSync('./test.mpeg');
+            }
+            catch (err) {
+                console.log(err);
+            } 
+        })
+    } catch (err) {
+        console.log(err);
+    }  
+}
+
+const randomNumber = (max) => {
+    return Math.floor(Math.random() * (max - 1 + 1));
+}
+
+const sendRandomSticker = (msg, files, num, bot) => {
+    media = MessageMedia.fromFilePath(files[randomNumber(num)]);
+    bot.sendMessage(msg.from, media, {
+        sendMediaAsSticker:true
+        })
+}
+
+const sendSticker = async (msg, filePath, bot) => {
+    media = MessageMedia.fromFilePath(filePath);
+    return bot.sendMessage(msg.from, media, {
+        sendMediaAsSticker:true
+    })
+}
+
+const downloadMessageMedia = async (msg) => {
+    var messageToDowloadMedia = msg;
+    if (msg.hasQuotedMsg){
+        let quotedMsg = await msg.getQuotedMessage();
+        if (quotedMsg.hasMedia){
+            messageToDowloadMedia = quotedMsg;
+        }
+    }
+    var ret = await messageToDowloadMedia.downloadMedia();
+    return ret;
+}
+
+const makeSticker = async (msg) => {
+    var media = await downloadMessageMedia(msg);
+    msg.reply(media, undefined, {
+        sendMediaAsSticker:true,
+        stickerName: 'Feito com o Bot Bom',
+        sticketAuthor: 'Bot Bom'
+    })
+}
+
+const getGroup = async (msg) => {
+    var chat = await msg.getChat();
+    if (chat.isGroup) return chat;
+
+    return undefined;
+}
+
+const userIsAdmin = async (chat, authorId) => {
+    for(let participant of chat.participants) {
+        if(participant.id._serialized === authorId && participant.isAdmin) {
+            return true;
+        }
+    }
+    return false;
+}
+
+const banMember = (msg, bot) => {
+    var hasMentions = msg.getMentions();
+    if (!msg.hasQuotedMsg && !hasMentions){
+        return msg.reply('Para banir, você deve mencionar um usuário ou responder a mensagem do usuário a ser banido.');
+    }
+
+    const group = getGroup(msg).then((group) => {
+        if (!group){
+            return msg.reply('Você precisa estar em um grupo para isso');
+        }
+
+        const isAdmin = userIsAdmin(group, msg.author).then((isAdmin) => {
+            if (!isAdmin) {
+                return msg.reply('Você não é Admin.');
+            }
+
+            const botIsAdmin = userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+                if (!botIsAdmin){
+                    return msg.reply('O Bot não é Admin.');
+                }
+    
+                sendSticker(msg, './img/delete this5.webp', bot).then(() => {
+                    if (msg.hasQuotedMsg){
+                        let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
+                            let usersToBan = [quotedMsg.author];
+                            group.removeParticipants(usersToBan);
+                            return;
+                        })
+                    }
+        
+                    var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
+                        var usersToBan = [];
+                        mentionedUsers.forEach((element) => {
+                        usersToBan.push(element.id._serialized);
+                        })
+                        group.removeParticipants(usersToBan);
+                    });
+                })
+            });
+        });
+    });
+}
+
+const promoteMember = (msg, bot) => {
+    var hasMentions = msg.getMentions();
+    if (!msg.hasQuotedMsg && !hasMentions){
+        return msg.reply('Para promover alguém para Admin você deve mencionar um usuário ou responder a mensagem do usuário a ser promovido.');
+    }
+
+    const group = getGroup(msg).then((group) => {
+        if (!group){
+            return msg.reply('Você precisa estar em um grupo para isso.');
+        }
+        const isAdmin = userIsAdmin(group, msg.author).then((isAdmin) => {
+            if (!isAdmin) {
+                return msg.reply('Você não é Admin.');
+            }
+
+            const botIsAdmin = userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+                if (!botIsAdmin){
+                    return msg.reply('O Bot não é Admin.');
+                }
+
+                if (msg.hasQuotedMsg){
+                    let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
+                        let usersToUp = [quotedMsg.author];
+                        group.promoteParticipants(usersToUp);
+                    })
+                }
+                else {
+                    var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
+                        var usersToUp = [];
+                        mentionedUsers.forEach((element) => {
+                            usersToUp.push(element.id._serialized);
+                        })
+                        group.promoteParticipants(usersToUp);
+                })
+                }
+            })
+        })
+    })
+}
+
+const demoteMember = (msg, bot) => {
+    var hasMentions = msg.getMentions();
+    if (!hasMentions && !msg.hasQuotedMsg){
+        return msg.reply('Para rebaixar alguém você deve mencionar um usuário ou responder a mensagem do usuário a ser rebaixado.');
+    }
+    const group = getGroup(msg).then((group) => {
+        if (!group){
+            return msg.reply('Você precisa estar em um grupo para isso.');
+        }
+        const isAdmin = userIsAdmin(group, msg.author).then((isAdmin) => {
+            if (!isAdmin){
+                return msg.reply('Você não é Admin.');
+            }
+            const botIsAdmin = userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+                if (!botIsAdmin){
+                    return msg.reply('O Bot não é Admin.');
+                }
+            
+                if (msg.hasQuotedMsg){
+                    let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
+                        let usersToDown = [quotedMsg.author];
+                        group.demoteParticipants(usersToDown);
+                    })
+                }
+                else {
+                    var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
+                        var usersToDown = [];
+                        mentionedUsers.forEach((element) => {
+                            usersToDown.push(element.id._serialized);
+                        })
+                        group.demoteParticipants(usersToDown);
+                    })
+                }
+            })
+        })
+    })
+}
+
+const forwardingScore = (msg) => {
+    let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
+        var score = quotedMsg.forwardingScore;
+        if (score === 1){
+            msg.reply('Essa mensagem foi encaminhada ' + score + ' vez.', undefined);
+        }
+        else if (score === 0){
+            msg.reply('Essa mensagem nunca foi encaminhada', undefined);
+        }
+        else {
+            msg.reply('Essa mensagem foi encaminhada ' + score + ' vezes.', undefined);
+        }
+    })
+}
+
+const freeGames = (bot, msg) => {
+    getGames('BR', false).then(res => {
+        var currentGamesInfo = [];
+        var nextGamesInfo = [];
+        res.currentGames.forEach(game => {
+            currentGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}\n`)
+        })
+        res.nextGames.forEach(game => {
+            nextGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}`)
+        })
+        bot.sendMessage(msg.from, `🎮*Jogos grátis na Epic hoje:* \n\n${currentGamesInfo.join('\n\n')}\n\n 🎮*Próximos jogos grátis na Epic:* \n\n${nextGamesInfo.join('\n\n')}`);
+    })
+}
+
+const imgSearch = async (msg, bot) => {
+    const image = await google.image(msg.body.slice(4), { safe: true });
+    console.log(image[randomNumber(10)]);
+    bot.sendMessage(msg.from, image, {
+        caption: `Origem da Imagem: ${image.origin.title}`
+    })
+}
+
+const getLevel = async (msg, bot) => {
+    const Exp = db.getModel('Experiencia');
+    const group = await getGroup(msg);
+    const mentionedUsers = await msg.getMentions();
+    const isAdmin = await userIsAdmin(group, msg.author);
+
+    if (!group) {
+        Exp.find({
+            id: msg.id.remote
+        }).then(async user => {
+            if(!user) {
+                msg.reply('*Você ainda não tem exp.*');
+                return;
+            }
+
+            var userLevelArr = [];
+
+            for (element of user) {
+                let exp = element.exp;
+                let level = element.level;
+                let group = element.groupName;
+                let expToNextLevel = getNextLevelExp(level + 1) - exp;
+
+                let userLevel = `💎Nível no grupo *${group}*\n✨Exp: ${exp}\n🎇Level: ${level}\n🎆Exp para o próximo level: ${expToNextLevel}`
+
+                userLevelArr.push(userLevel);
+            }
+            let _userLevel = `💎*Esse é seu nível em cada grupo:*\n\n${userLevelArr.join('\n\n')}`;
+            bot.sendMessage(msg.from, _userLevel); 
+        })
+        return;
+    }
+
+    if (mentionedUsers && mentionedUsers.length > 0) {
+        if (isAdmin) {
+            console.log(mentionedUsers);
+            Exp.findOne({
+                id: mentionedUsers[0].id._serialized,
+                group: group.id._serialized
+            }).then(async user => {
+                let userName = user.userName;
+                let exp = user.exp;
+                let level = user.level;
+                let group = user.groupName;
+                let expToNextLevel = getNextLevelExp(level + 1) - exp;
+
+                bot.sendMessage(msg.from, `Nível de *${userName}* no grupo *${group}*\n\n✨Exp: ${exp}\n🎇Level: ${level}\n🎆Exp para o próximo level: ${expToNextLevel}`);
+            })
+            return;
+        }
+    }
+
+    Exp.findOne({
+        id: msg.author,
+        group: group.id._serialized
+    }).then(async user => {
+        if(!user) {
+            msg.reply('*Você ainda não tem exp.*');
+            return;
+        }
+        let userName = user.userName;
+        let exp = user.exp;
+        let level = user.level;
+        let group = user.groupName;
+        let expToNextLevel = getNextLevelExp(level + 1) - exp;
+
+        bot.sendMessage(msg.from, `Nível de *${userName}* no grupo *${group}*\n\n✨Exp: ${exp}\n🎇Level: ${level}\n🎆Exp para o próximo level: ${expToNextLevel}`);
+    })
+}
+
+const getRanking = async (msg, bot) => {
+    const Exp = db.getModel('Experiencia');
+    const group = await getGroup(msg);
+    
+    Exp.find({
+        group: group.id._serialized
+    }).then(async users => {
+        users.sort((a, b) => {
+            if (a.level == b.level){
+                return (a.exp > b.exp) ? -1 : 1;
+            }
+            return (a.level > b.level) ? -1 : 1;
+        })
+        
+        let ranking = [];
+
+        var max = 10;
+        if(users.length < 10) {
+            max = users.length;
+        }
+
+        for (var i = 0; i < max; i++) {
+            let element = users[i];
+            let place = users.indexOf(element) + 1;
+            let placeMessage = "";
+            switch(place) {
+                case 1:
+                    placeMessage = "🥇";
+                    break;
+                case 2:
+                    placeMessage = "🥈";
+                    break;
+                case 3:
+                    placeMessage = "🥉";
+                    break;
+                default:
+                    break;
+            }
+            let message = `${placeMessage} *${place}° Lugar*: ${element.userName}, *Level*: ${element.level}, *Exp*: ${element.exp}.`;
+            ranking.push(message);
+        }
+
+        let _message = `🏆 Top 10 no grupo *${group.name}*\n\n${ranking.join("\n")}`;
+        bot.sendMessage(msg.from, _message);
+    });
+}
+
+const commands = [
+    { name: '!ban', callback: (msg, bot) => banMember(msg, bot)},
+    { name: '!up', callback: (msg, bot) => promoteMember(msg, bot)},
+    { name: '!down', callback: (msg, bot) => demoteMember(msg, bot)},
+    { name: '!s', callback: (msg) => makeSticker(msg)},
+    { name: '!encaminhado', callback: (msg) => forwardingScore(msg)},
+    { name: '!gratis', callback: (msg, bot) => freeGames(bot, msg)},
+    { name: '!tts', callback: (msg, bot) => tts(msg, bot)},
+    { name: '!tabela', callback: (msg, bot) => getTabela(msg, bot)},
+    { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
+    { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
+    { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)}
+]
+
+const trigger = [
+    { name: 'zeca', 
+        callback: (msg, bot) => sendSticker(msg, './img/zeca.png', bot)},
+    { names: ['macaco', 'macacos'], 
+        callback: (msg, bot) => sendSticker(msg, './img/macaco.jpg', bot)},
+    { names: ['mengao', 'flamengo', 'flaputa', 'flacadela', 'malvadão'], 
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/mengao.jpg',
+        './img/mengao2.webp'], 2, bot)},
+    { name: 'puto',
+        callback: (msg, bot) => sendSticker(msg, './img/puto.jpg', bot)},
+    { names: ['perdemo', 'perdemos'],
+        callback: (msg, bot) => sendSticker(msg, './img/perdemo.jpg', bot)},
+    { name: 'poxa',
+        callback: (msg, bot) => sendSticker(msg, './img/a ana entortou.webp', bot)},
+    { name: 'ancap',
+        callback: (msg, bot) => sendSticker(msg, './img/ancap.webp', bot)},
+    { names: ['churrasco', 'churras'],
+        callback: (msg, bot) => sendSticker(msg, './img/churrasco.webp', bot)},
+    { names: ['nargas', 'narga', 'narguile'],
+        callback: (msg, bot) => sendSticker(msg, './img/e o narga.webp', bot)},
+    { name: 'fofo',
+        callback: (msg, bot) => sendSticker(msg, './img/fofo.webp', bot)},
+    { name: 'jae',
+        callback: (msg, bot) => sendSticker(msg, './img/jae princesa.webp', bot)},
+    { names: ['kek', 'kekw'],
+        callback: (msg, bot) => sendSticker(msg, './img/kekw.webp', bot)},
+    { name: 'maluco',
+        callback: (msg, bot) => sendSticker(msg, './img/maluco.webp', bot)},
+    { name: 'muie',
+        callback: (msg, bot) => sendSticker(msg, './img/misoginia.webp', bot)},
+    { names: ['foi de base', 'foi de b', 'nao tankou', 'não tankou', 'foi encontrado morto', 'morri'],
+        callback: (msg, bot) => sendSticker(msg, './img/morri.webp', bot)},
+    { name: 'neymar', 
+        callback: (msg, bot) => sendSticker(msg, './img/neymar.webp', bot)},
+    { name: 'primeiramente',
+        callback: (msg, bot) => sendSticker(msg, './img/primeiramente.webp', bot)},
+    { name: 'segundamente',
+        callback: (msg, bot) => sendSticker(msg, './img/segundamente.webp', bot)},
+    { name: 'terceiramente',
+        callback: (msg, bot) => sendSticker(msg, './img/terceiramente.webp', bot)},
+    { name: 'quartamente',
+        callback: (msg, bot) => sendSticker(msg, './img/quartamente.webp', bot)},
+    { name: 'quintamente',
+        callback: (msg, bot) => sendSticker(msg, './img/quintamente.webp', bot)},
+    { name: 'sextamente',
+        callback: (msg, bot) => sendSticker(msg, './img/sextamente.webp', bot)},
+    { name: 'setimamente',
+        callback: (msg, bot) => sendSticker(msg, './img/setimamente.webp', bot)},
+    { name: 'oitavamente',
+        callback: (msg, bot) => sendSticker(msg, './img/oitavamente.webp', bot)},
+    { name: 'perdi',
+        callback: (msg, bot) => sendSticker(msg, './img/perdi.webp', bot)},
+    { name: 'oxe',
+        callback: (msg, bot) => sendSticker(msg, './img/oxe.webp', bot)},
+    { names: ['será', 'sera'],
+        callback: (msg, bot) => sendSticker(msg, './img/sera.webp', bot)},
+    { name: 'transito',
+        callback: (msg, bot) => sendSticker(msg, './img/transito.webp', bot)},
+    { name: 'galera',
+        callback: (msg, bot) => sendSticker(msg, './img/tijolo.webp', bot)},
+    { name: 'boa noite',
+        callback: (msg, bot) => sendSticker(msg, './img/boa noite bolsonaro.webp', bot)},
+    { name: 'angra',
+        callback: (msg, bot) => sendSticker(msg, './img/ANDRÉ matos bliding hart.png', bot)},
+    { name: 'lula',
+        callback: (msg, bot) => sendSticker(msg, './img/lula.webp', bot)},
+    { name: 'triste', 
+        callback: (msg, bot) => sendSticker(msg, './img/triste.webp', bot)},
+    { name: 'bom dia',
+        callback: (msg, bot) => sendSticker(msg, './img/bom dia.webp', bot)},
+    { names: ['caralho', 'crlho'], callback: (msg, bot) => sendSticker(msg, './img/caralho.webp', bot)},
+    { name: 'ok google',
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/ok google.webp', 
+        './img/ok google2.webp'], 2, bot)},
+    { names: ['dj', 'azeitona'],
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/dj azeitona.jpg', 
+        './img/dj azeitona 2.png', 
+        './img/dj azeitona 3.png'], 3, bot)},
+    { names: ['calvo', 'careca', 'carecas'],
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/careca.jpeg', 
+        './img/calvo.webp', 
+        './img/calvo2.webp'], 3, bot)},
+    { name: 'legal',
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/legal.webp', 
+        './img/legal2.webp', 
+        './img/legal3.webp'], 3, bot)},
+    { names: ['bolsonaro', 'bolsomito'],
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/bolsonaro.webp', 
+        './img/bolsonaro2.webp',
+        './img/bolsonaro3.webp'], 3, bot)},
+    { names: ['verdade', 'positivo', 'concordo'],
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/verdade.webp', 
+        './img/capitao broxa.webp'], 2, bot)},
+    { name: 'apaga',
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/delete this.webp', 
+        './img/delete this2.webp', 
+        './img/delete this3.webp', 
+        './img/delete this4.webp'], 4, bot)},
+    { names: ['erva do capeta', 'maconha', 'diamba', 'banza', 'baseado', 'beck', 'cannabis', 'dedo de gorila', 'erva', 'ganja', 'majimba', 'marijuana', 'maria joana', 'mary jane', 'verdinha', 'tapa na pantera', 'um dois', 'bongada'],
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/maconha.webp', 
+        './img/maconha2.webp', 
+        './img/maconha3.webp', 
+        './img/maconha4.webp', 
+        './img/maconha5.webp',
+        './img/maconha6.webp',
+        './img/maconha7.webp',
+        './img/maconha8.webp',
+        './img/maconha9.webp',
+        './img/maconha10.webp',
+        './img/maconha11.webp'], 11, bot)},
+    { names: ['transa', 'atos libidinosos', 'coito', 'sexo', 'furunfada'],
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/roger procuro sexo.webp', 
+        './img/sexo.webp', 
+        './img/sexo2.webp', 
+        './img/sexo3.webp', 
+        './img/sexo4.webp',
+        './img/sexo5.webp',
+        './img/sexo6.webp',
+        './img/sexo7.webp'], 8, bot)},
+    { names: ['gay', 'viado', 'viadagem'],
+        callback: (msg, bot) => sendRandomSticker(msg, 
+        ['./img/viadagem.webp', 
+        './img/gay.webp'], 2, bot)},
+    { name: 'ironicamente', callback: (msg, bot) => sendSticker(msg, './img/ironicamente.webp', bot)},
+    { name: 'ceni', callback: (msg, bot) => sendSticker(msg, './img/ceni.webp', bot)},
+]
+
+commands.forEach((value) => {
+    commandsMap.set(value.name, value.callback);
+})
+
+trigger.forEach((value) => {
+    if (value.names) {
+        value.names.forEach((name) => {
+            callbackMap.set(name, value.callback);
+        })
+    }
+    else if (value.name) {
+        callbackMap.set(value.name, value.callback);
+    }
+})   
+
+module.exports = { callbackMap, commandsMap, getGroup, getNextLevelExp };

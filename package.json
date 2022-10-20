@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "init": "nodemon index.js"
+  },
+  "dependencies": {
+    "campeonato-brasileiro-api": "^1.2.10",
+    "epic-free-games": "^3.1.1",
+    "g-i-s": "^2.1.6",
+    "googlethis": "^1.4.3",
+    "mongoose": "^6.6.5",
+    "node-google-text-to-speech": "^0.1.0",
+    "node-speak": "^0.0.2",
+    "nodemon": "^2.0.20",
+    "puppeteer-extra-plugin-user-data-dir": "^2.4.0",
+    "qrcode-terminal": "^0.12.0",
+    "say": "^0.16.0",
+    "superagent": "^8.0.2",
+    "text-to-speech-js": "^1.1.10",
+    "whatsapp-web": "^1.0.3",
+    "whatsapp-web.js": "^1.17.1"
+  }
+}
