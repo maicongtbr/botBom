@@ -68,8 +68,9 @@ const list = new List(
       ],
       "teste3"
 )
-try {
-    bot.on('message', async msg => {
+
+bot.on('message', async msg => {
+    try {
         if (msg.body.startsWith('!')){
             for (value of commandsMap) {
                 var key = value[0];
@@ -142,10 +143,10 @@ try {
                 }
             })
         }
-    });
-} catch (err) {
-    console.log('_____________________________________________________________\n' + err + '\n_____________________________________________________________\n');
-}
+    } catch (err) {
+        console.log('_____________________________________________________________\n' + err + '\n_____________________________________________________________\n');
+    }
+});
 
 
 bot.initialize();
