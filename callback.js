@@ -449,7 +449,7 @@ const commandList = (msg, bot) => {
         '*!level* [membro] ➡ Retorna o level do membro marcado.'
     ]
 
-    bot.sendMessage(msg.from, `Lista de comandos: \n${userCommandsList.join('\n🔹')}\n\nLista de comandos para Admin: \n${adminCommandsList.join('\n🔹')}` );
+    bot.sendMessage(msg.from, `*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n*Lista de comandos para Admin:* \n${adminCommandsList.join('\n🔹')}` );
 }
 
 const commands = [

@@ -89,11 +89,9 @@ bot.on('message', async msg => {
                 _callback(msg, bot);
                 break;
             }
-            else {
-                if(!group){
-                    bot.sendMessage(msg.from, 'Use *!comandos* para ver a lista de comandos.');
-                    break;
-                }
+            else if (!group){
+                bot.sendMessage(msg.from, 'Use *!comandos* para ver a lista de comandos.');
+                break;
             }
         }
         if (msg.body.length >= 150) {
