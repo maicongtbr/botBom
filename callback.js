@@ -160,28 +160,42 @@ const banMember = (msg, bot) => {
                 if (!botIsAdmin){
                     return msg.reply('O Bot não é Admin.');
                 }
-    
-                sendSticker(msg, './img/delete this5.webp', bot).then(() => {
-                    if (msg.hasQuotedMsg){
-                        let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
-                            let usersToBan = [quotedMsg.author];
-                            console.log(usersToBan);
-                            group.removeParticipants(usersToBan);
-                            return;
+
+                sendSticker(msg, './img/delete this5.webp', bot).then(() => { //5521991241118@c.us
+                    let quotedMsgMember = msg.getQuotedMessage().author.then((quotedMsg) => {
+                        var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
+                            if (quotedMsgMember === '5521991241118@c.us') {
+                                msg.reply('*JAMAIS TENTE ISSO!*');
+                                group.removeParticipants(msg.author);
+                                return;
+                            }
+
+                            mentionedUsers.forEach((element) => {
+                                if (element.id._serialized === '5521991241118@c.us') {
+                                    msg.reply('*JAMAIS TENTE ISSO*');
+                                    group.removeParticipants(msg.author);
+                                    return;
+                                }
+                            })
+
+                            if (msg.hasQuotedMsg){
+                                    let usersToBan = [quotedMsgMember];
+                                    console.log(usersToBan);
+                                    group.removeParticipants(usersToBan);
+                                    return;
+                            }
+                            
+                                var usersToBan = [];
+                                mentionedUsers.forEach((element) => {
+                                usersToBan.push(element.id._serialized);
+                                })
+                                group.removeParticipants(usersToBan);
                         })
-                    }
-        
-                    var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
-                        var usersToBan = [];
-                        mentionedUsers.forEach((element) => {
-                        usersToBan.push(element.id._serialized);
-                        })
-                        group.removeParticipants(usersToBan);
-                    });
+                    })
                 })
-            });
-        });
-    });
+            })
+        })
+    })
 }
 
 const promoteMember = (msg, bot) => {
