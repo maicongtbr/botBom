@@ -433,7 +433,8 @@ const getRanking = async (msg, bot) => {
 }
 
 const commandList = async (msg, bot) => {
-    console.log(msg.getChat());
+    console.log(await msg.getChat());
+    console.log(userIsAdmin(msg.getChat(), msg.author));
     const userCommandsList = [
         '🔹*!s* ➡ Cria uma figurinha a partir da imagem enviada ou mencionada.',
         '*!img* [palavra para pesquisar] ➡ Pesquisa uma imagem e retorna ela.',
