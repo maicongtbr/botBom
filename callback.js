@@ -432,6 +432,26 @@ const getRanking = async (msg, bot) => {
     });
 }
 
+const commandList = (bot) => {
+    const userCommandsList = [
+        '🔹*!s* ➡ Cria uma figurinha a partir da imagem enviada ou mencionada.',
+        '*!img* [palavra para pesquisar] ➡ Pesquisa uma imagem e retorna ela.',
+        '*!encaminhado* ➡ Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada.',
+        '*!gratis* ➡ Retorna os jogos grátis na Epic Games da semana atual e da próxima.',
+        '*!tabela* ➡ Retorna a tabela atualizada do Brasileirão Serie A',
+        '*!level* ➡ Retorna seu level no grupo atual (Se enviado no PV do bot, retorna seu level em todos os grupos que o bot participa).',
+        '*!ranking* ➡ Retorna o Top 10 do grupo.'
+    ]
+    const adminCommandsList = [
+        '🔹*!ban* [membro] ➡ Bane o membro marcado ou da mensagem mencionada.',
+        '*!up* [membro] ➡ Promove o membro marcado ou da mensagem mencionada.',
+        '*!down* [membro] ➡ Rebaixa o membro marcado ou da mensagem mencionada.',
+        '*!level* [membro] ➡ Retorna o level do membro marcado.'
+    ]
+
+    bot.sendMessage(msg.from, `Lista de comandos: \n${userCommandsList.join('\n🔹')}\n\nLista de comandos para Admin: \n${adminCommandsList.join('\n🔹')}` );
+}
+
 const commands = [
     { name: '!ban', callback: (msg, bot) => banMember(msg, bot)},
     { name: '!up', callback: (msg, bot) => promoteMember(msg, bot)},
@@ -443,7 +463,8 @@ const commands = [
     { name: '!tabela', callback: (msg, bot) => getTabela(msg, bot)},
     { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
-    { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)}
+    { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)},
+    { name: '!comandos', callback: (bot) => commandList(bot)}
 ]
 
 const trigger = [
