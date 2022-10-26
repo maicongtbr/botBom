@@ -69,6 +69,20 @@ const list = new List(
       "teste3"
 )
 
+const msgCallback = (msg) => {
+    for (value of callbackMap) {
+        var key = value[0];
+        if (msg.body.toLowerCase().includes(key)) {
+            var _callback = value[1];
+            _callback(msg, bot);
+            return;
+        }
+    }
+
+    if(!group) {bot.sendMessage(msg.from, 'Use *!comandos* para ver a lista de comandos.');
+    }
+}
+
 bot.on('message', async msg => {
     try {
         var group = await getGroup(msg);
@@ -83,21 +97,7 @@ bot.on('message', async msg => {
             }
         }
 
-        for (value of callbackMap) {
-            console.log(value.lenght);
-            var key = value[0];
-            if (msg.body.toLowerCase().includes(key)) {
-                var _callback = value[1];
-                _callback(msg, bot);
-                break;
-            }
-            else if (value == callbackMap.lenght){
-                if(!group) {
-                    bot.sendMessage(msg.from, 'Use *!comandos* para ver a lista de comandos.');
-                    break;
-                }
-            }
-        }
+        msgCallback(msg);
 
         if (group) { //Coleta de EXP
             var groupId = group.id._serialized;
