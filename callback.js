@@ -166,7 +166,7 @@ const banMember = (msg, bot) => {
                         if (quotedMsg.author === '5521991241118@c.us') {
                             console.log('mencionou a msg do bot')
                             msg.reply('*JAMAIS TENTE ISSO!*');
-                            group.removeParticipants(msg.author);
+                            group.removeParticipants([msg.author]);
                             return;
                         }
                         msg.getMentions().then((mentionedUsers) => {
@@ -174,7 +174,7 @@ const banMember = (msg, bot) => {
                                 if (element.id._serialized === '5521991241118@c.us') {
                                     console.log('mencionou o bot')
                                     msg.reply('*JAMAIS TENTE ISSO*');
-                                    group.removeParticipants(msg.author);
+                                    group.removeParticipants([msg.author]);
                                     return;
                                 }
                             })
