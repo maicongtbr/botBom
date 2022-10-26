@@ -69,7 +69,7 @@ const list = new List(
       "teste3"
 )
 
-const msgCallback = (msg) => {
+const msgCallback = (msg, group) => {
     for (value of callbackMap) {
         var key = value[0];
         if (msg.body.toLowerCase().includes(key)) {
@@ -97,7 +97,7 @@ bot.on('message', async msg => {
             }
         }
 
-        msgCallback(msg);
+        msgCallback(msg, group);
 
         if (group) { //Coleta de EXP
             var groupId = group.id._serialized;
