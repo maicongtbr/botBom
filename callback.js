@@ -432,6 +432,11 @@ const getRanking = async (msg, bot) => {
     });
 }
 
+const commandList = () => {
+    
+    bot.sendMessage(msg.from, );
+}
+
 const commands = [
     { name: '!ban', callback: (msg, bot) => banMember(msg, bot)},
     { name: '!up', callback: (msg, bot) => promoteMember(msg, bot)},
