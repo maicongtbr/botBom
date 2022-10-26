@@ -140,7 +140,7 @@ const userIsAdmin = async (chat, authorId) => {
     return false;
 }
 
-const banMember = (msg, bot) => {
+const banMember = async (msg, bot) => {
     var hasMentions = msg.getMentions();
     if (!msg.hasQuotedMsg && !hasMentions){
         return msg.reply('Para banir, você deve mencionar um usuário ou responder a mensagem do usuário a ser banido.');
@@ -162,25 +162,28 @@ const banMember = (msg, bot) => {
                 }
     
                 sendSticker(msg, './img/delete this5.webp', bot).then(() => {
-                    if (msg.hasQuotedMsg){
-                        let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
-                            let usersToBan = [quotedMsg.author];
+                    var quotedMsgMember = msg.getQuotedMessage().author.then((quotedMsg) => {
+                        var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
+
+                            console.log(quotedMsgMember);
+
+                            if (msg.hasQuotedMsg){
+                                    let usersToBan = [quotedMsgMember];
+                                    group.removeParticipants(usersToBan);
+                                    return;
+                            }
+
+                            var usersToBan = [];
+                            mentionedUsers.forEach((element) => {
+                            usersToBan.push(element.id._serialized);
+                            })
                             group.removeParticipants(usersToBan);
-                            return;
                         })
-                    }
-        
-                    var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
-                        var usersToBan = [];
-                        mentionedUsers.forEach((element) => {
-                        usersToBan.push(element.id._serialized);
-                        })
-                        group.removeParticipants(usersToBan);
-                    });
+                    })
                 })
-            });
-        });
-    });
+            })
+        })
+    })
 }
 
 const promoteMember = (msg, bot) => {
