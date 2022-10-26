@@ -165,7 +165,7 @@ const banMember = async (msg, bot) => {
                     var quotedMsgMember = msg.getQuotedMessage().author.then((quotedMsg) => {
                         var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
 
-                            console.log(quotedMsgMember);
+                            console.log(quotedMsgMember, mentionedUsers);
 
                             if (msg.hasQuotedMsg){
                                     let usersToBan = [quotedMsgMember];
