@@ -433,6 +433,7 @@ const getRanking = async (msg, bot) => {
 }
 
 const commandList = (msg, bot) => {
+    console.log(msg.author);
     const userCommandsList = [
         '🔹*!s* ➡ Cria uma figurinha a partir da imagem enviada ou mencionada.',
         '*!img* [palavra para pesquisar] ➡ Pesquisa uma imagem e retorna ela.',
@@ -449,7 +450,7 @@ const commandList = (msg, bot) => {
         '*!level* [membro] ➡ Retorna o level do membro marcado.'
     ]
 
-    bot.sendMessage(msg.from, (userIsAdmin()) ? `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n` : `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n📄*Lista de comandos para Admin:* \n${adminCommandsList.join('\n🔹')}`);
+    bot.sendMessage(msg.from, (userIsAdmin(msg.from, msg.author)) ? `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n` : `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n📄*Lista de comandos para Admin:* \n${adminCommandsList.join('\n🔹')}`);
 }
 
 const commands = [
