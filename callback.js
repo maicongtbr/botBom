@@ -432,7 +432,7 @@ const getRanking = async (msg, bot) => {
     });
 }
 
-const commandList = (bot) => {
+const commandList = (msg, bot) => {
     const userCommandsList = [
         '🔹*!s* ➡ Cria uma figurinha a partir da imagem enviada ou mencionada.',
         '*!img* [palavra para pesquisar] ➡ Pesquisa uma imagem e retorna ela.',
@@ -464,7 +464,7 @@ const commands = [
     { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
     { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)},
-    { name: '!comandos', callback: (bot) => commandList(bot)}
+    { name: '!comandos', callback: (msg, bot) => commandList(msg, bot)}
 ]
 
 const trigger = [
