@@ -451,7 +451,7 @@ const commandList = async (msg, bot) => {
         '*!level* [membro] ➡ Retorna o level do membro marcado.'
     ]
 
-    bot.sendMessage(msg.from, (userIsAdmin(await msg.getChat(), msg.author)) ? `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n` : `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n📄*Lista de comandos para Admin:* \n${adminCommandsList.join('\n🔹')}`);
+    bot.sendMessage(msg.from, (userIsAdmin(await getGroup(), msg.author)) ? `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n` : `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n📄*Lista de comandos para Admin:* \n${adminCommandsList.join('\n🔹')}`);
 }
 
 const commands = [
