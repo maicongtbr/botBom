@@ -162,15 +162,17 @@ const banMember = (msg, bot) => {
                 }
 
                 sendSticker(msg, './img/delete this5.webp', bot).then(() => { //5521991241118@c.us
-                    let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
+                    msg.getQuotedMessage().then((quotedMsg) => {
                         if (quotedMsg.author === '5521991241118@c.us') {
+                            console.log('mencionou a msg do bot')
                             msg.reply('*JAMAIS TENTE ISSO!*');
                             group.removeParticipants(msg.author);
                             return;
                         }
-                        var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
+                        msg.getMentions().then((mentionedUsers) => {
                             mentionedUsers.forEach((element) => {
                                 if (element.id._serialized === '5521991241118@c.us') {
+                                    console.log('mencionou o bot')
                                     msg.reply('*JAMAIS TENTE ISSO*');
                                     group.removeParticipants(msg.author);
                                     return;
