@@ -162,7 +162,7 @@ const banMember = (msg, bot) => {
                 }
 
                 sendSticker(msg, './img/delete this5.webp', bot).then(() => { //5521991241118@c.us
-                    let quotedMsg = msg.getQuotedMessage().author.then((quotedMsg) => {
+                    let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
                         if (quotedMsg.author === '5521991241118@c.us') {
                             msg.reply('*JAMAIS TENTE ISSO!*');
                             group.removeParticipants(msg.author);
