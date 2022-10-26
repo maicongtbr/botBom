@@ -1,2 +1,3 @@
-2022/10/20-13:28:48.786 34cc Creating DB C:\Users\micha\Documents\bot-aop1\.wwebjs_auth\session\Default\Session Storage since it was missing.
-2022/10/20-13:28:48.792 34cc Reusing MANIFEST C:\Users\micha\Documents\bot-aop1\.wwebjs_auth\session\Default\Session Storage/MANIFEST-000001
+2022/10/26-14:45:58.891 16e61 Reusing MANIFEST /home/life4gamming2/bot-aop/.wwebjs_auth/session/Default/Session Storage/MANIFEST-000001
+2022/10/26-14:45:58.892 16e61 Recovering log #3
+2022/10/26-14:45:58.892 16e61 Reusing old log /home/life4gamming2/bot-aop/.wwebjs_auth/session/Default/Session Storage/000003.log 
