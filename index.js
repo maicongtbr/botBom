@@ -82,23 +82,24 @@ bot.on('message', async msg => {
                 }
             }
         }
+
         for (value of callbackMap) {
+            console.log(value);
             var key = value[0];
             if (msg.body.toLowerCase().includes(key)) {
                 var _callback = value[1];
                 _callback(msg, bot);
                 break;
             }
-            else if (!group){
-                bot.sendMessage(msg.from, 'Use *!comandos* para ver a lista de comandos.');
-                break;
+            else if (value == callbackMap.lenght){
+                if(!group) {
+                    bot.sendMessage(msg.from, 'Use *!comandos* para ver a lista de comandos.');
+                    break;
+                }
             }
         }
-        if (msg.body.length >= 150) {
-            msg.reply('Desculpa parceiro, não leio textão');
-        }
 
-        if (group) {
+        if (group) { //Coleta de EXP
             var groupId = group.id._serialized;
             var groupName = group.name;
             let contact = await msg.getContact();
