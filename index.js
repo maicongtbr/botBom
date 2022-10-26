@@ -84,7 +84,7 @@ bot.on('message', async msg => {
         }
 
         for (value of callbackMap) {
-            console.log(value);
+            console.log(value.lenght);
             var key = value[0];
             if (msg.body.toLowerCase().includes(key)) {
                 var _callback = value[1];
