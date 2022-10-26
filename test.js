@@ -1,19 +1,10 @@
-const gis = require('g-i-s');
+const deepai = require('deepai');
 
+deepai.setApiKey('quickstart-QUdJIGlzIGNvbWluZy4uLi4K');
 
-
-// function logResults(error, results) {
-//     if (error) {
-//       console.log(error);
-//     }
-//     else {
-//       console.log(JSON.stringify(results, null, '  '));
-//     }
-//   }
-
-const imageSearch = (error, results) => {
-    var result = (JSON.stringify(results, null, '  '));
-    console.log(results[1].url);
-}
-
-gis ('cats', imageSearch);
+(async function() {
+    var resp = await deepai.callStandardApi("text2img", {
+            text: "deyverson flamengo",
+    });
+    console.log(resp);
+})()
