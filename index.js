@@ -71,6 +71,7 @@ const list = new List(
 
 bot.on('message', async msg => {
     try {
+        var group = await getGroup(msg);
         if (msg.body.startsWith('!')){
             for (value of commandsMap) {
                 var key = value[0];
@@ -89,15 +90,16 @@ bot.on('message', async msg => {
                 break;
             }
             else {
-                bot.sendMessage(msg.from, 'Use *!comandos* para ver a lista de comandos.');
-                break;
+                if(!group){
+                    bot.sendMessage(msg.from, 'Use *!comandos* para ver a lista de comandos.');
+                    break;
+                }
             }
         }
         if (msg.body.length >= 150) {
             msg.reply('Desculpa parceiro, não leio textão');
         }
 
-        var group = await getGroup(msg);
         if (group) {
             var groupId = group.id._serialized;
             var groupName = group.name;
