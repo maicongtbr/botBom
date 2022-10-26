@@ -95,9 +95,9 @@ bot.on('message', async msg => {
                     break;
                 }
             }
+        } else {
+            msgCallback(msg, group);
         }
-
-        msgCallback(msg, group);
 
         if (group) { //Coleta de EXP
             var groupId = group.id._serialized;
