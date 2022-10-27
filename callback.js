@@ -161,10 +161,10 @@ const banMember = (msg, bot) => {
                     return msg.reply('O Bot não é Admin.');
                 }
 
-                sendSticker(msg, './img/delete this5.webp', bot).then(() => { //5521991241118@c.us
+                sendSticker(msg, './img/delete this5.webp', bot).then(() => { //id do bot = 5521991241118@c.us
                     msg.getQuotedMessage().then((quotedMsg) => {
                         if (quotedMsg && quotedMsg.author === '5521991241118@c.us') {
-                            console.log('mencionou a msg do bot')
+                            console.log('mencionou a msg do bot');
                             msg.reply('*JAMAIS TENTE ISSO!*');
                             group.removeParticipants([msg.author]);
                             return;
@@ -172,7 +172,7 @@ const banMember = (msg, bot) => {
                         msg.getMentions().then((mentionedUsers) => {
                             mentionedUsers.forEach((element) => {
                                 if (element.id._serialized === '5521991241118@c.us') {
-                                    console.log('mencionou o bot')
+                                    console.log('mencionou o bot');
                                     msg.reply('*JAMAIS TENTE ISSO*');
                                     group.removeParticipants([msg.author]);
                                     return;
@@ -335,7 +335,9 @@ const getLevel = async (msg, bot) => {
     const Exp = db.getModel('Experiencia');
     const group = await getGroup(msg);
     const mentionedUsers = await msg.getMentions();
-    const isAdmin = await userIsAdmin(group, msg.author);
+    if (group) {
+        var isAdmin = await userIsAdmin(group, msg.author);
+    }
 
     if (!group) {
         Exp.find({
