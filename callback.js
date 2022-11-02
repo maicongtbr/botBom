@@ -450,6 +450,27 @@ const getRanking = async (msg, bot) => {
     });
 }
 
+const roletaRussa = async (msg, bot) => {
+    // iniciar o jogo
+    bot.sendMessage(msg.from, 'A ROLETA RUSSA COMEÇOU \nEnvie !atirar para testar sua sorte.');
+    bot.on('message', async msg => {
+        if (msg === '!roleta') {
+            bot.sendMessage(msg.from, 'A ROLETA RUSSA ACABOU');
+            return;
+        }
+        else if (msg === '!atirar') {
+            if (randomNumber(5) === 1) {
+                // group.removeParticipants(msg.author);
+                bot.sendMessage(msg.from, 'Alguma mensagem dizendo que vc morreu + um gif'); //encerrar o jogo aqui
+                return;
+            }
+            else {
+                msg.reply('A arma falhou!');
+            }
+        }
+    });
+}
+
 const commandList = (msg, bot) => {
     const userCommandsList = [
         '🔹*!s* ➡ Cria uma figurinha a partir da imagem enviada ou mencionada.',
@@ -482,7 +503,8 @@ const commands = [
     // { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
     { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)},
-    { name: '!comandos', callback: (msg, bot) => commandList(msg, bot)}
+    { name: '!comandos', callback: (msg, bot) => commandList(msg, bot)},
+    { name: '!roleta', callback: (msg, bot) => roletaRussa(msg, bot)}
 ]
 
 const trigger = [
