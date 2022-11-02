@@ -12,6 +12,7 @@
     "node-google-text-to-speech": "^0.1.0",
     "node-speak": "^0.0.2",
     "nodemon": "^2.0.20",
+    "pokemon.js": "^1.1.8",
     "puppeteer-extra-plugin-user-data-dir": "^2.4.0",
     "qrcode-terminal": "^0.12.0",
     "say": "^0.16.0",
