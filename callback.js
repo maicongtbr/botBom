@@ -647,7 +647,7 @@ const trigger = [
         'img/corinthians.webp'], 2, bot)},
     {names: ['galo', 'atletico mg', 'Galão da Massa', 'Galo Doido'], callback: (msg, bot) => sendSticker(msg, 'img/galo.webp', bot)},
     {names: ['fortaleza', 'leão', 'tricolaço', 'laion'], callback: (msg, bot) => sendSticker(msg, 'img/fortaleza.webp', bot)},
-    {names: ['peixão', 'big fish', 'santástico'], callback: (msg, bot) => sendSticker(msg, 'img/santos.webp', bot)}
+    {names: ['santos' ,'peixão', 'big fish', 'santástico'], callback: (msg, bot) => sendSticker(msg, 'img/santos.webp', bot)}
 ]
 
 commands.forEach((value) => {
