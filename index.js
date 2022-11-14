@@ -7,7 +7,7 @@ const { get } = require('superagent');
 const bot = new Client({
     puppeteer: {
 //        executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-        args:["--no-sandbox", "--autoplay-policy=no-user-gesture-required"]
+        args:["--no-sandbox"]
     },
 //    ffmpegPath: "./ffmpeg/ffmpeg.exe",
     authStrategy: new LocalAuth(),
