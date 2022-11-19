@@ -116,8 +116,8 @@ const downloadMessageMedia = async (msg) => {
 }
 
 const makeSticker = async (msg) => {
-    if (msg.type != 'IMAGE') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
     if (msg.isGif) return msg.reply('Por enquanto, não estou fazendo sticker com GIF.');
+    if (msg.type != 'IMAGE') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
     
     var media = await downloadMessageMedia(msg);
     msg.reply(media, undefined, {
