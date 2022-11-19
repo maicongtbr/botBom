@@ -120,7 +120,7 @@ const downloadMessageMedia = async (msg) => {
 const makeSticker = async (msg) => {
     console.log(msg.type);
     if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
-    if (msg.type == 'chat') return msg.reply('O comando de Sticker não está funcionando mencionando mensagens. Tente enviando diretamente a imagem.');
+    if (msg.type === 'chat') return msg.reply('O comando de Sticker não está funcionando mencionando mensagens. Tente enviando diretamente a imagem.');
 
     var media = await downloadMessageMedia(msg);
     msg.reply(media, undefined, {
