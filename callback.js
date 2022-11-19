@@ -117,13 +117,23 @@ const downloadMessageMedia = async (msg) => {
 
 const makeSticker = async (msg) => {
     // if (msg.isGif) return msg.reply('Por enquanto, não estou fazendo sticker com GIF.');
-    // if (msg.type != 'IMAGE') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
+    // if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
     console.log(msg.type);
     
-    var media = await downloadMessageMedia(msg);
+    if (msg.hasQuotedMsg) {
+        var quotedMsg = await getQuotedMessage(msg);
+        if(quotedMsg.hasMedia) {
+            if (quotedMsg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
+            var media = await downloadMessageMedia(quotedMsg);
+        }
+    }
+    else {
+        var media = await downloadMessageMedia(msg);
+    }
+
     msg.reply(media, undefined, {
         sendMediaAsSticker:true,
-        stickerName: 'Feito com o Bot Bom',
+        stickerName: 'Feito com o Bot Bom da AOP',
         sticketAuthor: 'Bot Bom'
     })
 }
