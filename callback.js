@@ -186,6 +186,7 @@ const banMember = (msg, bot) => {
                             })
 
                             if (msg.hasQuotedMsg){
+                                    console.log(quotedMsg.author);
                                     let usersToBan = [quotedMsg.author];
                                     console.log(usersToBan);
                                     group.removeParticipants(usersToBan);
