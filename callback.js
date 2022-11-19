@@ -106,6 +106,7 @@ const sendSticker = async (msg, fileName, bot) => {
 const downloadMessageMedia = async (msg) => {
     var messageToDowloadMedia = msg;
     if (msg.hasQuotedMsg){
+        return; //só enquanto o bot ta crashando com quotedMsg
         let quotedMsg = await msg.getQuotedMessage();
         if (quotedMsg.hasMedia){
             messageToDowloadMedia = quotedMsg;
@@ -116,22 +117,9 @@ const downloadMessageMedia = async (msg) => {
 }
 
 const makeSticker = async (msg) => {
-    // if (msg.isGif) return msg.reply('Por enquanto, não estou fazendo sticker com GIF.');
-    // if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
-    console.log(msg.type);
+    if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
     
-    if (msg.hasQuotedMsg) {
-        var quotedMsg = await msg.getQuotedMessage();
-        if(quotedMsg.hasMedia) {
-            console.log(quotedMsg.type);
-            if (quotedMsg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
-            var media = await downloadMessageMedia(quotedMsg);
-        }
-    }
-    else {
-        var media = await downloadMessageMedia(msg);
-    }
-
+    var media = await downloadMessageMedia(msg);
     msg.reply(media, undefined, {
         sendMediaAsSticker:true,
         stickerName: 'Feito com o Bot Bom da AOP',
