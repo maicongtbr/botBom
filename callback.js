@@ -121,7 +121,7 @@ const makeSticker = async (msg) => {
     console.log(msg.type);
     
     if (msg.hasQuotedMsg) {
-        var quotedMsg = await getQuotedMessage(msg);
+        var quotedMsg = await msg.getQuotedMessage();
         if(quotedMsg.hasMedia) {
             if (quotedMsg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
             var media = await downloadMessageMedia(quotedMsg);
