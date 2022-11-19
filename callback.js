@@ -106,8 +106,9 @@ const sendSticker = async (msg, fileName, bot) => {
 const downloadMessageMedia = async (msg) => {
     var messageToDowloadMedia = msg;
     if (msg.hasQuotedMsg){
-        return; //só enquanto o bot ta crashando com quotedMsg
         let quotedMsg = await msg.getQuotedMessage();
+        console.log(quotedMsg.type);
+        return; //só enquanto o bot ta crashando com quotedMsg
         if (quotedMsg.hasMedia){
             messageToDowloadMedia = quotedMsg;
         }
@@ -117,6 +118,7 @@ const downloadMessageMedia = async (msg) => {
 }
 
 const makeSticker = async (msg) => {
+    console.log(msg.type);
     if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
     
     var media = await downloadMessageMedia(msg);
