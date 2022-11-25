@@ -4,6 +4,25 @@ const { callbackMap, commandsMap, getGroup, getNextLevelExp } = require('./callb
 const db = require('./database');
 const { get } = require('superagent');
 
+const exp = [
+    {
+        date: new Date("2022-11-27 00:00:00"),
+        multiplyer: 2.0
+    }
+]
+
+const getExpMultply = () => {
+    var date = new Date();
+
+    for (var i = 0; i < exp.length; i++){
+        var selectedBonus = exp[i];
+        if (selectedBonus.date>date) {
+            return selectedBonus.multiplyer
+        }
+    }
+    return 1.0;
+}
+
 const bot = new Client({
     puppeteer: {
 //        executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
@@ -112,7 +131,7 @@ bot.on('message', async msg => {
                 group: groupId
             }).then(async user => {
                 if (user) {
-                    let newExp = user.exp + 1;
+                    let newExp = user.exp + (1 * getExpMultply());
                     let level = user.level;
                     let nextLevelExp = user.nextLevelExp ? user.nextLevelExp : getNextLevelExp(user.level + 1);
                     if (newExp >= getNextLevelExp(user.level + 1)) {

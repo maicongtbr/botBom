@@ -107,7 +107,6 @@ const downloadMessageMedia = async (msg) => {
     var messageToDowloadMedia = msg;
     if (msg.hasQuotedMsg){
         let quotedMsg = await msg.getQuotedMessage();
-        console.log(quotedMsg.type);
         return; //só enquanto o bot ta crashando com quotedMsg
         if (quotedMsg.hasMedia){
             messageToDowloadMedia = quotedMsg;
@@ -118,7 +117,6 @@ const downloadMessageMedia = async (msg) => {
 }
 
 const makeSticker = async (msg) => {
-    console.log(msg.type);
     if (msg.type === 'chat') return msg.reply('O comando de Sticker não está funcionando mencionando mensagens. Tente enviando diretamente a imagem.');
     if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
 
@@ -285,7 +283,8 @@ const demoteMember = (msg, bot) => {
 }
 
 const forwardingScore = (msg) => {
-    let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
+    msg.getQuotedMessage().then((quotedMsg) => {
+        if (!quotedMsg) return msg.reply('Você precisa mencionar uma mensagem.'); 
         var score = quotedMsg.forwardingScore;
         if (score === 1){
             msg.reply('Essa mensagem foi encaminhada ' + score + ' vez.', undefined);
