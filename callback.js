@@ -576,7 +576,7 @@ const trigger = [
     { names: ['será', 'sera'],
         callback: (msg, bot) => sendSticker(msg, 'img/sera.webp', bot)},
     { name: 'transito',
-        callback: (msg, bot) => sendSticker(msg, 'img/transito.webp', bot)},
+        callback: (msg, bot) => sendSticker(msg, 'img/ta transito.webp', bot)},
     { name: 'galera',
         callback: (msg, bot) => sendSticker(msg, 'img/tijolo.webp', bot)},
     { name: 'boa noite',

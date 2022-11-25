@@ -123,6 +123,7 @@ bot.on('message', async msg => {
             var groupName = group.name;
             let contact = await msg.getContact();
             var userName = contact.name ? contact.name : contact.pushname;
+            var expMultiplier = getExpMultply();
 
             const Exp = db.getModel('Experiencia');
 
@@ -131,7 +132,7 @@ bot.on('message', async msg => {
                 group: groupId
             }).then(async user => {
                 if (user) {
-                    let newExp = user.exp + (1 * getExpMultply());
+                    let newExp = user.exp + (1 * expMultiplier);
                     let level = user.level;
                     let nextLevelExp = user.nextLevelExp ? user.nextLevelExp : getNextLevelExp(user.level + 1);
                     if (newExp >= getNextLevelExp(user.level + 1)) {
