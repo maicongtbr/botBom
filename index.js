@@ -25,10 +25,8 @@ const getExpMultply = () => {
 
 const bot = new Client({
     puppeteer: {
-//        executablePath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
         args:["--no-sandbox"]
     },
-//    ffmpegPath: "./ffmpeg/ffmpeg.exe",
     authStrategy: new LocalAuth(),
 })
 
