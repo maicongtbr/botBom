@@ -1,12 +1,12 @@
 const { MessageMedia, Client, List, Buttons } = require('whatsapp-web.js');
 const { getGames } = require ('epic-free-games');
 const fs = require ('fs');
-const Say = require ('say').Say;
 const superagent = require('superagent');
 const db = require('./database');
 const google = require('googlethis');
+const tts = require('./tts');
 
-const say = new Say('win32');
+
 const callbackMap = new Map();
 const commandsMap = new Map();
 
@@ -38,10 +38,10 @@ const getTabela = async (msg, bot) => {
     var teamStats = `⚽️Campeonato Brasileiro Série A⚽️\n\n🔘Rodada ${rodadaAtual}/${rodada._body.length}\n\n🔵${tabela._body[0].posicao}° - ${tabela._body[0].time.nome_popular} ▶️Pts: ${tabela._body[0].pontos}\n`;
     for (let i = 1; i <= 19; i++) {
         var team = tabela._body[i].time.nome_popular;
-        if(i <= 3){//libertadotabela
+        if(i <= 3){//libertadores
             teamStats = teamStats + `🔵${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
         }
-        else if(i > 3 && i <= 5){//pré-libertadotabela
+        else if(i > 3 && i <= 5){//pré-libertado
             teamStats = teamStats + `🟠${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
         }
         else if(i > 5 && i <= 11){//sulamericana
@@ -61,29 +61,6 @@ const getTabela = async (msg, bot) => {
     bot.sendMessage(msg.from, teamStats);
 }
 
-//Teste TTS. Precisa converter o audio pra .OGG
-const tts = (msg, bot) => {
-    try {
-        say.getInstalledVoices(console.log);
-        say.export("It's just a test.", 'Microsoft Maria Desktop', 1.0, './test.wav', (err) => {
-            if (err){
-                return console.error(err);
-            }
-            try {
-                media = MessageMedia.fromFilePath('./test.wav');
-                bot.sendMessage(msg.from, media, {
-                    sendAudioAsVoice:true
-                });
-                //fs.unlinkSync('./test.mpeg');
-            }
-            catch (err) {
-                console.log(err);
-            } 
-        })
-    } catch (err) {
-        console.log(err);
-    }  
-}
 
 const randomNumber = (max) => {
     return Math.floor(Math.random() * (max - 1 + 1));
@@ -497,6 +474,11 @@ const commandList = (msg, bot) => {
     bot.sendMessage(msg.from, `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n📄*Lista de comandos para Admin:* \n${adminCommandsList.join('\n🔹')}` );
 }
 
+const textToSpeach = (msg, bot) => {
+    tts(msg.body);
+    console.log(kek1);
+}
+
 const commands = [
     { name: '!ban', callback: (msg, bot) => banMember(msg, bot)},
     { name: '!up', callback: (msg, bot) => promoteMember(msg, bot)},
@@ -504,7 +486,7 @@ const commands = [
     { name: '!s', callback: (msg) => makeSticker(msg)},
     { name: '!encaminhado', callback: (msg) => forwardingScore(msg)},
     { name: '!gratis', callback: (msg, bot) => freeGames(bot, msg)},
-    //{ name: '!tts', callback: (msg, bot) => tts(msg, bot)},
+    { name: '!tts', callback: (msg, bot) => tts(msg.body, msg, bot)},
     { name: '!tabela', callback: (msg, bot) => getTabela(msg, bot)},
     // { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
