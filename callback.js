@@ -475,6 +475,7 @@ const commandList = (msg, bot) => {
 }
 
 const textToSpeach = (msg, bot) => {
+    console.log('coe');
     tts(msg.body.slice(4), msg, bot);
 }
 
