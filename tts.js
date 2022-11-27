@@ -4,7 +4,7 @@ const { MessageMedia, Client } = require('whatsapp-web.js');
 const say = new Say('win32');
 
 //Teste TTS. Precisa converter o audio para .OGG???
-const tts = (textToSpeach, msg, bot) => {
+const tts = async (textToSpeach, msg, bot) => {
     try {
         console.log(kekw);
         say.export(textToSpeach, 'Maria', 1, 'audioToSend.wav', (err) => {          
