@@ -474,11 +474,6 @@ const commandList = (msg, bot) => {
     bot.sendMessage(msg.from, `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n📄*Lista de comandos para Admin:* \n${adminCommandsList.join('\n🔹')}` );
 }
 
-const textToSpeach = (msg, bot) => {
-    tts(msg.body);
-    console.log(kek1);
-}
-
 const commands = [
     { name: '!ban', callback: (msg, bot) => banMember(msg, bot)},
     { name: '!up', callback: (msg, bot) => promoteMember(msg, bot)},
@@ -486,7 +481,7 @@ const commands = [
     { name: '!s', callback: (msg) => makeSticker(msg)},
     { name: '!encaminhado', callback: (msg) => forwardingScore(msg)},
     { name: '!gratis', callback: (msg, bot) => freeGames(bot, msg)},
-    { name: '!tts', callback: (msg, bot) => tts(msg.body, msg, bot)},
+    { name: '!tts', callback: (msg, bot) => tts(msg.body.slice(4), msg, bot)},
     { name: '!tabela', callback: (msg, bot) => getTabela(msg, bot)},
     // { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
