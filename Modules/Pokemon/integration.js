@@ -73,6 +73,7 @@ const tryCatch = async (msg) => {
                     PokemonPlayerDB.updateOne({
                         id: msg.author
                     },{
+                        user,
                         pokemon: newPokemon
                     })
                 }
