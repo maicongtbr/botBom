@@ -168,6 +168,7 @@ const getStarter = async (msg) => {
         id: msg.author
     });
     if (player && player.hasStarter) {
+        msg.reply("Você já tem um inicial!");
         return;
     }
 
