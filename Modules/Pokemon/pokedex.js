@@ -11,33 +11,37 @@ const getPokedex = async (msg) => {
 
     pokeName = pokeName.toLowerCase();
 
-    var pokeInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}/`);
-    pokeInfo = pokeInfo._body;
-
-    var sprite = await MessageMedia.fromUrl(pokeInfo.sprites.front_default, {
-        unsafeMime: true
-    });
-
-    var types = [];
-    pokeInfo.types.forEach( async t => {
-        types.push(capitalize(t.type.name));
-    })
-
-
-    var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName.toLowerCase()}/`);
-    var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
-
-    var chain = getChain(evolutionsInfo._body.chain);
-    var evolutionsMessages = await getChainString(chain);
-
-
-
-    var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.height/10}kg\nTipos: ${types.join(", ")}`;
-    if(evolutionsMessages.length > 0) {
-        message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
+    try {
+        var pokeInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}/`);
+        pokeInfo = pokeInfo._body;
+    
+        var sprite = await MessageMedia.fromUrl(pokeInfo.sprites.front_default, {
+            unsafeMime: true
+        });
+    
+        var types = [];
+        pokeInfo.types.forEach( async t => {
+            types.push(capitalize(t.type.name));
+        })
+    
+    
+        var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName.toLowerCase()}/`);
+        var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
+    
+        var chain = getChain(evolutionsInfo._body.chain);
+        var evolutionsMessages = await getChainString(chain);
+    
+    
+    
+        var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.height/10}kg\nTipos: ${types.join(", ")}`;
+        if(evolutionsMessages.length > 0) {
+            message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
+        }
+    
+        msg.reply(sprite, msg.from, {caption: message});
+    } catch (error) {
+        console.warn(error);
     }
-
-    msg.reply(sprite, msg.from, {caption: message});
 }
 
 const getChainString = async (chain) => {
