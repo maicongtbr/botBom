@@ -108,7 +108,7 @@ bot.on('message', async msg => {
         var group = await getGroup(msg);
         if (msg.body.startsWith('!')){
             global.modules.forEach(e => {
-                for (value of e.commands) {
+                for (value of e.mod.commands) {
                     var key = value[0];
                     if (msg.body.toLowerCase().includes(key)) {
                         var _callback = value[1];

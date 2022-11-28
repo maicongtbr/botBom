@@ -1,4 +1,4 @@
-global.modules = { }
+global.modules = [];
 class Module {
     constructor(name, bot, callbacks, commands) {
         this.name = name;
@@ -6,7 +6,7 @@ class Module {
         this.enabled = false;
         this.callbacks = callbacks;
         this.commands = commands;
-        global.modules[name] = this;
+        global.modules.push({ name: name, mod: this });
     }
 
     disable() { this.enabled = false }
