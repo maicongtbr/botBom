@@ -108,9 +108,7 @@ bot.on('message', async msg => {
         var group = await getGroup(msg);
         if (msg.body.startsWith('!')){
             global.modules.forEach(e => {
-                console.log(e, e.mod);
                 for (value of e.mod.commands) {
-                    console.log(value);
                     var key = value[0];
                     if (msg.body.toLowerCase().includes(key)) {
                         var _callback = value[1];
@@ -184,8 +182,9 @@ bot.on('message', async msg => {
         }
 
         global.modules.forEach(e => {
-            if(e.enabled) {
-                e.onMessage(msg);
+            console.log(e);
+            if(e.mod.enabled) {
+                e.mod.onMessage(msg);
             }
         })
     } catch (err) {
