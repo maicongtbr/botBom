@@ -31,7 +31,6 @@ class PlayerPokemon {
             var ret = x.version_group_details.find(y => {
                 return y.level_learned_at <= this.level && y.move_learn_method.name == "level-up";
             });
-            console.log(ret);
 
             if(ret) {
                 return true;
