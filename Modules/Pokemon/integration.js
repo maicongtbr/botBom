@@ -186,18 +186,18 @@ const getStarter = async (msg) => {
                 })
             })
             let _button = new Buttons('Escolha seu inicial!', _buttons);
-            await myModule.bot.sendMessage(msg.from, _button);
             state[msg.author]++;
+            await myModule.bot.sendMessage(msg.from, _button);
         case 2:
-            var splited = msg.body.split(" ");
-            var pokemon = splited[1].toLowerCase();
-            if(pokemon == "voltar") {
+            let _splited = msg.body.split(" ");
+            let pokemon = _splited[1].toLowerCase();
+            if(pokemon == "Voltar") {
                 state[msg.author]--;
                 return getStarter(msg);
             }
             var starter = new PlayerPokemon(pokemon, 1, 0, 0, 0, 0, 0);
-            addPokemonToPlayer(msg, starter, true);
-            msg.reply(`Você escolheu o inicial ${capitalize(pokemon)}.`)
+            await addPokemonToPlayer(msg, starter, true);
+            await msg.reply(`Você escolheu o inicial ${capitalize(pokemon)}.`)
             state[msg.author]++;
             break;
         default:
