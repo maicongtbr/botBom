@@ -27,7 +27,6 @@ const getExpMultply = () => {
 
 const bot = new Client({
     puppeteer: {
-        args:["--no-sandbox"],
         executablePath: "/usr/bin/google-chrome-stable"
     },
     authStrategy: new LocalAuth(),
