@@ -69,6 +69,7 @@ class PlayerPokemon {
 
                     
                     pokeMoves.push({ name: name.name, pp: a._body.pp })
+                    break;
                 }
             }
 
