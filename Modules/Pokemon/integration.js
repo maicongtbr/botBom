@@ -9,6 +9,8 @@ const { getPokedex } = require("./pokedex");
 const capitalize = require("capitalize");
 var encounterPercentage = 5;
 var myModule = {};
+const webp = require('webp-converter');
+
 
 
 
@@ -300,6 +302,12 @@ const getPokemon = async (msg, private) => {
         //unsafeMime: true
     });
 
+    let result = await webp.str2webpstr(sticker.data,"gif","-q 80");
+    sticker.data = result;
+    sticker.mimetype = "image/webp"
+
+
+    console.log(sticker.data);
     console.log(sticker.mimetype);
     var bot = myModule.bot;
 
