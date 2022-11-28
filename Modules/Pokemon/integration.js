@@ -60,7 +60,9 @@ const getPokemon = async (msg, private) => {
 const onMessage = async (msg) => {
     try {
         var chat = await msg.getChat();
+        console.log(chat.isGroup, chat.name);
         if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
+        console.log(encounterPercentage);
         var canEncounterPokemon = getRandomIntRange(1, 100) >= encounterPercentage;
         if(!canEncounterPokemon) {
             if(getRandomIntRange(1, 100) >= encounterPercentage * 2) {
