@@ -1,7 +1,7 @@
 const {Module} = require("../mod");
 const { getRandomIntRange, Storage, getStorage, getStorageValue } = require("../../libs");
 const { getEncounter } = require("./encounter");
-const { MessageMedia } = require("whatsapp-web.js");
+const { MessageMedia, Buttons } = require("whatsapp-web.js");
 const db = require("../../database");
 const { PlayerPokemon } = require("./classes");
 const superagent = require("superagent");
