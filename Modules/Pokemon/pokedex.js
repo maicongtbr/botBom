@@ -56,7 +56,7 @@ const getPokedex = async (msg) => {
         })
     } catch (error) {
         msg.reply('Esse Pokémon não existe ou não está disponível.');
-        console.log(err);
+        console.log(error);
     }
 }
 
