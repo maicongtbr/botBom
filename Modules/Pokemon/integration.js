@@ -231,8 +231,8 @@ const initPokemonModule = (bot) => {
 
     new Storage("pokemonModuleCurrentServerPokemon", (value) => {
         for (vae in value) {
-            _e = value[vae]
-            if(!_e.notificated) {
+            element = value[vae]
+            if(!element.notificated) {
                 console.log(`Um ${element.pokemon} selvagem apareceu no servidor ${element.server}!`);
             }
         }
