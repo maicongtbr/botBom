@@ -25,6 +25,10 @@ const slicePokeName = (pokeName) => {
     var pokeNameLenght = pokeName.length -1;
     var str = [];
     for(var e = 0; e <= pokeNameLenght; e++) {
+        if (e == 0){
+            str[e] = pokeName[e];
+            continue;
+        }
         var chance = 90;
         if (str[e -1] == "_") {
             chance = 10
