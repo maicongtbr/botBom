@@ -87,7 +87,9 @@ const onMessage = async (msg) => {
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
 
-        if(!storage[id] || storage[id].catch == true) {
+        if(storage[id] || storage[id].catch == true) {
+            storage[id] = {};
+            getStorage("pokemonModuleCurrentServerPokemon").setValue(storage);
             return;
         }
 
