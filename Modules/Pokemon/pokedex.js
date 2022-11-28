@@ -38,7 +38,7 @@ const getPokedex = async (msg) => {
             message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
         }
     
-        // msg.reply(sprite, msg.from, {caption: message});
+        msg.reply(sprite, msg.from, {caption: message});
     } catch (error) {
         console.warn(error);
         msg.reply('Esse Pokémon não existe ou não está disponível.');
@@ -121,6 +121,6 @@ const getChain = (chain, notBase) => {
     return ret;
 }
 
-getPokedex({body:"!pokedex gengar"})
+// getPokedex({body:"!pokedex gengar"})
 
 module.exports = { getPokedex }
