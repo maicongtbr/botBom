@@ -10,6 +10,7 @@ const capitalize = require("capitalize");
 var encounterPercentage = 5;
 var myModule = {};
 const webp = require('webp-converter');
+const fs = require('fs');
 
 
 
@@ -298,19 +299,17 @@ const getPokemon = async (msg, private) => {
     if(!pokemon) {
         return;
     }
-    const sticker = await MessageMedia.fromUrl(pokemon.image, {
-        //unsafeMime: true
+    const sticker = await MessageMedia.fromUrl(pokemon.image, {});
+
+    console.log(sticker.data);
+    fs.writeFile("temp/out.gif", sticker.data, 'base64', function(err) {
+        console.log(err);
     });
+    await webp.gwebp("temp/out.gif","temp/poke.webp","-q 80",logging="-v");
+    fs.unlink(temp/out.gif);
 
-    console.log(sticker.data);
-    let result = webp.str2webpstr(sticker.data,"gif","-q 100").then(console.log);
-    sticker.data = result;
-    sticker.mimetype = "image/webp"
+    const pokemonGif = await MessageMedia.fromFilePath("temp/out.gif")
 
-
-    console.log(sticker.data);
-    console.log(sticker.mimetype);
-    var bot = myModule.bot;
 
     havePokemon[id] = true;
 
@@ -337,7 +336,7 @@ const getPokemon = async (msg, private) => {
     }
 
     await bot.sendMessage(id, pokemon.phrase);
-    await bot.sendMessage(id, sticker, {
+    await bot.sendMessage(id, pokemonGif, {
         sendMediaAsSticker:true
     });
     await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando \"!capturar <nome do pokemon\" para captura-lo!");
