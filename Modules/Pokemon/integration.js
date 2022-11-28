@@ -301,11 +301,10 @@ const getPokemon = async (msg, private) => {
     }
     const sticker = await MessageMedia.fromUrl(pokemon.image, {});
 
-    console.log(sticker.data);
-    fs.writeFile("temp/out.gif", sticker.data, 'base64', function(err) {
+    fs.writeFile(`./temp/out.gif`, sticker.data, 'base64', function(err) {
         console.log(err);
         if(err) return;
-        webp.gwebp("temp/out.gif","temp/poke.webp","-q 80",logging="-v").then(async e=> {
+        webp.gwebp("./temp/out.gif","temp/poke.webp","-q 80",logging="-v").then(async e=> {
             const pokemonGif = await MessageMedia.fromFilePath("temp/out.gif")
             havePokemon[id] = true;
 
