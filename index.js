@@ -92,7 +92,7 @@ bot.on('message', async msg => {
         var group = await getGroup(msg);
         if (msg.body.startsWith('!')){
             global.modules.forEach(e => {
-                console.log(e);
+                console.log(e.mod.commands);
                 for (value of e.mod.commands) {
                     var key = value[0];
                     if (msg.body.toLowerCase().includes(key)) {
