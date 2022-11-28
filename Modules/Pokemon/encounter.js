@@ -23,13 +23,16 @@ const getCorrectImage = (images, female, shiny) => {
 
 const slicePokeName = (pokeName) => {
     var pokeNameLenght = pokeName.length -1;
+    var str = [];
     for(var e = 0; e <= pokeNameLenght; e++) {
         if (getRandomInt(100) <= 20){
-            pokeName[e] = '?';
+            str[e] = '?';
+        } else {
+            str[e] = pokeName[e];
         }
     }
-    console.log(pokeName);
-    return pokeName;
+    console.log(str);
+    return str.concat("");
 }
 
 var encounterMessages = {
