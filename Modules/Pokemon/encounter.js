@@ -21,6 +21,17 @@ const getCorrectImage = (images, female, shiny) => {
     return images[str]
 }
 
+const slicePokeName = (pokeName) => {
+    var pokeNameLenght = pokeName.length -1;
+    for(var e = 0; e <= pokeNameLenght; e++) {
+        if (getRandomInt(100) <= 20){
+            pokeName[e] = '?';
+        }
+    }
+    print(pokeName);
+    return pokeName;
+}
+
 var encounterMessages = {
     private: [ "Você estava %mode% e um Pokémon selvagem apareceu!" ],
     group: [ "Um Pokémon selvagem apareceu!" ]
@@ -90,7 +101,7 @@ const getEncounter = async (msg, private) => {
     phrase = phrase[getRandomInt(phrase.length - 1)];
     var name = capitalize(resBody.name);
 
-    phrase = phrase.replace("%pokemon%", name).replace("mode", pokemon.condition.string);
+    phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("mode", pokemon.condition.string);
     var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase };
     return ret;
 }

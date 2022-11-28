@@ -11,18 +11,23 @@ const tryCatch = async (msg) => {
     var splited = msg.body.split(" ");
     var pokeName = splited[1];
 
-    var storage = getStorageValue("pokemonModuleCurrentServerPokemon")[msg.from];
+    var _storage = getStorageValue("pokemonModuleCurrentServerPokemon");
+    var storage = _storage[msg.from];
     if(!storage || storage.catch) return;
 
     if(pokeName.toUpperCase() == storage.pokemon.toUpperCase()) {
         await msg.reply("Você acertou e captoru um " + storage.pokemon);
         storage.catch = true;
+        _storage[msg.from] = null;
+        getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
     } else {
         await msg.reply("Você errou!");
         storage.tries += 1;
         var randomTries = getRandomIntRange(6, 10);
         if(storages.tries >= randomTries) {
             await myModule.bot.sendMessage(msg.from, "O Pokémon fugiu!");
+            _storage[msg.from] = null;
+            getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
         }
     }
 }
