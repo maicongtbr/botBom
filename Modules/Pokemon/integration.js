@@ -149,7 +149,9 @@ const showBox = (msg) => {
 }
 
 const starters = {
-    kanto: [ "Charmander", "Squirtle", "Bulbasaur", "Voltar" ]
+    kanto: [ "Charmander", "Squirtle", "Bulbasaur", "Voltar" ],
+    johto: [ "Cyndaquil", "Totodile", "Chicorita", "Voltar" ],
+    hoenn: [ "Tortchic", "Mudkip", "Treecko", "Voltar" ],
 }
 
 const enabledRegions = ["Kanto", "Johto", "Hoeen" ]
@@ -207,7 +209,7 @@ const getStarter = async (msg) => {
                 return getStarter(msg);
             }
 
-            msg.reply(`Você escolheu o inicial ${capitalize(pokemon)}.`)
+            myModule.bot.sendMessage(msg.from, `Você escolheu o inicial ${capitalize(pokemon)}.`);
             var starter = new PlayerPokemon(capitalize(pokemon), 1, 0, 0, 0, 0, 0);
             addPokemonToPlayer(msg, starter, true);
             state[msg.author]++;
