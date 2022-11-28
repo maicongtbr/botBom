@@ -14,7 +14,9 @@ const getPokedex = async (msg) => {
     var pokeInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}/`);
     pokeInfo = pokeInfo._body;
 
-    var sprite = MessageMedia.fromUrl(pokeInfo.sprites.front_default);
+    var sprite = MessageMedia.fromUrl(pokeInfo.sprites.front_default, {
+        unsafeMime: true
+    });
 
     var types = [];
     pokeInfo.types.forEach( async t => {
