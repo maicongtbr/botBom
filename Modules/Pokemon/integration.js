@@ -65,17 +65,17 @@ const tryCatch = async (msg) => {
                    })
                 } else {
                     var arr = [];
-                    console.log(user.pokemon)
+                    // console.log(user.pokemon)
                     arr.push(catchPokemon);
-                    console.log(arr);
+                    // console.log(arr);
                     var newPokemon = arr.concat(user.pokemon);
-                    console.log(newPokemon);
+                    // console.log(newPokemon);
                     PokemonPlayerDB.updateOne({
                         id: msg.author
                     },{
                         user,
                         pokemon: newPokemon
-                    }).then(console.log).catch(console.error)
+                    }).then(() => {}).catch(console.error)
                 }
             }
         })
