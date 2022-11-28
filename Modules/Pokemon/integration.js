@@ -169,8 +169,6 @@ const getStarter = async (msg) => {
         state[msg.author] = 0;
     }
 
-    console.log(state[msg.author]);
-
     switch(state[msg.author]) {
         case 0:
             let buttons = [];
