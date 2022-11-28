@@ -4,6 +4,8 @@ const { callbackMap, commandsMap, getGroup, getNextLevelExp } = require('./callb
 const db = require('./database');
 const { get } = require('superagent');
 
+const PokemonModule = require("./Modules/Pokemon/integration");
+
 const exp = [
     {
         date: new Date("2022-11-27 00:00:00"),
@@ -60,6 +62,7 @@ bot.on('disconnected', () => {
 
 bot.on('ready', () => {
     console.log("BOT ONLINE")
+    PokemonModule.initPokemonModule(bot);
 })
 
 bot.on('group_leave', (notification) => {
@@ -104,6 +107,17 @@ bot.on('message', async msg => {
     try {
         var group = await getGroup(msg);
         if (msg.body.startsWith('!')){
+            global.modules.forEach(e => {
+                for (value of e.commands) {
+                    var key = value[0];
+                    if (msg.body.toLowerCase().includes(key)) {
+                        var _callback = value[1];
+                        _callback(msg);
+                        break;
+                    }
+                }
+            });
+
             for (value of commandsMap) {
                 var key = value[0];
                 if (msg.body.toLowerCase().includes(key)) {
@@ -166,6 +180,12 @@ bot.on('message', async msg => {
                 }
             })
         }
+
+        global.modules.forEach(e => {
+            if(e.enabled) {
+                e.onMessage(msg);
+            }
+        })
     } catch (err) {
         console.log('_____________________________________________________________\n' + err + '\n_____________________________________________________________\n');
     }

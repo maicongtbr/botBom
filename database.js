@@ -16,6 +16,23 @@ class Database {
         }, {
             collection: 'WhatsApp'
         }));
+        this.connection.model('PokemonPlayer', new mongoose.Schema({
+            id: String,
+            repel: Boolean,
+            playing: Boolean,
+            pokemon: Array,
+            Itens: Array,
+            Coins: Number
+        }, {
+            collection: 'PokemonPlayerModule'
+        }));
+        this.connection.model('PokemonBox', new mongoose.Schema({
+            id: String,
+            playerId: Boolean,
+            pokemon: Array
+        }, {
+            collection: 'PokemonBoxModule'
+        }));
     };
 
     getModel(name){
