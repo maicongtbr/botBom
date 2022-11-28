@@ -20,6 +20,7 @@
     "say": "^0.16.0",
     "superagent": "^8.0.2",
     "text-to-speech-js": "^1.1.10",
+    "uuid": "^9.0.0",
     "whatsapp-web": "^1.0.3",
     "whatsapp-web.js": "github:pedroslopez/whatsapp-web.js#fix-buttons-list"
   }

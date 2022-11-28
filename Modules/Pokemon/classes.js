@@ -1,5 +1,6 @@
 const superagent = require("superagent");
 const { getRandomIntRange } = require("../../libs");
+const { v4 } = require('uuid');
 
 class Pokemon {
     constructor(name, url, chance, minLevel, maxLevel, condition){
@@ -17,6 +18,7 @@ class PlayerPokemon {
         this.name = name
         this.level = level
         this.exp = exp
+        this.id = v4();
     }
 
     async levelUp() {
@@ -104,8 +106,6 @@ const createPokemon = async (name, level, exp) => {
         return "Invalid Pokemon";
     }
 }
-
-
 
 const Conditions = {
     Walk: 0,
