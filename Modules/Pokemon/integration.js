@@ -8,7 +8,7 @@ var myModule = {};
 
 
 const tryCatch = async (msg) => {
-    var splited = msg.split(" ");
+    var splited = msg.body.split(" ");
     var pokeName = splited[1];
 
     var storage = getStorageValue("pokemonModuleCurrentServerPokemon")[msg.from];
