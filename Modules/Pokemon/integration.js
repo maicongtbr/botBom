@@ -299,6 +299,8 @@ const getPokemon = async (msg, private) => {
     const sticker = await MessageMedia.fromUrl(pokemon.image, {
         //unsafeMime: true
     });
+
+    console.log(sticker.mimetype);
     var bot = myModule.bot;
 
     havePokemon[id] = true;
