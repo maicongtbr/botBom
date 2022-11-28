@@ -306,7 +306,7 @@ const getPokemon = async (msg, private) => {
     });
 
     webp.gwebp("/home/life4gamming2/bot-aop/temp/out.gif","/home/life4gamming2/bot-aop/temp/poke.webp","-q 80",logging="-v").then(async e=> {
-        const pokemonGif = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/poke.webp")
+        const pokemonGif = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/poke.webp");
         havePokemon[id] = true;
 
         var storage = getStorage("pokemonModuleCurrentServerPokemon");
