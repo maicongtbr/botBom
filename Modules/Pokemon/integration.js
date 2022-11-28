@@ -5,6 +5,7 @@ const { MessageMedia, Buttons } = require("whatsapp-web.js");
 const db = require("../../database");
 const { PlayerPokemon } = require("./classes");
 const superagent = require("superagent");
+const { getPokedex } = require("./pokedex");
 var encounterPercentage = 5;
 var myModule = {};
 
@@ -13,6 +14,10 @@ var myModule = {};
 const tryCatch = async (msg) => {
     var splited = msg.body.split(" ");
     var pokeName = splited[1];
+
+    if(!pokeName) {
+        return;
+    }
 
     var _storage = getStorageValue("pokemonModuleCurrentServerPokemon");
     var storage = _storage[msg.from];
@@ -146,7 +151,8 @@ var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
     { name:'!pokemon', callback: (msg) => showPokemon(msg) },
     { name:'!boxpokemon', callback: (msg) => showBox(msg) },
-    { name: "!inicial", callback: (msg) => getStarter(msg) }
+    { name: "!inicial", callback: (msg) => getStarter(msg) },
+    { name: "!pokedex", callback: (msg) => getPokedex(msg) },
 ]
 
 var commandsMap = new Map();
