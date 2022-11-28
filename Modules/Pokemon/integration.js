@@ -158,7 +158,7 @@ const starters = {
     hoenn: [ "Tortchic", "Mudkip", "Treecko", "Voltar" ],
 }
 
-const enabledRegions = ["Kanto", "Johto", "Hoeen" ]
+const enabledRegions = ["Kanto", "Johto", "Hoenn" ]
 
 const state = [];
 
