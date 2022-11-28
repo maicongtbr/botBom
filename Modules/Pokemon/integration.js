@@ -43,7 +43,7 @@ const tryCatch = async (msg) => {
 
                 }).catch(console.error);
             } else {
-                if(user.pokemon.length > 3) {
+                if(user.pokemon.length > 6) {
                    var boxModel = db.getModel("PokemonBoxModule");
                    boxModel.findOne({
                     id: msg.author
@@ -85,8 +85,38 @@ const tryCatch = async (msg) => {
     }
 }
 
+const showPokemon = (msg) => {
+    var PokemonPlayerDB = db.getModel("PokemonPlayer");
+    PokemonPlayerDB.findOne({
+        id: msg.author
+    }).then(async player => {
+        var Pokemon = [];
+        player.pokemon.forEach(e=> {
+            Pokemon.push(`${e.name}, Level: ${e.level}`);
+        })
+        var _m = "Seus Pokémon na Party:\n"+ Pokemon.join("\n");
+        msg.reply(_m);
+    })
+}
+
+const showBox = (msg) => {
+    var PokemonBox = db.getModel("PokemonBoxModule");
+    PokemonBox.findOne({
+        id: msg.author
+    }).then(async player => {
+        var Pokemon = [];
+        player.pokemon.forEach(e=> {
+            Pokemon.push(`${e.name}, Level: ${e.level}`);
+        })
+        var _m = "Seus Pokémon na Party:\n"+ Pokemon.join("\n");
+        msg.reply(_m);
+    })
+}
+
 var commands = [
-    { name:'!capturar', callback: (msg) => tryCatch(msg) }
+    { name:'!capturar', callback: (msg) => tryCatch(msg) },
+    { name:'!pokemon', callback: (msg) => showPokemon(msg) },
+    { name:'!pokemonbox', callback: (msg) => showBox(msg) }
 ]
 
 var commandsMap = new Map();
