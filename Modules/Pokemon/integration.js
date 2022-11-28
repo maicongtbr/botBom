@@ -207,19 +207,22 @@ const getStarter = async (msg) => {
             break;
         case 2:
             let _splited = msg.body.split(" ");
-            let pokemon = _splited[1].toLowerCase();
+            let pokemon = _splited[1] && _splited[1].toLowerCase();
             if(pokemon == "Voltar") {
                 state[msg.author]--;
                 return getStarter(msg);
             }
 
-            myModule.bot.sendMessage(msg.from, `Você escolheu o inicial ${capitalize(pokemon)}.`);
             var starter = await createPokemon(capitalize(pokemon), 1, 0);
             if(typeof(starter) == "string") {
                 msg.reply(starter);
+                state[msg.author]--;
                 return;
             }
+            
             addPokemonToPlayer(msg, starter, true);
+            myModule.bot.sendMessage(msg.from, `Você escolheu o inicial ${capitalize(pokemon)}.`);
+
             state[msg.author]++;
             break;
         default:
