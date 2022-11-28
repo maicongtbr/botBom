@@ -29,7 +29,8 @@ const getEncounter = async (msg, private) => {
         return;
     }
     var pokemon = pokes.pokemon[getRandomInt(pokes.pokemon.length - 1)];
-    if(!pokemon && !pokemon.condition) {
+    if(!pokemon || !pokemon.condition) {
+        console.log(pokemon);
         return;
     }
 
