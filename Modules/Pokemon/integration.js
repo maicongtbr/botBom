@@ -86,6 +86,7 @@ const onMessage = async (msg) => {
         if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
+        console.log(id);
 
         if(storage[id] || storage[id].catch == true) {
             storage[id] = {};
