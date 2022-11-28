@@ -203,18 +203,6 @@ const getStarter = async (msg) => {
             msg.reply(`Opção inválida.`);
             break;
     }
-    var buttons = [];
-    starters.forEach(e => {
-        console.log(e);
-        buttons.push({
-            buttonId: e,
-            type: 1,
-            body: "!starter "+e
-        })
-    })
-    let button = new Buttons('Escolha seu inicial!', buttons);
-    console.log(button);
-    myModule.bot.sendMessage(msg.from, button);
 }
 
 var commands = [
