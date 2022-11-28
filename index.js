@@ -29,6 +29,7 @@ const bot = new Client({
     puppeteer: {
         executablePath: "/usr/bin/google-chrome-stable"
     },
+    ffmpegPath: '/usr/bin/ffmpeg',
     authStrategy: new LocalAuth(),
 })
 
