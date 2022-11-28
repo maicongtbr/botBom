@@ -66,6 +66,7 @@ const tryCatch = async (msg) => {
                 } else {
                     var arr = [];
                     arr.concat(user.pokemon);
+                    console.log(user.pokemon)
                     arr.push(catchPokemon);
                     console.log(arr);
                     PokemonPlayerDB.updateOne({
