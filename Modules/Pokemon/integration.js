@@ -243,7 +243,25 @@ var commands = [
     { name:'!boxpokemon', callback: (msg) => showBox(msg) },
     { name: "!inicial", callback: (msg) => getStarter(msg) },
     { name: "!pokedex", callback: (msg) => getPokedex(msg) },
-    { name: "!stopPokemon", callback: (msg) => stopModule(msg)}
+    { name: "!stopPokemon", callback: (msg) => stopModule(msg)},
+    { name: "!lllist", callback: (msg) => {
+        const productsList = new List(
+            "Here's our list of products at 50% off",
+            "View all products",
+            [
+              {
+                title: "Products list",
+                rows: [
+                  { id: "apple", title: "Apple" },
+                  { id: "mango", title: "Mango" },
+                  { id: "banana", title: "Banana" },
+                ],
+              },
+            ],
+            "Please select a product"
+          );
+          myModule.bot.sendMessage(msg.from, productsList);
+    }}
 ]
 
 var commandsMap = new Map();
