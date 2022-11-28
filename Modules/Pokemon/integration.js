@@ -56,7 +56,6 @@ const getPokemon = async (msg, private) => {
     if(!pokemon) {
         return;
     }
-    console.log(pokemon.image);
     const sticker = await MessageMedia.fromUrl(pokemon.image, {
         unsafeMime: true
     });

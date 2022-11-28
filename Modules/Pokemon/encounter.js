@@ -40,8 +40,6 @@ const slicePokeName = (pokeName) => {
             str[e] = pokeName[e];
         }
     }
-
-    console.log(str);
     return str.join("");
 }
 
@@ -107,7 +105,6 @@ const getEncounter = async (msg, private) => {
     var hasGenderDiff = speciesBody.has_gender_differences;
 
     var image = getCorrectImage(resBody.sprites, hasGenderDiff && isFemale, _isShiny);
-    console.log(image);
 
     var level = getRandomIntRange(Math.floor(pokemon.minLevel/2), pokemon.maxLevel);
     var phrase = private ? encounterMessages.private : encounterMessages.group;
