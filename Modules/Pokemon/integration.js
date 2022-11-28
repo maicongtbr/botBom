@@ -185,7 +185,7 @@ const getStarter = async (msg) => {
                     body: "!inicial "+e
                 })
             })
-            let _button = new Buttons('Escolha seu inicial!', buttons);
+            let _button = new Buttons('Escolha seu inicial!', _buttons);
             await myModule.bot.sendMessage(msg.from, _button);
             state[msg.author]++;
         case 2:
