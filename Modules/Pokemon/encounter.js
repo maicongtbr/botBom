@@ -8,10 +8,17 @@ const isShiny = () => {
 }
 
 const getCorrectImage = (images, female, shiny) => {
-    var str = "front";
-    str += shiny ? "_shiny" : "";
-    str = str + female ? "_female" : "_default";
-
+    var str = "front_default";
+    if(female) {
+        if(shiny) {
+            str = "front_shiny_female";
+        } else {
+            str = "front_female";
+        }
+    } else if (shiny) {
+        str = "front_shiny"
+    }
+    console.log(str);
     return images[str]
 }
 
