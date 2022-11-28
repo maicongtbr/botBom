@@ -16,7 +16,7 @@ const tryCatch = async (msg) => {
 
     var _storage = getStorageValue("pokemonModuleCurrentServerPokemon");
     var storage = _storage[msg.from];
-    if(!storage || storage.catch) return;
+    if(!storage || storage.catch || !storage.pokemon) return;
 
     if(pokeName.toUpperCase() == storage.pokemon.toUpperCase()) {
         await msg.reply("Você acertou e captoru um " + storage.pokemon);
