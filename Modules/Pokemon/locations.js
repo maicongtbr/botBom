@@ -27,7 +27,7 @@ const updateLocationCache = async () => {
             })
     })
     new Storage("pokemonModuleLocation", (storage) => {
-        console.log("Localizações atualizadas")
+        console.log("Localizações atualizadas");
         global.locales = storage;
     }, parsedRegions);
 }
@@ -38,5 +38,4 @@ module.exports = { updateCache: (cb) => {
         cb();
         new Storage("pokemonModuleLoaded", () => console.log("Pokemon Module Done"), true);
     }, 1000)
-} }
-
+}}

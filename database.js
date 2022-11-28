@@ -21,14 +21,14 @@ class Database {
             repel: Boolean,
             playing: Boolean,
             pokemon: Array,
-            Itens: Array,
-            Coins: Number
+            itens: Array,
+            coins: Number
         }, {
             collection: 'PokemonPlayerModule'
         }));
         this.connection.model('PokemonBox', new mongoose.Schema({
             id: String,
-            playerId: Boolean,
+            boxId: Boolean,
             pokemon: Array
         }, {
             collection: 'PokemonBoxModule'

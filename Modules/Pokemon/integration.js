@@ -2,6 +2,9 @@ const {Module} = require("../mod");
 const { getRandomIntRange, Storage, getStorage, getStorageValue } = require("../../libs");
 const { getEncounter } = require("./encounter");
 const { MessageMedia } = require("whatsapp-web.js");
+const db = require("../../database");
+const { PlayerPokemon } = require("./classes");
+const superagent = require("superagent.js");
 var encounterPercentage = 5;
 var myModule = {};
 
@@ -20,6 +23,56 @@ const tryCatch = async (msg) => {
         storage.catch = true;
         storage.ignora = true;
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
+        var pokemonSpecies = await superagent.get('https://pokeapi.co/api/v2/pokemon-species/' + storage.pokemon);
+        var growthRate = pokemonSpecies._body.growth_rate.name;
+        var levels = getStorageValue('pokemonModuleLevels');
+        var pokeLevel = levels[growthRate][storage.level - 1];
+        var catchPokemon = new PlayerPokemon(storage.pokemon, storage.level, pokeLevel.experience, 0, 0, 0, 0);
+        var PokemonPlayerDB = db.getModel("PokemonPlayer");
+        PokemonPlayerDB.findOne({
+            id: msg.author
+        }).then( async user => {
+            if(!user) {
+                PokemonPlayerDB.create({ 
+                    id: msg.author,
+                    repel: false,
+                    playing: true,
+                    pokemon: [ catchPokemon ],
+                    items: [],
+                    coins: 0,
+
+                }).catch(console.error);
+            } else {
+                if(user.pokemon.length > 3) {
+                   var boxModel = db.getModel("PokemonBoxModule");
+                   boxModel.findOne({
+                    id: msg.author
+                   }).then(box => {
+                    if (!box) {
+                        boxModel.create({
+                            id: msg.author,
+                            pokemon: [ catchPokemon ]
+                        });
+                    } else {
+                        box.pokemon.push(catchPokemon);
+                        boxModel.updateOne({
+                            id: msg.author
+                        },
+                        {
+                            pokemon: box.pokemon
+                        })
+                    }
+                   })
+                } else {
+                    user.pokemon.push(catchPokemon);
+                    PokemonPlayerDB.updateOne({
+                        id: msg.author
+                    },{
+                        pokemon: user.pokemon
+                    })
+                }
+            }
+        })
     } else {
         await msg.reply("Você errou!");
         storage.tries += 1;
