@@ -8,9 +8,9 @@ const isShiny = () => {
 }
 
 const getCorrectImage = (images, female, shiny) => {
-    var str = `front${shiny ? "_shiny" : ""}`;
+    var str = "front";
+    str += shiny ? "_shiny" : "";
     str = str + female ? "_female" : "_default";
-    console.log(images, str)
 
     return images[str]
 }
@@ -76,8 +76,9 @@ const getEncounter = async (msg, private) => {
     var genderRate = speciesBody.gender_rate;
     var hasGender = genderRate != -1;
     var isFemale = hasGender && getRandomInt(genderRate) == genderRate;
+    var hasGenderDiff = speciesBody.has_gender_differences;
 
-    var image = getCorrectImage(resBody.sprites, isFemale, _isShiny);
+    var image = getCorrectImage(resBody.sprites, hasGenderDiff && isFemale, _isShiny);
     console.log(image);
 
     var level = getRandomIntRange(Math.floor(pokemon.minLevel/2), pokemon.maxLevel);
