@@ -54,7 +54,6 @@ const getPokemon = async (msg, private) => {
     });
     await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando '!capturar <nome do pokemon> para captura-lo!");
     var storage = getStorage("pokemonModuleCurrentServerPokemon");
-    console.log(storage);
     
     var svStorage = storage.value && storage.value[msg.from] || {};
 
@@ -80,6 +79,13 @@ const onMessage = async (msg) => {
     try {
         var chat = await msg.getChat();
         if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
+        var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
+        var id = msg.from ? msg.from : msg.chatId;
+
+        if(storage[id] && storage[id].catch == true) {
+            return;
+        }
+
         var canEncounterPokemon = getRandomIntRange(1, 100) >= encounterPercentage;
         if(!canEncounterPokemon) {
             if(getRandomIntRange(1, 100) >= encounterPercentage * 2) {
