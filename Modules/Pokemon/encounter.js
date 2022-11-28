@@ -29,11 +29,11 @@ const getEncounter = async (msg, private) => {
     var pokes = locales[id];
     var _isShiny = isShiny();
     if(!pokemon || !pokes.pokemon || pokes.pokemon.length -1 <= 0) {
-        return;
+        return getEncounter(msg, private);
     }
     var pokemon = pokes.pokemon[getRandomInt(pokes.pokemon.length - 1)];
     if(!pokemon || !pokemon.condition) {
-        return;
+        return getEncounter(msg, private);
     }
 
     if(pokemon.condition.condition) {
@@ -55,7 +55,10 @@ const getEncounter = async (msg, private) => {
                 break;
         }
 
-        if(!canCatch) return;
+        if(!canCatch) {
+            console.log("NAo da para pegar o pokemon", pokemon);
+            return;
+        };
     }
 
     var res = await superagent.get(pokemon.url);
@@ -63,7 +66,10 @@ const getEncounter = async (msg, private) => {
     var speciesInfo = await superagent.get(resBody.species.url);
     var speciesBody = speciesInfo._body;
 
-    if(speciesBody.is_legendary && getRandomInt(100) >= 5) return await getEncounter(); // Se for lendario 5% de chance de continuar, se nao gera outro
+    if(speciesBody.is_legendary && getRandomInt(100) >= 5) {
+        console.log("NAo da para pegar o pokemon", pokemon);
+        return await getEncounter(); 
+    }// Se for lendario 5% de chance de continuar, se nao gera outro
 
     var genderRate = speciesBody.gender_rate;
     var hasGender = genderRate != -1;
