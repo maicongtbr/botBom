@@ -8,7 +8,11 @@ const isShiny = () => {
 }
 
 const getCorrectImage = (images, female, shiny) => {
-    return images[`front${shiny ? "_shiny" : female ? "_female" : "_default"}`]
+    var str = `front${shiny ? "_shiny" : ""}`;
+    str = str + female ? "_female" : "_default";
+    console.log(images, str)
+
+    return images[str]
 }
 
 var encounterMessages = {
