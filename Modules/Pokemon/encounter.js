@@ -28,12 +28,14 @@ const getEncounter = async (msg, private) => {
     var id = getRandomInt(locales.length - 1);
     var pokes = locales[id];
     var _isShiny = isShiny();
-    if(!pokemon || !pokes.pokemon || pokes.pokemon.length -1 <= 0) {
-        return getEncounter(msg, private);
+    if(!pokes || !pokes.pokemon || pokes.pokemon.length -1 <= 0) {
+        console.warn("Warn on Pokemon", pokes);
+        return;
     }
     var pokemon = pokes.pokemon[getRandomInt(pokes.pokemon.length - 1)];
     if(!pokemon || !pokemon.condition) {
-        return getEncounter(msg, private);
+        console.warn("Warn on Pokemon", pokemon);
+        return;
     }
 
     if(pokemon.condition.condition) {
