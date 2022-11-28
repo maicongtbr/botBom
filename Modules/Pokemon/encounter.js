@@ -18,7 +18,6 @@ const getCorrectImage = (images, female, shiny) => {
     } else if (shiny) {
         str = "front_shiny"
     }
-    console.log(str);
     return images[str]
 }
 

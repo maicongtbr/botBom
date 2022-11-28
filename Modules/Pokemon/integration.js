@@ -18,7 +18,8 @@ const tryCatch = async (msg) => {
     } else {
         await msg.reply("Você errou!");
         storage.tries += 1;
-        if(storages.tries >= 10) {
+        var randomTries = getRandomIntRange(6, 10);
+        if(storages.tries >= randomTries) {
             await myModule.bot.sendMessage(msg.from, "O Pokémon fugiu!");
         }
     }
@@ -42,6 +43,7 @@ const getPokemon = async (msg, private) => {
     console.log(pokemon);
     var sticker = await MessageMedia.fromUrl(pokemon.image);
     var id = msg.from ? msg.from : msg.chatId;
+    var bot = myModule.bot;
     await bot.sendMessage(id, pokemon.phrase);
     await bot.sendMessage(id, sticker, {
         sendMediaAsSticker:true
