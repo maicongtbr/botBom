@@ -134,7 +134,7 @@ const showBox = (msg) => {
 
 const starters = [ "Charamnder", "Bulbasaur", "Squirtle" ];
 
-const getStarter = async (msg) => {
+const getStarter = (msg) => {
     var buttons = [];
     starters.forEach(e => {
         buttons.push({
@@ -144,6 +144,7 @@ const getStarter = async (msg) => {
         })
     })
     let button = new Buttons('Escolha seu inicial!', buttons);
+    console.log(button);
     myModule.bot.sendMessage(msg.from, button);
 }
 
@@ -167,7 +168,7 @@ const getPokemon = async (msg, private) => {
     var pokemon = await getEncounter(private);
     var id = msg.from ? msg.from : msg.chatId;
     if (private) {
-        id = msg.author;
+        // id = msg.author;
     }
 
     if(havePokemon[id]) {
