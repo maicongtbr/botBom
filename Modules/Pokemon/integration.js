@@ -159,6 +159,8 @@ const getStarter = async (msg) => {
         state[msg.author] = 0;
     }
 
+    console.log(state[msg.author]);
+
     switch(state[msg.author]) {
         case 0:
             let buttons = [];
@@ -195,6 +197,8 @@ const getStarter = async (msg) => {
                 state[msg.author]--;
                 return getStarter(msg);
             }
+
+            console.log(_splited, pokemon)
             var starter = new PlayerPokemon(pokemon, 1, 0, 0, 0, 0, 0);
             await addPokemonToPlayer(msg, starter, true);
             await msg.reply(`Você escolheu o inicial ${capitalize(pokemon)}.`)
