@@ -193,6 +193,7 @@ const getStarter = async (msg) => {
             var pokemon = splited[1].toLowerCase();
             if(pokemon == "voltar") {
                 state[msg.author]--;
+                return;
             }
             var starter = new PlayerPokemon(pokemon, 1, 0, 0, 0, 0, 0);
             addPokemonToPlayer(msg, starter, true);

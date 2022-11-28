@@ -22,7 +22,8 @@ class Database {
             playing: Boolean,
             pokemon: Array,
             itens: Array,
-            coins: Number
+            coins: Number,
+            hasStarter: Boolean
         }, {
             collection: 'PokemonPlayerModule'
         }));
