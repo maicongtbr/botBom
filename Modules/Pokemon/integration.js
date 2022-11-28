@@ -36,6 +36,7 @@ commands.forEach((value) => {
 
 const getPokemon = async (msg, private) => {
     var pokemon = getEncounter(private);
+    console.log(pokemon.image);
     var sticker = await MessageMedia.fromUrl(pokemon.image);
     var id = msg.from ? msg.from : msg.chatId;
     await bot.sendMessage(id, pokemon.phrase);
