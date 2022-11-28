@@ -23,7 +23,7 @@ const getPokedex = async (msg) => {
             extractFilename: false,
         }).then(({filename}) => {
             webp.gwebp("/home/life4gamming2/bot-aop/temp/dex.gif","/home/life4gamming2/bot-aop/temp/dex.webp","-q 80",logging="-v")
-                .then(async e=> {
+                .then(async e => {
                     var sprite = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/dex.webp");
                     var types = [];
                     pokeInfo.types.forEach( async t => {
@@ -36,9 +36,7 @@ const getPokedex = async (msg) => {
                 
                     var chain = getChain(evolutionsInfo._body.chain);
                     var evolutionsMessages = await getChainString(chain);
-                
-                
-                
+   
                     var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.height/10}kg\nTipos: ${types.join(", ")}`;
                     if(evolutionsMessages.length > 0) {
                         message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
@@ -58,6 +56,7 @@ const getPokedex = async (msg) => {
         })
     } catch (error) {
         msg.reply('Esse Pokémon não existe ou não está disponível.');
+        console.log(err);
     }
 }
 
