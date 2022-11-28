@@ -300,44 +300,47 @@ const getPokemon = async (msg, private) => {
         return;
     }
 
-    await download.image({
+    download.image({
         url: pokemon.image,
         dest: "/home/life4gamming2/bot-aop/temp/out.gif"
-    });
+    }).then(({fileName}) => {
+        webp.gwebp("/home/life4gamming2/bot-aop/temp/out.gif","/home/life4gamming2/bot-aop/temp/poke.webp","-q 80",logging="-v").then(async e=> {
+            const pokemonGif = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/poke.webp");
+            havePokemon[id] = true;
+    
+            var storage = getStorage("pokemonModuleCurrentServerPokemon");
+            
+            var svStorage = storage.value && storage.value[msg.from] || {};
+    
+            svStorage.pokemon = pokemon.name;
+            svStorage.gender = pokemon.gender;
+            svStorage.level = pokemon.level;
+            svStorage.ignore = false;
+            var chat = await msg.getChat();
+            svStorage.server = chat.name;
+            svStorage.tries = 0;
+    
+            if(storage.value) {
+                storage.value[msg.from] = svStorage;
+                storage.setValue(storage.value);
+    
+            } else {
+                var a = [];
+                a[msg.from] = svStorage;
+                storage.setValue(a);
+            }
+    
+            await bot.sendMessage(id, pokemon.phrase);
+            await bot.sendMessage(id, pokemonGif, {
+                sendMediaAsSticker:true
+            });
+            await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando \"!capturar <nome do pokemon\" para captura-lo!");
+            fs.unlink("/home/life4gamming2/bot-aop/temp/out.gif");
 
-    webp.gwebp("/home/life4gamming2/bot-aop/temp/out.gif","/home/life4gamming2/bot-aop/temp/poke.webp","-q 80",logging="-v").then(async e=> {
-        const pokemonGif = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/poke.webp");
-        havePokemon[id] = true;
-
-        var storage = getStorage("pokemonModuleCurrentServerPokemon");
-        
-        var svStorage = storage.value && storage.value[msg.from] || {};
-
-        svStorage.pokemon = pokemon.name;
-        svStorage.gender = pokemon.gender;
-        svStorage.level = pokemon.level;
-        svStorage.ignore = false;
-        var chat = await msg.getChat();
-        svStorage.server = chat.name;
-        svStorage.tries = 0;
-
-        if(storage.value) {
-            storage.value[msg.from] = svStorage;
-            storage.setValue(storage.value);
-
-        } else {
-            var a = [];
-            a[msg.from] = svStorage;
-            storage.setValue(a);
-        }
-
-        await bot.sendMessage(id, pokemon.phrase);
-        await bot.sendMessage(id, pokemonGif, {
-            sendMediaAsSticker:true
         });
-        await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando \"!capturar <nome do pokemon\" para captura-lo!");
-    });
-    fs.unlink(temp/out.gif);
+    })
+
+    
     
 
     
