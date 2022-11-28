@@ -144,6 +144,10 @@ var havePokemon = [];
 const getPokemon = async (msg, private) => {
     var pokemon = await getEncounter(private);
     var id = msg.from ? msg.from : msg.chatId;
+    if (private) {
+        id = msg.author;
+    }
+
     if(havePokemon[id]) {
         setTimeout(() => {
             havePokemon[id] = false;
