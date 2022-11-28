@@ -6,6 +6,7 @@ const db = require("../../database");
 const { PlayerPokemon } = require("./classes");
 const superagent = require("superagent");
 const { getPokedex } = require("./pokedex");
+const capitalize = require("capitalize");
 var encounterPercentage = 5;
 var myModule = {};
 
@@ -33,7 +34,21 @@ const tryCatch = async (msg) => {
         var levels = getStorageValue('pokemonModuleLevels');
         var pokeLevel = levels[growthRate][storage.level - 1];
         var catchPokemon = new PlayerPokemon(storage.pokemon, storage.level, pokeLevel.experience, 0, 0, 0, 0);
-        var PokemonPlayerDB = db.getModel("PokemonPlayer");
+        addPokemonToPlayer(msg, catchPokemon);
+    } else {
+        await msg.reply("Você errou!");
+        storage.tries += 1;
+        var randomTries = getRandomIntRange(6, 10);
+        if(storage.tries >= randomTries) {
+            await myModule.bot.sendMessage(msg.from, "O Pokémon fugiu!");
+            storage.ignora = true;
+            getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
+        }
+    }
+}
+
+const addPokemonToPlayer = (msg, pokemon, isStarter) => {
+    var PokemonPlayerDB = db.getModel("PokemonPlayer");
         PokemonPlayerDB.findOne({
             id: msg.author
         }).then( async user => {
@@ -42,10 +57,10 @@ const tryCatch = async (msg) => {
                     id: msg.author,
                     repel: false,
                     playing: true,
-                    pokemon: [ catchPokemon ],
+                    pokemon: [ pokemon ],
                     items: [],
+                    hasStarter: isStarter,
                     coins: 0,
-
                 }).catch(console.error);
             } else {
                 if(user.pokemon.length > 6) {
@@ -56,10 +71,10 @@ const tryCatch = async (msg) => {
                     if (!box) {
                         boxModel.create({
                             id: msg.author,
-                            pokemon: [ catchPokemon ]
+                            pokemon: [ pokemon ]
                         });
                     } else {
-                        box.pokemon.push(catchPokemon);
+                        box.pokemon.push(pokemon);
                         boxModel.updateOne({
                             id: msg.author
                         },
@@ -71,7 +86,7 @@ const tryCatch = async (msg) => {
                 } else {
                     var arr = [];
                     // console.log(user.pokemon)
-                    arr.push(catchPokemon);
+                    arr.push(pokemon);
                     // console.log(arr);
                     var newPokemon = arr.concat(user.pokemon);
                     // console.log(newPokemon);
@@ -79,21 +94,12 @@ const tryCatch = async (msg) => {
                         id: msg.author
                     },{
                         user,
-                        pokemon: newPokemon
+                        pokemon: newPokemon,
+                        hasStarter: isStarter,
                     }).then(() => {}).catch(console.error)
                 }
             }
         })
-    } else {
-        await msg.reply("Você errou!");
-        storage.tries += 1;
-        var randomTries = getRandomIntRange(6, 10);
-        if(storage.tries >= randomTries) {
-            await myModule.bot.sendMessage(msg.from, "O Pokémon fugiu!");
-            storage.ignora = true;
-            getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
-        }
-    }
 }
 
 const showPokemon = (msg) => {
@@ -132,16 +138,78 @@ const showBox = (msg) => {
     })
 }
 
-const starters = [ "Charamnder", "Bulbasaur", "Squirtle" ];
+const starters = {
+    kanto: [ "Charmander", "Squirtle", "Bulbasaur", "Voltar" ]
+}
 
-const getStarter = (msg) => {
+const enabledRegions = ["Kanto", "Johto", "Hoeen" ]
+
+const state = [];
+
+const getStarter = async (msg) => {
+    var PokemonPlayerDB = db.getModel("PokemonPlayer");
+    var player = await PokemonPlayerDB.findOne({
+        id: msg.author
+    });
+    if (player && player.hasStarter) {
+        return;
+    }
+
+    if(!state[msg.author]) {
+        state[msg.author] = 0;
+    }
+
+    switch(state[msg.author]) {
+        case 0:
+            let buttons = [];
+            enabledRegions.forEach(e => {
+                buttons.push({
+                    buttonId: e,
+                    type: 1,
+                    body: "!inicial "+e
+                })
+            })
+            let button = new Buttons('Escolha sua região!', buttons);
+            await myModule.bot.sendMessage(msg.from, button);
+            state[msg.author]++;
+            break;
+        case 1:
+            var splited = msg.body.split(" ");
+            var region = splited[1].toLowerCase();
+            if(!starters[region]) return;
+            let _buttons = [];
+            starters[region].forEach(e => {
+                _buttons.push({
+                    buttonId: e,
+                    type: 1,
+                    body: "!inicial "+e
+                })
+            })
+            let _button = new Buttons('Escolha seu inicial!', buttons);
+            await myModule.bot.sendMessage(msg.from, _button);
+            state[msg.author]++;
+        case 2:
+            var splited = msg.body.split(" ");
+            var pokemon = splited[1].toLowerCase();
+            if(pokemon == "voltar") {
+                state[msg.author]--;
+            }
+            var starter = new PlayerPokemon(pokemon, 1, 0, 0, 0, 0, 0);
+            addPokemonToPlayer(msg, starter, true);
+            msg.reply(`Você escolheu o inicial ${capitalize(pokemon)}.`)
+            state[msg.author]++;
+            break;
+        default:
+            msg.reply(`Opção inválida.`);
+            break;
+    }
     var buttons = [];
     starters.forEach(e => {
         console.log(e);
         buttons.push({
-            buttonId: "!starter "+e,
+            buttonId: e,
             type: 1,
-            body: e
+            body: "!starter "+e
         })
     })
     let button = new Buttons('Escolha seu inicial!', buttons);
