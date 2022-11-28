@@ -94,12 +94,17 @@ class PlayerPokemon {
 }
 
 const createPokemon = async (name, level, exp) => {
-    var Pokemon = new PlayerPokemon(name, level, exp);
-    await Pokemon.generateMove();
-    await Pokemon.generateHealth();
-    //await Pokemon.generateAbility();
-    return Pokemon;
+    try {
+        var Pokemon = new PlayerPokemon(name, level, exp);
+        await Pokemon.generateMove();
+        await Pokemon.generateHealth();
+        //await Pokemon.generateAbility();
+        return Pokemon;
+    } catch (error) {
+        return "Invalid Pokemon";
+    }
 }
+
 
 
 const Conditions = {

@@ -215,6 +215,10 @@ const getStarter = async (msg) => {
 
             myModule.bot.sendMessage(msg.from, `Você escolheu o inicial ${capitalize(pokemon)}.`);
             var starter = await createPokemon(capitalize(pokemon), 1, 0);
+            if(typeof(starter) == "string") {
+                msg.reply(starter);
+                return;
+            }
             addPokemonToPlayer(msg, starter, true);
             state[msg.author]++;
             break;
