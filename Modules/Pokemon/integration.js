@@ -168,6 +168,8 @@ const getPokemon = async (msg, private) => {
     svStorage.gender = pokemon.gender;
     svStorage.level = pokemon.level;
     svStorage.ignore = false;
+    var chat = await msg.getChat();
+    svStorage.server = chat.name;
     svStorage.tries = 0;
 
     if(storage.value) {
@@ -191,7 +193,7 @@ const getPokemon = async (msg, private) => {
 const onMessage = async (msg) => {
     try {
         var chat = await msg.getChat();
-        if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
+        // if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
 
