@@ -4,7 +4,7 @@ const { getEncounter } = require("./encounter");
 const { MessageMedia } = require("whatsapp-web.js");
 const db = require("../../database");
 const { PlayerPokemon } = require("./classes");
-const superagent = require("superagent.js");
+const superagent = require("superagent");
 var encounterPercentage = 5;
 var myModule = {};
 

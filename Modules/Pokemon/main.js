@@ -1,7 +1,7 @@
 
 const { getEncounter } = require("./encounter");
 const { updateCache } = require("./locations");
-const superagent = require("superagent.js");
+const superagent = require("superagent");
 const { Storage } = require("../../libs");
 
 superagent.get('https://pokeapi.co/api/v2/growth-rate/').then((res) => {
