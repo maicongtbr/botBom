@@ -18,7 +18,7 @@ const tryCatch = async (msg) => {
     if(pokeName.toUpperCase() == storage.pokemon.toUpperCase()) {
         await msg.reply("Você acertou e captoru um " + storage.pokemon);
         storage.catch = true;
-        _storage[msg.from] = null;
+        storage.ignora = true;
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
     } else {
         await msg.reply("Você errou!");
@@ -26,7 +26,7 @@ const tryCatch = async (msg) => {
         var randomTries = getRandomIntRange(6, 10);
         if(storage.tries >= randomTries) {
             await myModule.bot.sendMessage(msg.from, "O Pokémon fugiu!");
-            _storage[msg.from] = null;
+            storage.ignora = true;
             getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
         }
     }
@@ -86,9 +86,8 @@ const onMessage = async (msg) => {
         if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
-        console.log(id);
 
-        if(storage[id] || storage[id].catch == true) {
+        if(storage[id] && storage[id].catch == true && storage[id].ignore) {
             storage[id] = {};
             getStorage("pokemonModuleCurrentServerPokemon").setValue(storage);
             return;
