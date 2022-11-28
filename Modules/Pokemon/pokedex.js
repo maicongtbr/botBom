@@ -17,69 +17,97 @@ const getPokedex = async (msg) => {
     var sprite = MessageMedia.fromUrl(pokeInfo.sprites.front_default);
 
     var types = [];
-    pokeInfo.types.forEach(t => {
+    pokeInfo.types.forEach( async t => {
         types.push(capitalize(t.type.name));
     })
 
-    var evolutions = [];
 
     var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName.toLowerCase()}/`);
     var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
 
-    var evolutions = getChain(evolutionsInfo._body.chain);
-    var evolutionsMessages = [];
-    console.log(evolutions)
-    evolutions.forEach( (e, index) => {
-        evolutionsMessages.push(getEvoString(e, evolutions[index+1]));
+    var chain = getChain(evolutionsInfo._body.chain);
+    var evolutionsMessages = await getChainString(chain);
 
-        if(e.evolutions) {
 
-        }
-    })
 
-    var message = `*${capitalize(pokeInfo.name)}*
-    Número na Pokedex: ${pokeInfo.id}
-    Tamanho: ${pokeInfo.height/10}
-    Peso: ${pokeInfo.height/10}kg
-    Tipos: ${types.join(", ")}
-    Evoluções: ${evolutions}`
-    console.log(message);
+    var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.height/10}kg\nTipos: ${types.join(", ")}`;
+    if(evolutionsMessages.length > 0) {
+        message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
+    }
+
+    msg.reply(sprite, {caption: message});
 }
 
-const getEvoString = (chain, next) => {
-    console.log(chain, next)
+const getChainString = async (chain) => {
+    let ret = []
+    for(var i = 0; i < chain.evolutions.length; i++) {
+        var e = chain.evolutions[i];
+        if(chain.name != e.name) {
+            var string = await getEvoString(chain.name, e);
+            ret.push(string);
+        }
+        if(e.evolutions) {
+            var otherArr = await getChainString(e);
+            ret = ret.concat(otherArr); 
+        }
+    }
+    return ret
+}
+
+const getEvoString = async (baseName, evolution) => {
     var methods = [];
-    if(next.min_level) {
-        methods.push(`Nível: ${next.min_level}`)
+    if(evolution.min_level) {
+        methods.push(`Nível: ${evolution.min_level}`);
     }
-    if(next.min_happiness) {
-        methods.push(`Felicidade: ${next.min_happiness}`)
+    if(evolution.min_happiness) {
+        methods.push(`Felicidade: ${evolution.min_happiness}`);
     }
-    var str = `${chain.name} evolui para ${next.name}, condições: ${methods.join(", ")}`;
+    if(evolution.min_affection) {
+        methods.push(`Amizade: ${evolution.min_affection}`);
+    }
+    if(evolution.time_of_day) {
+        switch(evolution.time_of_day) {
+            case "night":
+                methods.push("Durante a Noite");
+                break;
+            case "day":
+                methods.push("Durante o dia");
+                break;
+            default: break;
+        }
+    }
+    if(evolution.known_move_type) {
+        methods.push(`Possuir um movimento do tipo ${capitalize(evolution.known_move_type.name)}`);
+
+    }
+    if(evolution.location) {
+        methods.push(`Ao subir de nível em uma localização específica`);
+    }
+    if(evolution.item) {
+        var item = await superagent.get(evolution.item.url);
+        var name = item._body.names.find(x => x.language.name == "en");
+        methods.push(`Item: ${name.name}`)
+    }
+    var str = `${baseName} evolui para ${evolution.name}, condições: ${methods.join(" e ")}`;
 
     return str
-
 }
 
 const getChain = (chain, notBase) => {
-    var evolutions = [];
-    if (!notBase) {
-        evolutions[0] = { base: true, name: capitalize(chain.species.name) }
+    let ret = { base: true, name: capitalize(chain.species.name), evolutions: [] }
+
+    for(var i = 0; i < chain.evolves_to.length; i++) {
+        var e = chain.evolves_to[i];
+        var details = e.evolution_details;
+        var evo = []
+        if(e.evolves_to.length > 0) {
+            evo.push(getChain(e, true))
+        }
+        var obj = { ...details[0], name: capitalize(e.species.name), evolutions: evo };
+        ret.evolutions.push(obj)
     }
 
-    chain.evolves_to.forEach(e => {
-        var details = e.evolution_details;
-        var obj = { ...details[0], name: capitalize(e.species.name) };
-        if(e.evolves_to.length > 0) {
-            obj.evolutions = [];
-            obj.evolutions.push(getChain(e, true))
-        }
-        evolutions.push(obj)
-    })
-
-    return evolutions;
+    return ret;
 }
-
-getPokedex({ body: "!pokedex eevee" });
 
 module.exports = { getPokedex }
