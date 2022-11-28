@@ -49,6 +49,7 @@ var encounterMessages = {
 }
 
 const { Conditions } = require("./classes");
+const { image } = require("googlethis");
 
 
 const getEncounter = async (msg, private) => {
@@ -104,7 +105,12 @@ const getEncounter = async (msg, private) => {
     var isFemale = hasGender && getRandomInt(genderRate) == genderRate;
     var hasGenderDiff = speciesBody.has_gender_differences;
 
-    var image = getCorrectImage(resBody.sprites.versions["generation-v"] ? resBody.sprites.versions["generation-v"]["black-white"].animated : resBody.sprites, hasGenderDiff && isFemale, _isShiny);
+    var imagePath = resBody.sprite;
+    if(imagePath.versions && resBody.sprites.versions["generation-v"]  && resBody.sprites.versions["generation-v"]["black-white"] && resBody.sprites.versions["generation-v"]["black-white"].animated) {
+        imagePath = resBody.sprites.versions["generation-v"]["black-white"].animated
+    } else { console.log(imagePath); }
+
+    var image = getCorrectImage(imagePath, hasGenderDiff && isFemale, _isShiny);
 
     var level = getRandomIntRange(Math.floor(pokemon.minLevel/2), pokemon.maxLevel);
     var phrase = private ? encounterMessages.private : encounterMessages.group;
