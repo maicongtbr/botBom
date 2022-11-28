@@ -50,8 +50,9 @@ const getPokemon = async (msg, private) => {
     });
     await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando '!capturar <nome do pokemon> para captura-lo!");
     var storage = getStorage("pokemonModuleCurrentServerPokemon");
+    console.log(storage);
     
-    var svStorage = storage.value[msg.from] || {};
+    var svStorage = storage.value && storage.value[msg.from] || {};
 
     svStorage.pokemon = pokemon.name;
     svStorage.gender = pokemon.gender;
