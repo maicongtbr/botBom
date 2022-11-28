@@ -88,8 +88,8 @@ class PlayerPokemon {
         this.healthIv = healthIv;
 
         var hp = ((((baseStat + healthIv) * 2) + Math.sqrt(22850)/4) * this.level / 100) + this.level + 10;
-        this.currentHp = hp;
-        this.maxHp = hp;
+        this.currentHp = Math.floor(hp);
+        this.maxHp = Math.floor(hp);
     }
 }
 
@@ -101,7 +101,6 @@ const createPokemon = async (name, level, exp) => {
     return Pokemon;
 }
 
-console.log(createPokemon("Charmander", 5, 5).then(console.log));
 
 const Conditions = {
     Walk: 0,
