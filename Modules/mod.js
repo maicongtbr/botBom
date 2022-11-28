@@ -3,7 +3,7 @@ class Module {
     constructor(name, bot, callbacks, commands) {
         this.name = name;
         this.bot = bot;
-        this.enabled = false;
+        this.enabled = true;
         this.callbacks = callbacks;
         this.commands = commands;
         global.modules.push({ name: name, mod: this });

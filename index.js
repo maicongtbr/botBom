@@ -184,7 +184,7 @@ bot.on('message', async msg => {
         global.modules.forEach(e => {
             console.log(e);
             if(e.mod.enabled) {
-                e.mod.onMessage(msg);
+                e.mod.callbacks.onMessage(msg);
             }
         })
     } catch (err) {
