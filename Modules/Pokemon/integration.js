@@ -229,7 +229,7 @@ const initPokemonModule = (bot) => {
 
     new Storage("pokemonModuleEncounterRate", (value) => {
         encounterPercentage = value;
-    }, 50);
+    }, 5);
 
     new Storage("pokemonModuleCurrentServerPokemon", (value) => {
         for (vae in value) {
