@@ -297,7 +297,7 @@ const getPokemon = async (msg, private) => {
         return;
     }
     const sticker = await MessageMedia.fromUrl(pokemon.image, {
-        unsafeMime: true
+        //unsafeMime: true
     });
     var bot = myModule.bot;
 
@@ -355,7 +355,7 @@ const onMessage = async (msg) => {
         }
         var chat = await msg.getChat();
         let ep = encounterPercentage;
-        if(!chat.isGroup || chat.name != "bot test chamber") ep = 1000; /// lock pra test chamber
+        if(!chat.isGroup || chat.name != "bot test chamber") ep = 999999; /// lock pra test chamber
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
 
