@@ -155,7 +155,7 @@ const showBox = (msg) => {
 const starters = {
     kanto: [ "Charmander", "Squirtle", "Bulbasaur", "Voltar" ],
     johto: [ "Cyndaquil", "Totodile", "Chicorita", "Voltar" ],
-    hoenn: [ "Tortchic", "Mudkip", "Treecko", "Voltar" ],
+    hoenn: [ "Torchic", "Mudkip", "Treecko", "Voltar" ],
 }
 
 const enabledRegions = ["Kanto", "Johto", "Hoenn" ]
