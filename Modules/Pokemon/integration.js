@@ -1,4 +1,4 @@
-const Module = require("../mod");
+const {Module} = require("../mod");
 const { getRandomIntRange, Storage, getStorage, getStorageValue } = require("../../libs");
 const { getEncounter } = require("./encounter");
 const { MessageMedia } = require("whatsapp-web.js");
