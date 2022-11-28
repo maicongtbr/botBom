@@ -56,7 +56,7 @@ class PlayerPokemon {
             this.moves = pokeMoves;
         } else {
             var pokeMoves = [];
-            for(i = 0; i < 3; i++) {
+            for(var i = 0; i < 3; i++) {
                 for( var x = 0; x <= move.length -1; x++) {
                     var element = move[x];
                     var a = await superagent.get(element.move.url);
