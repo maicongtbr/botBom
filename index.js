@@ -73,22 +73,6 @@ bot.on('group_leave', (notification) => {
     sendSticker(notification, stickersSaiu[randomNumber(3)]);
 });
 
-const list = new List(
-    'TESTE1',
-    'TESTE2',
-    [
-        {
-          title: "Products list",
-          rows: [
-            { id: "apple", title: "Apple" },
-            { id: "mango", title: "Mango" },
-            { id: "banana", title: "Banana" },
-          ],
-        },
-      ],
-      "teste3"
-)
-
 const msgCallback = (msg, group) => {
     for (value of callbackMap) {
         var key = value[0];
@@ -108,6 +92,7 @@ bot.on('message', async msg => {
         var group = await getGroup(msg);
         if (msg.body.startsWith('!')){
             global.modules.forEach(e => {
+                console.log(e);
                 for (value of e.mod.commands) {
                     var key = value[0];
                     if (msg.body.toLowerCase().includes(key)) {
