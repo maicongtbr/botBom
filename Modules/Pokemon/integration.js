@@ -340,11 +340,11 @@ const getPokemon = async (msg, private) => {
             });
             await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando \"!capturar <nome do pokemon\" para captura-lo!");
             fs.unlink("/home/life4gamming2/bot-aop/temp/out.gif", (err) => {
-                if (!err) return
+                if (!err) return;
                 console.log(err)
             });
             fs.unlink("/home/life4gamming2/bot-aop/temp/poke.webp", (err) => {
-                if (!err) return
+                if (!err) return;
                 console.log(err)
             });
 
