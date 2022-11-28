@@ -5,6 +5,8 @@ const { MessageMedia } = require("whatsapp-web.js");
 var encounterPercentage = 5;
 var myModule = {};
 
+
+
 const tryCatch = async (msg) => {
     var splited = msg.split(" ");
     var pokeName = splited[1];
@@ -40,8 +42,10 @@ const getPokemon = async (msg, private) => {
     if(!pokemon) {
         return;
     }
-    console.log(pokemon);
-    var sticker = await MessageMedia.fromUrl(pokemon.image);
+    console.log(pokemon.image);
+    const sticker = await MessageMedia.fromUrl(pokemon.image, {
+        unsafeMime: true
+    });
     var id = msg.from ? msg.from : msg.chatId;
     var bot = myModule.bot;
     await bot.sendMessage(id, pokemon.phrase);
@@ -59,9 +63,17 @@ const getPokemon = async (msg, private) => {
     svStorage.level = pokemon.level;
     svStorage.tries = 0;
 
-    storage.value[msg.from] = svStorage;
+    if(storage.value) {
+        storage.value[msg.from] = svStorage;
+        storage.setValue(storage.value);
 
-    storage.setValue(storage.value);
+    } else {
+        var a = [];
+        a[msg.from] = svStorage;
+        storage.setValue(a);
+    }
+
+
 }
 
 const onMessage = async (msg) => {
