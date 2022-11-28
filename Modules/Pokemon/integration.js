@@ -354,7 +354,8 @@ const onMessage = async (msg) => {
             return;
         }
         var chat = await msg.getChat();
-        //if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
+        let ep = encounterPercentage;
+        if(!chat.isGroup || chat.name != "bot test chamber") ep = 1000; /// lock pra test chamber
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
 
@@ -364,9 +365,9 @@ const onMessage = async (msg) => {
             return;
         }
 
-        var canEncounterPokemon = getRandomIntRange(1, 100) <= encounterPercentage;
+        var canEncounterPokemon = getRandomIntRange(1, 100) <= ep;
         if(!canEncounterPokemon) {
-            if(getRandomIntRange(1, 100) <= encounterPercentage * 2) {
+            if(getRandomIntRange(1, 100) <= ep * 2) {
                 getPokemon(msg, true);
             } else {
                 return;
