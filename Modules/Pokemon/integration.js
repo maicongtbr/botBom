@@ -127,8 +127,18 @@ const showBox = (msg) => {
     })
 }
 
+const starters = [ "Charamnder", "Bulbasaur", "Squirtle" ];
+
 const getStarter = async (msg) => {
-    let button = new Buttons('Button body',[{body:'bt1'},{body:'bt2'},{body:'bt3'}],'title','footer');
+    var buttons = [];
+    starters.forEach(e => {
+        buttons.push({
+            buttonId: "!starter "+e,
+            type: 1,
+            buttonText: {displayText: e}
+        })
+    })
+    let button = new Buttons('Escolha seu inicial!', buttons);
     myModule.bot.sendMessage(msg.from, button);
 }
 
