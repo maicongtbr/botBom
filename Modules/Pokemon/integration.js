@@ -302,11 +302,11 @@ const getPokemon = async (msg, private) => {
 
     await download.image({
         url: pokemon.image,
-        dest: "./temp/out.gif"
+        dest: "home/life4gamming2/bot-aop/temp/out.gif"
     });
 
-    webp.gwebp("./temp/out.gif","./temp/poke.webp","-q 80",logging="-v").then(async e=> {
-        const pokemonGif = await MessageMedia.fromFilePath("./temp/poke.webp")
+    webp.gwebp("/home/life4gamming2/bot-aop/temp/out.gif","/home/life4gamming2/bot-aop/temp/poke.webp","-q 80",logging="-v").then(async e=> {
+        const pokemonGif = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/poke.webp")
         havePokemon[id] = true;
 
         var storage = getStorage("pokemonModuleCurrentServerPokemon");
