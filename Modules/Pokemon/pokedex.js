@@ -21,6 +21,8 @@ const getPokedex = async (msg) => {
         } else {
             imagePath = imagePath.front_default;
         }
+
+        console.log(imagePath);
     
         download.image({
             url: imagePath,
@@ -62,6 +64,7 @@ const getPokedex = async (msg) => {
     
         msg.reply(sprite, msg.from, {caption: message});
     } catch (error) {
+        console.log(error);
         msg.reply('Esse Pokémon não existe ou não está disponível.');
     }
 }
