@@ -158,7 +158,7 @@ const starters = {
     hoenn: [ "Torchic", "Mudkip", "Treecko", "Voltar" ],
 }
 
-const enabledRegions = ["Kanto", "Johto", "Hoenn" ]
+const enabledRegions = [ "Kanto", "Johto", "Hoenn" ]
 
 const state = [];
 
@@ -192,7 +192,11 @@ const getStarter = async (msg) => {
             break;
         case 1:
             var splited = msg.body.split(" ");
-            var region = splited[1].toLowerCase();
+            var region = splited[1] && splited[1].toLowerCase();
+            if(!region) {
+                state[msg.author]--;
+                return getStarter(msg);
+            }
             if(!starters[region]) return;
             let _buttons = [];
             starters[region].forEach(e => {
