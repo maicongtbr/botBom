@@ -8,7 +8,7 @@ const isShiny = () => {
 }
 
 const getCorrectImage = (images, female, shiny) => {
-       return images[`front${shiny ? "_shiny_" : female ? "_female" : "_default"}`]
+    return images[`front${shiny ? "_shiny_" : female ? "_female" : "_default"}`]
 }
 
 var encounterMessages = {
@@ -77,5 +77,7 @@ const getEncounter = async (msg, private) => {
     var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase };
     return ret;
 }
+
+getEncounter();
 
 module.exports = { getEncounter }
