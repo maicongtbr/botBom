@@ -136,7 +136,7 @@ var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
     { name:'!pokemon', callback: (msg) => showPokemon(msg) },
     { name:'!boxpokemon', callback: (msg) => showBox(msg) },
-    { name: "!starter", callback: (msg) => getStarter(msg) }
+    { name: "!inicial", callback: (msg) => getStarter(msg) }
 ]
 
 var commandsMap = new Map();
