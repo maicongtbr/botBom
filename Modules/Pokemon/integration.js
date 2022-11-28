@@ -24,7 +24,7 @@ const tryCatch = async (msg) => {
         await msg.reply("Você errou!");
         storage.tries += 1;
         var randomTries = getRandomIntRange(6, 10);
-        if(storages.tries >= randomTries) {
+        if(storage.tries >= randomTries) {
             await myModule.bot.sendMessage(msg.from, "O Pokémon fugiu!");
             _storage[msg.from] = null;
             getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);

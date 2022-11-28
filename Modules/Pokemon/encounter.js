@@ -33,8 +33,8 @@ const slicePokeName = (pokeName) => {
 }
 
 var encounterMessages = {
-    private: [ "Você estava %mode% e um Pokémon selvagem apareceu!" ],
-    group: [ "Um Pokémon selvagem apareceu!" ]
+    private: [ "Você estava %mode% e um %pokemon% selvagem apareceu!" ],
+    group: [ "Um %pokemon% selvagem apareceu!" ]
 }
 
 const { Conditions } = require("./classes");
