@@ -106,12 +106,12 @@ const getEncounter = async (msg, private) => {
     var hasGenderDiff = speciesBody.has_gender_differences;
 
     var imagePath = resBody.sprites;
-    console.log(imagePath);
     if(imagePath.versions && imagePath.versions["generation-v"]  && imagePath.versions["generation-v"]["black-white"] && imagePath.versions["generation-v"]["black-white"].animated) {
         imagePath = resBody.sprites.versions["generation-v"]["black-white"].animated
     }
 
     var image = getCorrectImage(imagePath, hasGenderDiff && isFemale, _isShiny);
+    console.log(image);
 
     var level = getRandomIntRange(Math.floor(pokemon.minLevel/2), pokemon.maxLevel);
     var phrase = private ? encounterMessages.private : encounterMessages.group;
