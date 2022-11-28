@@ -44,7 +44,7 @@ const tryCatch = async (msg) => {
                 }).catch(console.error);
             } else {
                 if(user.pokemon.length > 6) {
-                   var boxModel = db.getModel("PokemonBoxModule");
+                   var boxModel = db.getModel("PokemonBox");
                    boxModel.findOne({
                     id: msg.author
                    }).then(box => {
@@ -104,7 +104,7 @@ const showPokemon = (msg) => {
 }
 
 const showBox = (msg) => {
-    var PokemonBox = db.getModel("PokemonBoxModule");
+    var PokemonBox = db.getModel("PokemonBox");
     PokemonBox.findOne({
         id: msg.author
     }).then(async player => {
