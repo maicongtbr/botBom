@@ -105,10 +105,11 @@ const getEncounter = async (msg, private) => {
     var isFemale = hasGender && getRandomInt(genderRate) == genderRate;
     var hasGenderDiff = speciesBody.has_gender_differences;
 
-    var imagePath = resBody.sprite;
-    if(imagePath.versions && resBody.sprites.versions["generation-v"]  && resBody.sprites.versions["generation-v"]["black-white"] && resBody.sprites.versions["generation-v"]["black-white"].animated) {
+    var imagePath = resBody.sprites;
+    console.log(imagePath);
+    if(imagePath.versions && imagePath.versions["generation-v"]  && imagePath.versions["generation-v"]["black-white"] && imagePath.versions["generation-v"]["black-white"].animated) {
         imagePath = resBody.sprites.versions["generation-v"]["black-white"].animated
-    } else { console.log(imagePath); }
+    }
 
     var image = getCorrectImage(imagePath, hasGenderDiff && isFemale, _isShiny);
 

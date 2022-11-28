@@ -79,7 +79,7 @@ class Storage {
     }
 }
 
-const getStorageValue = (id) => globalCache[id].value;
+const getStorageValue = (id) => globalCache[id] && globalCache[id].value;
 const getStorage = (id) => globalCache[id];
 
 const getRandomInt = (max) => {
