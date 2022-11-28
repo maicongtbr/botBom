@@ -184,7 +184,7 @@ const getPokemon = async (msg, private) => {
     await bot.sendMessage(id, sticker, {
         sendMediaAsSticker:true
     });
-    await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando '!capturar <nome do pokemon> para captura-lo!");
+    await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando \"!capturar <nome do pokemon\" para captura-lo!");
 
 }
 
@@ -231,6 +231,9 @@ const initPokemonModule = (bot) => {
 
     new Storage("pokemonModuleCurrentServerPokemon", (value) => {
         console.log(value);
+        for (vae in value) {
+            console.log(vae)
+        }
         value.forEach(element => {
             if(!element.notificated) {
                 console.log(`Um ${element.pokemon} selvagem apareceu no servidor ${element.server}!`);
