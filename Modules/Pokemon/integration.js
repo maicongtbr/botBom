@@ -42,8 +42,17 @@ commands.forEach((value) => {
     commandsMap.set(value.name, value.callback);
 })
 
+var havePokemon = [];
+
 const getPokemon = async (msg, private) => {
     var pokemon = await getEncounter(private);
+    var id = msg.from ? msg.from : msg.chatId;
+    if(havePokemon[id]) {
+        setTimeout(() => {
+            havePokemon[id] = false;
+        }, 60000 * 5)
+        return;
+    }
     if(!pokemon) {
         return;
     }
@@ -51,8 +60,9 @@ const getPokemon = async (msg, private) => {
     const sticker = await MessageMedia.fromUrl(pokemon.image, {
         unsafeMime: true
     });
-    var id = msg.from ? msg.from : msg.chatId;
     var bot = myModule.bot;
+
+    havePokemon[id] = true;
 
     var storage = getStorage("pokemonModuleCurrentServerPokemon");
     
