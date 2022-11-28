@@ -7,6 +7,15 @@ const StorageTypes = {
     String: 3
 }
 
+const userIsAdmin = async (chat, authorId) => {
+    for(let participant of chat.participants) {
+        if(participant.id._serialized === authorId && participant.isAdmin) {
+            return true;
+        }
+    }
+    return false;
+}
+
 class UserStorage {
     constructor(id, type) {
         this.id = id;
@@ -81,4 +90,4 @@ const getRandomIntRange = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
 } 
 
-module.exports = { getUserStorage, UserStorage, StorageTypes, Storage, getStorage, getStorageValue, getRandomInt, getRandomIntRange }
+module.exports = { getUserStorage, UserStorage, StorageTypes, Storage, getStorage, getStorageValue, getRandomInt, getRandomIntRange, userIsAdmin }

@@ -1,5 +1,5 @@
 const {Module} = require("../mod");
-const { getRandomIntRange, Storage, getStorage, getStorageValue } = require("../../libs");
+const { getRandomIntRange, Storage, getStorage, getStorageValue, userIsAdmin } = require("../../libs");
 const { getEncounter } = require("./encounter");
 const { MessageMedia, Buttons } = require("whatsapp-web.js");
 const db = require("../../database");
@@ -224,12 +224,22 @@ const getStarter = async (msg) => {
     }
 }
 
+const stopModule = async (msg) => {
+    if (!userIsAdmin(await msg.getChat(), msg.author)) {
+        msg.reply("Somente Admins.");
+        return;
+    }
+
+    myModule.enabled = false;
+}
+
 var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
     { name:'!pokemon', callback: (msg) => showPokemon(msg) },
     { name:'!boxpokemon', callback: (msg) => showBox(msg) },
     { name: "!inicial", callback: (msg) => getStarter(msg) },
     { name: "!pokedex", callback: (msg) => getPokedex(msg) },
+    { name: "!stopPokemon", callback: (msg) => stopModule(msg)}
 ]
 
 var commandsMap = new Map();
@@ -295,6 +305,9 @@ const getPokemon = async (msg, private) => {
 
 const onMessage = async (msg) => {
     try {
+        if(!myModule.enabled){
+            return;
+        }
         var PokemonPlayerDB = db.getModel("PokemonPlayer");
         var player = await PokemonPlayerDB.findOne({
             id: msg.author
