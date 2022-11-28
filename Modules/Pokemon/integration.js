@@ -3,7 +3,7 @@ const { getRandomIntRange, Storage, getStorage, getStorageValue } = require("../
 const { getEncounter } = require("./encounter");
 const { MessageMedia, Buttons } = require("whatsapp-web.js");
 const db = require("../../database");
-const { PlayerPokemon } = require("./classes");
+const { PlayerPokemon, createPokemon } = require("./classes");
 const superagent = require("superagent");
 const { getPokedex } = require("./pokedex");
 const capitalize = require("capitalize");
@@ -43,7 +43,7 @@ const tryCatch = async (msg) => {
         var growthRate = pokemonSpecies._body.growth_rate.name;
         var levels = getStorageValue('pokemonModuleLevels');
         var pokeLevel = levels[growthRate][storage.level - 1];
-        var catchPokemon = new PlayerPokemon(storage.pokemon, storage.level, pokeLevel.experience, 0, 0, 0, 0);
+        var catchPokemon = await createPokemon(storage.pokemon, storage.level, pokeLevel.experience);
         addPokemonToPlayer(msg, catchPokemon);
     } else {
         await msg.reply("Você errou!");
@@ -123,7 +123,11 @@ const showPokemon = (msg) => {
         }
         var Pokemon = [];
         player.pokemon.forEach(e=> {
-            Pokemon.push(`${e.name}, Level: ${e.level}`);
+            var moves = [];
+            e.moves.forEach( m => {
+                moves.push(m.name);
+            })
+            Pokemon.push(`${e.name}, Level: ${e.level}, Moves: ${moves.join(", ")}, HP: ${e.currentHp}/${e.maxHp}`);
         })
         var _m = "Seus Pokémon na Party:\n"+ Pokemon.join("\n");
         msg.reply(_m);
@@ -210,7 +214,7 @@ const getStarter = async (msg) => {
             }
 
             myModule.bot.sendMessage(msg.from, `Você escolheu o inicial ${capitalize(pokemon)}.`);
-            var starter = new PlayerPokemon(capitalize(pokemon), 1, 0, 0, 0, 0, 0);
+            var starter = await createPokemon(capitalize(pokemon), 1, 0);
             addPokemonToPlayer(msg, starter, true);
             state[msg.author]++;
             break;
@@ -307,7 +311,7 @@ const onMessage = async (msg) => {
             return;
         }
         var chat = await msg.getChat();
-        if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
+        //if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
 
