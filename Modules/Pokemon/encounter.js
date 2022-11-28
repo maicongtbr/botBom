@@ -78,6 +78,4 @@ const getEncounter = async (msg, private) => {
     return ret;
 }
 
-getEncounter();
-
 module.exports = { getEncounter }
