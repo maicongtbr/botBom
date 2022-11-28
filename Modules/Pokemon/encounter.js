@@ -25,14 +25,21 @@ const slicePokeName = (pokeName) => {
     var pokeNameLenght = pokeName.length -1;
     var str = [];
     for(var e = 0; e <= pokeNameLenght; e++) {
-        if (getRandomInt(100) <= 20){
-            str[e] = '?';
-        } else {
+        var chance = 90;
+        if (str[e -1] == "?") {
+            chance = 10
+        }
+        if (getRandomInt(100) <= chance){
+            var caracteres = [ "?", "%", "#", "@" ]
+            str[e] = caracteres[getRandomInt(caracteres.length - 1)];
+        } 
+        else {
             str[e] = pokeName[e];
         }
     }
+
     console.log(str);
-    return str.concat("");
+    return str.join("");
 }
 
 var encounterMessages = {
