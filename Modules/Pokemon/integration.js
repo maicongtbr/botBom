@@ -11,7 +11,7 @@ var encounterPercentage = 5;
 var myModule = {};
 const webp = require('webp-converter');
 const fs = require('fs');
-
+const download = require('image-downloader');
 
 
 
@@ -299,46 +299,45 @@ const getPokemon = async (msg, private) => {
     if(!pokemon) {
         return;
     }
-    const sticker = await MessageMedia.fromUrl(pokemon.image, {});
 
-    fs.writeFile(`./temp/out.gif`, sticker.data, 'base64', function(err) {
-        console.log(err);
-        if(err) return;
-        webp.gwebp("./temp/out.gif","temp/poke.webp","-q 80",logging="-v").then(async e=> {
-            const pokemonGif = await MessageMedia.fromFilePath("temp/out.gif")
-            havePokemon[id] = true;
-
-            var storage = getStorage("pokemonModuleCurrentServerPokemon");
-            
-            var svStorage = storage.value && storage.value[msg.from] || {};
-
-            svStorage.pokemon = pokemon.name;
-            svStorage.gender = pokemon.gender;
-            svStorage.level = pokemon.level;
-            svStorage.ignore = false;
-            var chat = await msg.getChat();
-            svStorage.server = chat.name;
-            svStorage.tries = 0;
-
-            if(storage.value) {
-                storage.value[msg.from] = svStorage;
-                storage.setValue(storage.value);
-
-            } else {
-                var a = [];
-                a[msg.from] = svStorage;
-                storage.setValue(a);
-            }
-
-            await bot.sendMessage(id, pokemon.phrase);
-            await bot.sendMessage(id, pokemonGif, {
-                sendMediaAsSticker:true
-            });
-            await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando \"!capturar <nome do pokemon\" para captura-lo!");
-        });
-        fs.unlink(temp/out.gif);
-
+    await download.image({
+        url: pokemon.image,
+        dest: "./temp/out.gif"
     });
+
+    webp.gwebp("./temp/out.gif","./temp/poke.webp","-q 80",logging="-v").then(async e=> {
+        const pokemonGif = await MessageMedia.fromFilePath("./temp/poke.webp")
+        havePokemon[id] = true;
+
+        var storage = getStorage("pokemonModuleCurrentServerPokemon");
+        
+        var svStorage = storage.value && storage.value[msg.from] || {};
+
+        svStorage.pokemon = pokemon.name;
+        svStorage.gender = pokemon.gender;
+        svStorage.level = pokemon.level;
+        svStorage.ignore = false;
+        var chat = await msg.getChat();
+        svStorage.server = chat.name;
+        svStorage.tries = 0;
+
+        if(storage.value) {
+            storage.value[msg.from] = svStorage;
+            storage.setValue(storage.value);
+
+        } else {
+            var a = [];
+            a[msg.from] = svStorage;
+            storage.setValue(a);
+        }
+
+        await bot.sendMessage(id, pokemon.phrase);
+        await bot.sendMessage(id, pokemonGif, {
+            sendMediaAsSticker:true
+        });
+        await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando \"!capturar <nome do pokemon\" para captura-lo!");
+    });
+    fs.unlink(temp/out.gif);
     
 
     

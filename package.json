@@ -10,6 +10,7 @@
     "epic-free-games": "^3.1.1",
     "g-i-s": "^2.1.6",
     "googlethis": "^1.4.3",
+    "image-downloader": "^4.3.0",
     "mongoose": "^6.6.5",
     "node-google-text-to-speech": "^0.1.0",
     "node-speak": "^0.0.2",
