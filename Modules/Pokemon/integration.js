@@ -331,6 +331,8 @@ const getPokemon = async (msg, private) => {
                 a[msg.from] = svStorage;
                 storage.setValue(a);
             }
+
+            var bot = myModule.bot;
     
             await bot.sendMessage(id, pokemon.phrase);
             await bot.sendMessage(id, pokemonGif, {
@@ -338,6 +340,7 @@ const getPokemon = async (msg, private) => {
             });
             await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando \"!capturar <nome do pokemon\" para captura-lo!");
             fs.unlink("/home/life4gamming2/bot-aop/temp/out.gif");
+            fs.unlink("/home/life4gamming2/bot-aop/temp/poke.webp");
 
         });
     })
