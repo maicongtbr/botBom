@@ -203,9 +203,9 @@ const onMessage = async (msg) => {
             return;
         }
 
-        var canEncounterPokemon = getRandomIntRange(1, 100) >= encounterPercentage;
+        var canEncounterPokemon = getRandomIntRange(1, 100) <= encounterPercentage;
         if(!canEncounterPokemon) {
-            if(getRandomIntRange(1, 100) >= encounterPercentage * 2) {
+            if(getRandomIntRange(1, 100) <= encounterPercentage * 2) {
                 getPokemon(msg, true);
             } else {
                 return;
@@ -234,8 +234,9 @@ const initPokemonModule = (bot) => {
     new Storage("pokemonModuleCurrentServerPokemon", (value) => {
         for (vae in value) {
             element = value[vae]
-            if(!element.notificated) {
+            if(!element.notificated && element.pokemon && element.server) {
                 console.log(`Um ${element.pokemon} selvagem apareceu no servidor ${element.server}!`);
+                element.notificated = true;
             }
         }
     }, []);
