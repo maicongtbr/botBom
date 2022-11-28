@@ -127,10 +127,16 @@ const showBox = (msg) => {
     })
 }
 
+const getStarter = async (msg) => {
+    let button = new Buttons('Button body',[{body:'bt1'},{body:'bt2'},{body:'bt3'}],'title','footer');
+    myModule.bot.sendMessage(msg.from, button);
+}
+
 var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
     { name:'!pokemon', callback: (msg) => showPokemon(msg) },
-    { name:'!boxpokemon', callback: (msg) => showBox(msg) }
+    { name:'!boxpokemon', callback: (msg) => showBox(msg) },
+    { name: "!starter", callback: (msg) => getStarter(msg) }
 ]
 
 var commandsMap = new Map();
