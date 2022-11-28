@@ -90,6 +90,10 @@ const showPokemon = (msg) => {
     PokemonPlayerDB.findOne({
         id: msg.author
     }).then(async player => {
+        if(!player) {
+            msg.reply("Você não tem Pokémon na Party");
+            return;
+        }
         var Pokemon = [];
         player.pokemon.forEach(e=> {
             Pokemon.push(`${e.name}, Level: ${e.level}`);
@@ -104,6 +108,10 @@ const showBox = (msg) => {
     PokemonBox.findOne({
         id: msg.author
     }).then(async player => {
+        if(!player) {
+            msg.reply("Você não tem Pokémon na Box");
+            return;
+        }
         var Pokemon = [];
         player.pokemon.forEach(e=> {
             Pokemon.push(`${e.name}, Level: ${e.level}`);
@@ -116,7 +124,7 @@ const showBox = (msg) => {
 var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
     { name:'!pokemon', callback: (msg) => showPokemon(msg) },
-    { name:'!pokemonbox', callback: (msg) => showBox(msg) }
+    { name:'!boxpokemon', callback: (msg) => showBox(msg) }
 ]
 
 var commandsMap = new Map();
