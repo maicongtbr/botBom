@@ -66,6 +66,7 @@ const getEncounter = async (msg, private) => {
     var isFemale = hasGender && getRandomInt(genderRate) == genderRate;
 
     var image = getCorrectImage(resBody.sprites, isFemale, _isShiny);
+    console.log(image);
 
     var level = getRandomIntRange(Math.floor(pokemon.minLevel/2), pokemon.maxLevel);
     var phrase = private ? encounterMessages.private : encounterMessages.group;
