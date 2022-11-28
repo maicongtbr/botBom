@@ -13,6 +13,16 @@ var myModule = {};
 
 
 const tryCatch = async (msg) => {
+    var PokemonPlayerDB = db.getModel("PokemonPlayer");
+    var player = await PokemonPlayerDB.findOne({
+        id: msg.author
+    });
+
+    if(player && !player.playing) {
+        await msg.reply("Você não está jogando, comece a jogar com !inicial");
+        return;
+    }
+
     var splited = msg.body.split(" ");
     var pokeName = splited[1];
 
@@ -25,7 +35,7 @@ const tryCatch = async (msg) => {
     if(!storage || storage.catch || !storage.pokemon) return;
 
     if(pokeName.toUpperCase() == storage.pokemon.toUpperCase()) {
-        await msg.reply("Você acertou e captoru um " + storage.pokemon);
+        await msg.reply("Você acertou e capturou um " + storage.pokemon);
         storage.catch = true;
         storage.ignora = true;
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
@@ -199,10 +209,9 @@ const getStarter = async (msg) => {
                 return getStarter(msg);
             }
 
-            console.log(_splited, pokemon)
-            var starter = new PlayerPokemon(pokemon, 1, 0, 0, 0, 0, 0);
-            await addPokemonToPlayer(msg, starter, true);
-            await msg.reply(`Você escolheu o inicial ${capitalize(pokemon)}.`)
+            msg.reply(`Você escolheu o inicial ${capitalize(pokemon)}.`)
+            var starter = new PlayerPokemon(capitalize(pokemon), 1, 0, 0, 0, 0, 0);
+            addPokemonToPlayer(msg, starter, true);
             state[msg.author]++;
             break;
         default:
@@ -282,6 +291,14 @@ const getPokemon = async (msg, private) => {
 
 const onMessage = async (msg) => {
     try {
+        var PokemonPlayerDB = db.getModel("PokemonPlayer");
+        var player = await PokemonPlayerDB.findOne({
+            id: msg.author
+        });
+
+        if(player && !player.playing) {
+            return;
+        }
         var id = msg.from ? msg.from : msg.chatId;
         if(havePokemon[id]) {
             setTimeout(() => {
