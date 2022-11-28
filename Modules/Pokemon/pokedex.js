@@ -37,7 +37,7 @@ const getPokedex = async (msg) => {
         message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
     }
 
-    msg.reply(sprite, {caption: message});
+    msg.reply(sprite, msg.from, {caption: message});
 }
 
 const getChainString = async (chain) => {
