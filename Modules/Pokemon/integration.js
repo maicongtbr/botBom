@@ -192,6 +192,13 @@ const getPokemon = async (msg, private) => {
 
 const onMessage = async (msg) => {
     try {
+        var id = msg.from ? msg.from : msg.chatId;
+        if(havePokemon[id]) {
+            setTimeout(() => {
+                havePokemon[id] = false;
+            }, 60000 * 5)
+            return;
+        }
         var chat = await msg.getChat();
         // if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
