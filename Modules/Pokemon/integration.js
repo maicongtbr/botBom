@@ -190,6 +190,7 @@ const getStarter = async (msg) => {
             let _button = new Buttons('Escolha seu inicial!', _buttons);
             state[msg.author]++;
             await myModule.bot.sendMessage(msg.from, _button);
+            break;
         case 2:
             let _splited = msg.body.split(" ");
             let pokemon = _splited[1].toLowerCase();
