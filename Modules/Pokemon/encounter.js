@@ -28,7 +28,7 @@ const slicePokeName = (pokeName) => {
             pokeName[e] = '?';
         }
     }
-    print(pokeName);
+    console.log(pokeName);
     return pokeName;
 }
 
