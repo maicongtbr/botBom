@@ -338,7 +338,7 @@ const getPokemon = async (msg, private) => {
             await bot.sendMessage(id, pokemonGif, {
                 sendMediaAsSticker:true
             });
-            await bot.sendMessage(id, "O primeiro a acerter o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!");
+            await bot.sendMessage(id, "O *primeiro* a acerter o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!");
             fs.unlink("/home/life4gamming2/bot-aop/temp/out.gif", (err) => {
                 if (!err) return;
                 console.log(err)

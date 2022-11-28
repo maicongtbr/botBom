@@ -24,7 +24,7 @@ const getPokedex = async (msg) => {
         }).then(({filename}) => {
             webp.gwebp("/home/life4gamming2/bot-aop/temp/dex.gif","/home/life4gamming2/bot-aop/temp/dex.webp","-q 80",logging="-v")
                 .then(async e=> {
-                    var sprite = MessageMedia.fromFilePath(/home/life4gamming2/bot-aop/temp/dex.webp);
+                    var sprite = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/dex.webp");
                     var types = [];
                     pokeInfo.types.forEach( async t => {
                         types.push(capitalize(t.type.name));
