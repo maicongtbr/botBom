@@ -40,7 +40,6 @@ const getPokedex = async (msg) => {
     
         msg.reply(sprite, msg.from, {caption: message});
     } catch (error) {
-        console.warn(error);
         msg.reply('Esse Pokémon não existe ou não está disponível.');
     }
 }
@@ -63,7 +62,6 @@ const getChainString = async (chain) => {
 
 const getEvoString = async (baseName, evolution) => {
     var methods = [];
-    console.log(evolution)
     if(evolution.min_level) {
         methods.push(`Nível: ${evolution.min_level}`);
     }
