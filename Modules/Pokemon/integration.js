@@ -303,7 +303,7 @@ const getPokemon = async (msg, private) => {
     });
 
     console.log(sticker.data);
-    let result = await webp.str2webpstr(sticker.data,"gif","-q 80");
+    let result = webp.str2webpstr(sticker.data,"gif","-q 100").then(console.log);
     sticker.data = result;
     sticker.mimetype = "image/webp"
 
