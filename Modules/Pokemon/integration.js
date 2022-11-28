@@ -302,8 +302,10 @@ const getPokemon = async (msg, private) => {
 
     download.image({
         url: pokemon.image,
-        dest: "/home/life4gamming2/bot-aop/temp/out.gif"
+        dest: "/home/life4gamming2/bot-aop/temp/out.gif",
+        extractFilename: false
     }).then(({fileName}) => {
+        console.log(fileName);
         webp.gwebp("/home/life4gamming2/bot-aop/temp/out.gif","/home/life4gamming2/bot-aop/temp/poke.webp","-q 80",logging="-v").then(async e=> {
             const pokemonGif = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/poke.webp");
             havePokemon[id] = true;
