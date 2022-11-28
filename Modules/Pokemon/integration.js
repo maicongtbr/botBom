@@ -137,10 +137,11 @@ const starters = [ "Charamnder", "Bulbasaur", "Squirtle" ];
 const getStarter = (msg) => {
     var buttons = [];
     starters.forEach(e => {
+        console.log(e);
         buttons.push({
             buttonId: "!starter "+e,
             type: 1,
-            buttonText: {displayText: e}
+            body: e
         })
     })
     let button = new Buttons('Escolha seu inicial!', buttons);
@@ -227,7 +228,7 @@ const onMessage = async (msg) => {
             return;
         }
         var chat = await msg.getChat();
-        // if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
+        if(!chat.isGroup || chat.name != "bot test chamber") return; /// lock pra test chamber
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
 
