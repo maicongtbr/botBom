@@ -1,8 +1,6 @@
 const superagent = require("superagent");
 const { MessageMedia } = require("whatsapp-web.js");
 var capitalize = require('capitalize');
-const download = require('image-downloader');
-
 
 const getPokedex = async (msg) => {
     var splited = msg.body.split(" ");
@@ -16,9 +14,16 @@ const getPokedex = async (msg) => {
     try {
         var pokeInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}/`);
         pokeInfo = pokeInfo._body;
+
+        var imagePath = pokeInfo.sprites;
+        if(imagePath.versions && imagePath.versions["generation-v"]  && imagePath.versions["generation-v"]["black-white"] && imagePath.versions["generation-v"]["black-white"].animated) {
+            imagePath = pokeInfo.sprites.versions["generation-v"]["black-white"].animated.front_default;
+        } else {
+            imagePath = imagePath.front_default;
+        }
     
         download.image({
-            url: pokemon.image,
+            url: imagePath,
             dest: "/home/life4gamming2/bot-aop/temp/dex.gif",
             extractFilename: false,
         }).then(({filename}) => {
@@ -54,9 +59,10 @@ const getPokedex = async (msg) => {
                 })
             
         })
+    
+        msg.reply(sprite, msg.from, {caption: message});
     } catch (error) {
         msg.reply('Esse Pokémon não existe ou não está disponível.');
-        console.log(error);
     }
 }
 
