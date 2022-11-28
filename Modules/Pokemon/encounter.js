@@ -26,12 +26,11 @@ const slicePokeName = (pokeName) => {
     var str = [];
     for(var e = 0; e <= pokeNameLenght; e++) {
         var chance = 90;
-        if (str[e -1] == "?") {
+        if (str[e -1] == "_") {
             chance = 10
         }
         if (getRandomInt(100) <= chance){
-            var caracteres = [ "?", "%", "#", "@" ]
-            str[e] = caracteres[getRandomInt(caracteres.length - 1)];
+            str[e] = '_';
         } 
         else {
             str[e] = pokeName[e];

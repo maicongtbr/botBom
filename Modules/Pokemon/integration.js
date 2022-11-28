@@ -53,11 +53,7 @@ const getPokemon = async (msg, private) => {
     });
     var id = msg.from ? msg.from : msg.chatId;
     var bot = myModule.bot;
-    await bot.sendMessage(id, pokemon.phrase);
-    await bot.sendMessage(id, sticker, {
-        sendMediaAsSticker:true
-    });
-    await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando '!capturar <nome do pokemon> para captura-lo!");
+
     var storage = getStorage("pokemonModuleCurrentServerPokemon");
     
     var svStorage = storage.value && storage.value[msg.from] || {};
@@ -65,6 +61,7 @@ const getPokemon = async (msg, private) => {
     svStorage.pokemon = pokemon.name;
     svStorage.gender = pokemon.gender;
     svStorage.level = pokemon.level;
+    svStorage.ignore = false;
     svStorage.tries = 0;
 
     if(storage.value) {
@@ -77,6 +74,11 @@ const getPokemon = async (msg, private) => {
         storage.setValue(a);
     }
 
+    await bot.sendMessage(id, pokemon.phrase);
+    await bot.sendMessage(id, sticker, {
+        sendMediaAsSticker:true
+    });
+    await bot.sendMessage(id, "Acerte o nome do Pokémon com o comando '!capturar <nome do pokemon> para captura-lo!");
 
 }
 
@@ -87,7 +89,7 @@ const onMessage = async (msg) => {
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
 
-        if(storage[id] && storage[id].catch == true && storage[id].ignore) {
+        if(storage[id] && (storage[id].catch == true || storage[id].ignore)) {
             storage[id] = {};
             getStorage("pokemonModuleCurrentServerPokemon").setValue(storage);
             return;
