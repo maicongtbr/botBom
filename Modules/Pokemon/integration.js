@@ -23,7 +23,7 @@ const tryCatch = async (msg) => {
         storage.catch = true;
         storage.ignora = true;
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
-        var pokemonSpecies = await superagent.get('https://pokeapi.co/api/v2/pokemon-species/' + storage.pokemon);
+        var pokemonSpecies = await superagent.get('https://pokeapi.co/api/v2/pokemon-species/' + storage.pokemon.toLowerCase());
         var growthRate = pokemonSpecies._body.growth_rate.name;
         var levels = getStorageValue('pokemonModuleLevels');
         var pokeLevel = levels[growthRate][storage.level - 1];
