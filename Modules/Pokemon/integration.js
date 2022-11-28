@@ -75,7 +75,7 @@ const tryCatch = async (msg) => {
                     },{
                         user,
                         pokemon: newPokemon
-                    })
+                    }).then(console.log).catch(console.error)
                 }
             }
         })
