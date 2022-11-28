@@ -63,6 +63,7 @@ const getChainString = async (chain) => {
 
 const getEvoString = async (baseName, evolution) => {
     var methods = [];
+    console.log(evolution)
     if(evolution.min_level) {
         methods.push(`Nível: ${evolution.min_level}`);
     }
@@ -71,6 +72,9 @@ const getEvoString = async (baseName, evolution) => {
     }
     if(evolution.min_affection) {
         methods.push(`Amizade: ${evolution.min_affection}`);
+    }
+    if(evolution.trigger.name=="trade") {
+        methods.push("Durante uma Troca");
     }
     if(evolution.time_of_day) {
         switch(evolution.time_of_day) {
@@ -116,5 +120,7 @@ const getChain = (chain, notBase) => {
 
     return ret;
 }
+
+// getPokedex({body:"!pokedex gengar"})
 
 module.exports = { getPokedex }
