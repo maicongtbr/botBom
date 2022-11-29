@@ -26,11 +26,11 @@ const getPokedex = async (msg) => {
         if(imagePath.versions && imagePath.versions["generation-v"]  && imagePath.versions["generation-v"]["black-white"] && imagePath.versions["generation-v"]["black-white"].animated) {
             imagePath = pokeInfo.sprites.versions["generation-v"]["black-white"].animated.front_default;
         } else {
-            imagePath = imagePath.front_default;
+            imagePath = pokeInfo.sprites.front_default;
         }
     
         var rng = getRandomInt(999999);
-        var imgName = `/home/life4gamming2/bot-aop/temp/dex${rng}.gif`;
+        var imgName = `/temp/dex${rng}.gif`;
 
         download.image({
             url: imagePath,
@@ -125,7 +125,7 @@ const getEvoString = async (baseName, evolution) => {
         var name = item._body.names.find(x => x.language.name == "en");
         methods.push(`Item: ${name.name}`)
     }
-    var str = `${baseName} evolui para ${evolution.name}, condições: ${methods.join(" e ")}`;
+    var str = `${baseName} evolui para ${evolution.name}, ${methods.length> 0 ? "condições: "+methods.join(" e ")+"" : ""}`;
 
     return str
 }
@@ -147,6 +147,6 @@ const getChain = (chain, notBase) => {
     return ret;
 }
 
-// getPokedex({body:"!pokedex gengar"})
+getPokedex({body:"!pokedex manaphy"})
 
 module.exports = { getPokedex }
