@@ -99,11 +99,11 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                         var arr = [];
                         arr.push(pokemon);
                         var newPokemon = arr.concat(box.pokemon);
-                        console.log(newPokemon, arr, box.pokemon);
                         boxModel.updateOne({
                             id: msg.author
                         },
                         {
+                            ...box,
                             pokemon: newPokemon
                         })
                     }
@@ -118,7 +118,7 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                     PokemonPlayerDB.updateOne({
                         id: msg.author
                     },{
-                        user,
+                        ...user,
                         pokemon: newPokemon,
                         hasStarter: isStarter,
                     }).then(() => {}).catch(console.error)
