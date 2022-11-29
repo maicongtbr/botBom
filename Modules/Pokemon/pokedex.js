@@ -147,6 +147,6 @@ const getChain = (chain, notBase) => {
     return ret;
 }
 
-getPokedex({body:"!pokedex manaphy"})
+// getPokedex({body:"!pokedex manaphy"})
 
 module.exports = { getPokedex }
