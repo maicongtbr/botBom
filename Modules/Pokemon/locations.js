@@ -1,5 +1,5 @@
 const superagent = require("superagent");
-const { Storage } = require("../../libs");
+const { Storage, getStorage } = require("../../libs");
 const Areas = require("./areas");
 
 global.regions = [
@@ -25,13 +25,19 @@ const updateLocationCache = async () => {
 
         }
     }
-    new Storage("pokemonModuleLocation", (storage) => {
-        console.log(`Carregadas ${parsedRegions.length} regiões com pokémon capturáveis.`)
-        var timeAfter = new Date();
-        console.log(timeAfter - timeBefore);
-        console.log("Localizações atualizadas em " + (timeAfter - timeBefore)/60000 + " minutos");
-        global.locales = storage;
-    }, parsedRegions);
+
+    var st = getStorage("pokemonModuleLocation");
+    if (!st) {
+        new Storage("pokemonModuleLocation", (storage) => {
+            console.log(`Carregadas ${parsedRegions.length} regiões com pokémon capturáveis.`)
+            var timeAfter = new Date();
+            console.log("Localizações atualizadas em " + (timeAfter.getMilliseconds() - timeBefore.getMilliseconds())/60000 + " minutos");
+            global.locales = storage;
+        }, parsedRegions);
+    } else {
+        st.setValue(st.value.concat(parsedRegions));
+    }
+
 }
 
 updateLocationCache()

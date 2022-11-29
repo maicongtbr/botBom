@@ -328,11 +328,13 @@ const getPokemon = async (msg, private) => {
         }, 60000 * 5)
         return;
     }
+    havePokemon[id] = true;
     var pokemon = await getEncounter(private);
     if (private) {
         // id = msg.author;
     }
     if(!pokemon) {
+        havePokemon[id] = false;
         return;
     }
 
@@ -347,7 +349,6 @@ const getPokemon = async (msg, private) => {
         console.log(filename);
         webp.gwebp(imgName,imgNameWebp,"-q 80",logging="-v").then(async e=> {
             const pokemonGif = MessageMedia.fromFilePath(imgNameWebp);
-            havePokemon[id] = true;
     
             var storage = getStorage("pokemonModuleCurrentServerPokemon");
             
