@@ -87,12 +87,15 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                             pokemon: [ pokemon ]
                         });
                     } else {
-                        box.pokemon.push(pokemon);
+                        var arr = [];
+                        // console.log(user.pokemon)
+                        arr.push(pokemon);
+                        var newPokemon = arr.concat(user.pokemon);
                         boxModel.updateOne({
                             id: msg.author
                         },
                         {
-                            pokemon: box.pokemon
+                            pokemon: newPokemon
                         })
                     }
                    })
