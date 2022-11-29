@@ -11,6 +11,7 @@ const shinyBonus = [
 
 const isShiny = () => {
     for(bonus of shinyBonus) {
+        console.log(bonus, bonus.date, new Date());
         if (bonus.date >= new Date()) {
             var rng =  getRandomInt(chance);
             console.log(chance, rng)
@@ -144,7 +145,7 @@ const getEncounter = async (msg, private, index) => {
     var name = capitalize(speciesBody.name);
 
     phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("mode", pokemon.condition.string);
-    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance};
+    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance, shiny: _isShiny};
     return ret;
 }
 
