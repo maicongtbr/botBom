@@ -33,9 +33,12 @@ const getPokedex = async (msg) => {
             dest: "/home/life4gamming2/bot-aop/temp/dex.gif",
             extractFilename: false,
         }).then(({filename}) => {
-            webp.gwebp("/home/life4gamming2/bot-aop/temp/dex.gif","/home/life4gamming2/bot-aop/temp/dex.webp","-q 80",logging="-v")
+            webp.gwebp("/home/life4gamming2/bot-aop/temp/dex.gif","/home/life4gamming2/bot-aop/temp/dex.webp","-q 100",logging="-v")
                 .then(async e => {
                     var sprite = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/dex.webp");
+                    if(!sprite) {
+                        return;
+                    }
                     var types = [];
                     pokeInfo.types.forEach( async t => {
                         types.push(capitalize(t.type.name));
@@ -53,7 +56,7 @@ const getPokedex = async (msg) => {
                         message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
                     }
                 
-                    msg.reply(sprite, msg.from, {caption: message});
+                    msg.reply(sprite, msg.from, {caption: message, sendMediaAsSticker: true});
                     fs.unlink("/home/life4gamming2/bot-aop/temp/dex.gif", (err) => {
                         if (!err) return;
                         console.log(err)
