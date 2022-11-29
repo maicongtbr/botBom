@@ -51,7 +51,11 @@ var encounterMessages = {
 const { Conditions } = require("./classes");
 
 
-const getEncounter = async (msg, private) => {
+const getEncounter = async (msg, private, index) => {
+    if (index && index > 5) {
+        return;
+    }
+
     var locales = getStorageValue("pokemonModuleLocation");
     var id = getRandomInt(locales.length - 1);
     var pokes = locales[id];
@@ -90,7 +94,7 @@ const getEncounter = async (msg, private) => {
     }
 
     if(getRandomInt(100) > pokemon.chance) {
-        return getEncounter(msg, private);
+        return await getEncounter(msg, private, index || 0);
     }
 
     var res = await superagent.get(pokemon.url);

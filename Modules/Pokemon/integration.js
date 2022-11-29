@@ -36,6 +36,7 @@ const tryCatch = async (msg) => {
     var _storage = getStorageValue("pokemonModuleCurrentServerPokemon");
     var storage = _storage[msg.from];
     if(!storage || storage.catch || !storage.pokemon) return;
+    var __id = msg.from ? msg.from : msg.chatId;
 
     if(pokeName.toUpperCase() == storage.pokemon.toUpperCase()) {
         var PokemonPlayerDB = db.getModel("PokemonPlayer");
@@ -49,7 +50,8 @@ const tryCatch = async (msg) => {
 
         }
         storage.catch = true;
-        storage.ignora = true;
+        havePokemon[__id] = false;
+        storage.ignore = true;
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
         var pokemonSpecies = await superagent.get('https://pokeapi.co/api/v2/pokemon-species/' + storage.pokemon.toLowerCase());
         var growthRate = pokemonSpecies._body.growth_rate.name;
@@ -63,7 +65,8 @@ const tryCatch = async (msg) => {
         var randomTries = getRandomIntRange(6, 10);
         if(storage.tries >= randomTries) {
             await myModule.bot.sendMessage(msg.from, "O Pokémon fugiu!");
-            storage.ignora = true;
+            havePokemon[__id] = false;
+            storage.ignore = true;
             getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
         }
     }
@@ -296,17 +299,16 @@ commands.forEach((value) => {
 var havePokemon = [];
 
 const getPokemon = async (msg, private) => {
-    var pokemon = await getEncounter(private);
     var id = msg.from ? msg.from : msg.chatId;
-    if (private) {
-        // id = msg.author;
-    }
-
     if(havePokemon[id]) {
         setTimeout(() => {
             havePokemon[id] = false;
         }, 60000 * 5)
         return;
+    }
+    var pokemon = await getEncounter(private);
+    if (private) {
+        // id = msg.author;
     }
     if(!pokemon) {
         return;
