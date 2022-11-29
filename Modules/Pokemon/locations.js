@@ -29,12 +29,11 @@ const updateLocationCache = async () => {
     console.log(parsedRegions.length);
     new Storage("pokemonModuleLocation", (storage) => {
         var timeAfter = new Date();
-        console.log("Localizações atualizadas em " + new Date(timeAfter - timeBefore).getSeconds());
+        console.log("Localizações atualizadas em " + new Date(timeAfter - timeBefore).getSeconds() + " segundos");
         global.locales = storage;
     }, parsedRegions);
 }
 
-updateLocationCache();
 
 module.exports = { updateCache: async (cb) => {
     await updateLocationCache(cb);
