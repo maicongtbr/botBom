@@ -174,9 +174,10 @@ const starters = {
     kanto: [ "Charmander", "Squirtle", "Bulbasaur", "Voltar" ],
     johto: [ "Cyndaquil", "Totodile", "Chicorita", "Voltar" ],
     hoenn: [ "Torchic", "Mudkip", "Treecko", "Voltar" ],
+    sinnoh: [ "Chimchar", "Piplup", "Turtwig", "Voltar" ],
 }
 
-const enabledRegions = [ "Kanto", "Johto", "Hoenn" ]
+const enabledRegions = [ "Kanto", "Johto", "Hoenn", "Sinnoh" ]
 
 const state = [];
 

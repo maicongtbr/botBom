@@ -3,7 +3,7 @@ const { Storage } = require("../../libs");
 const Areas = require("./areas");
 
 global.regions = [
-    "kanto", "johto", "hoenn" // por as regioes em ordem, nao pular nenhuma
+    "kanto", "johto", "hoenn", "sinnoh", "unova" // por as regioes em ordem, nao pular nenhuma
 ]
 
 const updateLocationCache = async () => {
@@ -25,14 +25,15 @@ const updateLocationCache = async () => {
 
         }
     }
-
-    console.log(parsedRegions.length);
     new Storage("pokemonModuleLocation", (storage) => {
+        console.log(`Carregadas ${parsedRegions.length} regiões com pokémon capturáveis.`)
         var timeAfter = new Date();
         console.log("Localizações atualizadas em " + new Date(timeAfter - timeBefore).getSeconds() + " segundos");
         global.locales = storage;
     }, parsedRegions);
 }
+
+updateLocationCache()
 
 
 module.exports = { updateCache: async (cb) => {
