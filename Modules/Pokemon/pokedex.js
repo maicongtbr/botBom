@@ -48,7 +48,7 @@ const getPokedex = async (msg) => {
         
         
             var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName.toLowerCase()}/`);
-            var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.height/10}kg\nTipos: ${types.join(", ")}`;
+            var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.weight/10}kg\nTipos: ${types.join(", ")}`;
             if(speciesInfo._body.evolution_chain && speciesInfo._body.evolution_chain.url) {
                 var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
             
