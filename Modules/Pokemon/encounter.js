@@ -5,7 +5,7 @@ var capitalize = require('capitalize');
 const shinyBonus = [
     {
         date: new Date("2022-11-29 21:10:00"), // GMT
-        chance: 10
+        chance: 3
     }
 ]
 
@@ -13,7 +13,6 @@ const isShiny = () => {
     for(bonus of shinyBonus) {
         if (bonus.date >= new Date()) {
             var rng =  getRandomInt(bonus.chance);
-            console.log(2 == rng);
             return 2 == rng;
         }
     }
