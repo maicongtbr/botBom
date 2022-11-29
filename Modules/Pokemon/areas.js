@@ -53,6 +53,7 @@ const Areas = {
             var pokemon = new Pokemon(
                 capitalize(Areas.getRealName(encounter.pokemon.name)),
                 encounter.pokemon.url,
+                pokemon.id,
                 condition.chance,
                 condition.min_level,
                 condition.max_level,

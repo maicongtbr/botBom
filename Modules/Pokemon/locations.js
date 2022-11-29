@@ -28,7 +28,8 @@ const updateLocationCache = async () => {
     new Storage("pokemonModuleLocation", (storage) => {
         console.log(`Carregadas ${parsedRegions.length} regiões com pokémon capturáveis.`)
         var timeAfter = new Date();
-        console.log("Localizações atualizadas em " + new Date(timeAfter - timeBefore).getSeconds() + " segundos");
+        console.log(timeAfter - timeBefore);
+        console.log("Localizações atualizadas em " + (timeAfter - timeBefore)/60000 + " minutos");
         global.locales = storage;
     }, parsedRegions);
 }

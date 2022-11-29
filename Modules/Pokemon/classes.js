@@ -3,9 +3,10 @@ const { getRandomIntRange } = require("../../libs");
 const { v4 } = require('uuid');
 
 class Pokemon {
-    constructor(name, url, chance, minLevel, maxLevel, condition){
+    constructor(name, url, id, chance, minLevel, maxLevel, condition){
         this.name = name
         this.url = url
+        this.id = id
         this.chance = chance
         this.minLevel = minLevel
         this.maxLevel = maxLevel

@@ -128,7 +128,7 @@ const getEncounter = async (msg, private, index) => {
     var level = getRandomIntRange(Math.floor(pokemon.minLevel/2), pokemon.maxLevel);
     var phrase = private ? encounterMessages.private : encounterMessages.group;
     phrase = phrase[getRandomInt(phrase.length - 1)];
-    var name = capitalize(resBody.name);
+    var name = capitalize(speciesBody.name);
 
     phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("mode", pokemon.condition.string);
     var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance};
