@@ -433,7 +433,7 @@ const initPokemonModule = (bot) => {
 
     new Storage("pokemonModuleEncounterRate", (value) => {
         encounterPercentage = value;
-    }, 1); // o int no ultimo param é a chance 1 = 1%
+    }, 3); // o int no ultimo param é a chance 1 = 1%
 
     new Storage("pokemonModuleCurrentServerPokemon", (value) => {
         for (vae in value) {
