@@ -103,9 +103,9 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                             id: msg.author
                         },
                         {
-                            ...box,
+                            box,
                             pokemon: newPokemon
-                        })
+                        }).then(() => {}).catch(console.error);
                     }
                    })
                 } else {
@@ -118,10 +118,10 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                     PokemonPlayerDB.updateOne({
                         id: msg.author
                     },{
-                        ...user,
+                        user,
                         pokemon: newPokemon,
                         hasStarter: isStarter,
-                    }).then(() => {}).catch(console.error)
+                    }).then(() => {}).catch(console.error);
                 }
             }
         })
