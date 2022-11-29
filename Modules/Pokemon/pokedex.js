@@ -28,6 +28,8 @@ const getPokedex = async (msg) => {
         } else {
             imagePath = pokeInfo.sprites.front_default;
         }
+
+        console.log(imagePath, pokeInfo.sprites);
     
         var rng = getRandomInt(999999);
         var imgName = `/home/life4gamming2/bot-aop/temp/dex${rng}.gif`;
