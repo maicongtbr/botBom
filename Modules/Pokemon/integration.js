@@ -297,6 +297,7 @@ var commands = [
             msg.reply("Somente Admins.");
             return;
         }
+        var id = msg.from ? msg.from : msg.chatId;
         havePokemon[id] = false;
         await getPokemon(msg);
     }},
