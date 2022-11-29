@@ -76,7 +76,7 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                     coins: 0,
                 }).catch(console.error);
             } else {
-                if(user.pokemon.length > 6) {
+                if(user.pokemon.length >= 6) {
                    var boxModel = db.getModel("PokemonBox");
                    boxModel.findOne({
                     id: msg.author
