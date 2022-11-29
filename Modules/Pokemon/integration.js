@@ -150,7 +150,7 @@ const showBox = (msg) => {
         player.pokemon.forEach(e=> {
             Pokemon.push(`${e.name}, Level: ${e.level}`);
         })
-        var _m = "Seus Pokémon na Party:\n"+ Pokemon.join("\n");
+        var _m = "Seus Pokémon na Box:\n"+ Pokemon.join("\n");
         msg.reply(_m);
     })
 }
