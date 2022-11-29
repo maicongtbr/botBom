@@ -25,7 +25,9 @@ const getPokedex = async (msg) => {
         var imagePath = pokeInfo.sprites;
         if(imagePath.versions && imagePath.versions["generation-v"]  && imagePath.versions["generation-v"]["black-white"] && imagePath.versions["generation-v"]["black-white"].animated) {
             imagePath = pokeInfo.sprites.versions["generation-v"]["black-white"].animated.front_default;
-        } else {
+        }
+        
+        if(!imagePath) {
             imagePath = pokeInfo.sprites.front_default;
         }
 
