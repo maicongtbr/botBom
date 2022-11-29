@@ -260,7 +260,27 @@ const stopModule = async (msg) => {
         return;
     }
 
-    myModule.enabled = false;
+    myModule.enabled = !myModule.enabled;
+    msg.reply("O estado do PokéModule está " + myModule.enabled ? "Ativado" : "Desativado")
+}
+
+const changeSpawnRate = async (msg) => {
+    if (!userIsAdmin(await msg.getChat(), msg.author)) {
+        msg.reply("Somente Admins.");
+        return;
+    }
+
+    let _splited = msg.body.split(" ");
+    let chance = _splited[1] && parseInt(_splited[1]);
+    if (!chance) {
+        msg.reply("Chance inválida.");
+        return;
+    }
+
+    getStorage("pokemonModuleEncounterRate").setValue(chance);
+    msg.reply(`Spawn rate alterada para ${chance}`);
+    return;
+
 }
 
 var commands = [
@@ -270,6 +290,7 @@ var commands = [
     { name: "!inicial", callback: (msg) => getStarter(msg) },
     { name: "!pokedex", callback: (msg) => getPokedex(msg) },
     { name: "!pokestop", callback: (msg) => stopModule(msg)},
+    { name: "!pokespawnrate", callback: (msg) => changeSpawnRate(msg)},
     { name: "!lllist", callback: (msg) => {
         const productsList = new List(
             "Here's our list of products at 50% off",
