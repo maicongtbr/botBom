@@ -32,44 +32,35 @@ const getPokedex = async (msg) => {
             url: imagePath,
             dest: "/home/life4gamming2/bot-aop/temp/dex.gif",
             extractFilename: false,
-        }).then(({filename}) => {
-            webp.gwebp("/home/life4gamming2/bot-aop/temp/dex.gif","/home/life4gamming2/bot-aop/temp/dex.webp","-q 100",logging="-v")
-                .then(async e => {
-                    var sprite = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/dex.webp");
-                    if(!sprite) {
-                        return;
-                    }
-                    var types = [];
-                    pokeInfo.types.forEach( async t => {
-                        types.push(capitalize(t.type.name));
-                    })
-                
-                
-                    var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName.toLowerCase()}/`);
-                    var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
-                
-                    var chain = getChain(evolutionsInfo._body.chain);
-                    var evolutionsMessages = await getChainString(chain);
-   
-                    var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.height/10}kg\nTipos: ${types.join(", ")}`;
-                    if(evolutionsMessages.length > 0) {
-                        message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
-                    }
-                
-                    msg.reply(sprite, msg.from, {caption: message, sendMediaAsSticker: true});
-                    fs.unlink("/home/life4gamming2/bot-aop/temp/dex.gif", (err) => {
-                        if (!err) return;
-                        console.log(err)
-                    });
-                    fs.unlink("/home/life4gamming2/bot-aop/temp/dex.webp", (err) => {
-                        if (!err) return;
-                        console.log(err)
-                    });
-                })
+        }).then(async ({filename}) => {
+            var sprite = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/dex.gif");
+            if(!sprite) {
+                return;
+            }
+            var types = [];
+            pokeInfo.types.forEach( async t => {
+                types.push(capitalize(t.type.name));
+            })
+        
+        
+            var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName.toLowerCase()}/`);
+            var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
+        
+            var chain = getChain(evolutionsInfo._body.chain);
+            var evolutionsMessages = await getChainString(chain);
+
+            var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.height/10}kg\nTipos: ${types.join(", ")}`;
+            if(evolutionsMessages.length > 0) {
+                message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
+            }
+        
+            msg.reply(sprite, msg.from, {caption: message, sendMediaAsSticker: true});
+            fs.unlink("/home/life4gamming2/bot-aop/temp/dex.gif", (err) => {
+                if (!err) return;
+                console.log(err)
+            });
             
         })
-    
-        msg.reply(sprite, msg.from, {caption: message});
     } catch (error) {
         console.log(error);
         msg.reply('Esse Pokémon não existe ou não está disponível.');
