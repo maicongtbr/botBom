@@ -11,9 +11,9 @@ const shinyBonus = [
 
 const isShiny = () => {
     for(bonus of shinyBonus) {
-        console.log(bonus, bonus.date, new Date());
         if (bonus.date >= new Date()) {
             var rng =  getRandomInt(bonus.chance);
+            console.log(2 == rng);
             return 2 == rng;
         }
     }
