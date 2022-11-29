@@ -97,9 +97,9 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                         });
                     } else {
                         var arr = [];
-                        // console.log(user.pokemon)
                         arr.push(pokemon);
                         var newPokemon = arr.concat(box.pokemon);
+                        console.log(newPokemon, arr, box.pokemon);
                         boxModel.updateOne({
                             id: msg.author
                         },
