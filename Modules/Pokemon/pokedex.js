@@ -2,6 +2,7 @@ const superagent = require("superagent");
 const { MessageMedia } = require("whatsapp-web.js");
 var capitalize = require('capitalize');
 const download = require('image-downloader');
+const webp = require('webp-converter');
 
 const getPokedex = async (msg) => {
     var splited = msg.body.split(" ");
