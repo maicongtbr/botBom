@@ -4,7 +4,7 @@ var capitalize = require('capitalize');
 
 const shinyBonus = [
     {
-        date: new Date("2022-11-29 21:00:00"), // GMT
+        date: new Date("2022-11-29 21:10:00"), // GMT
         chance: 10
     }
 ]
@@ -134,6 +134,7 @@ const getEncounter = async (msg, private, index) => {
     if(!imagePath) {
         imagePath = pokeInfo.sprites.front_default;
     }
+    var _isShiny = isShiny();
 
 
     var image = getCorrectImage(imagePath, hasGenderDiff && isFemale, _isShiny);
@@ -141,7 +142,6 @@ const getEncounter = async (msg, private, index) => {
     var phrase = private ? encounterMessages.private : encounterMessages.group;
     phrase = phrase[getRandomInt(phrase.length - 1)];
     var name = capitalize(speciesBody.name);
-    var _isShiny = isShiny();
 
     if(_isShiny) {
         console.log("SHINY POKEMON ABAIXO!")
