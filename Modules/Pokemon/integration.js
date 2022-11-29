@@ -55,7 +55,7 @@ const tryCatch = async (msg) => {
         var growthRate = pokemonSpecies._body.growth_rate.name;
         var levels = getStorageValue('pokemonModuleLevels');
         var pokeLevel = levels[growthRate][storage.level - 1];
-        var catchPokemon = await createPokemon(storage.pokemon, storage.level, pokeLevel.experience);
+        var catchPokemon = await createPokemon(storage.pokemon, storage.level, pokeLevel ? pokeLevel.experience : 0);
         addPokemonToPlayer(msg, catchPokemon);
     } else {
         await msg.reply("Você errou!");
