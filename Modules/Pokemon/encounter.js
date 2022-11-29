@@ -4,7 +4,7 @@ var capitalize = require('capitalize');
 
 const shinyBonus = [
     {
-        date: new Date("2022-11-29 17:30:00"),
+        date: new Date("2022-11-29 17:40:00"),
         chance: 10
     }
 ]
