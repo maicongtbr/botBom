@@ -9,11 +9,14 @@ const getPokedex = async (msg) => {
     if (!pokeName) {
         return;
     }
-
-    pokeName = pokeName.toLowerCase();
-
     try {
+
+        pokeName = pokeName.toLowerCase();
+    
         var pokeInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}/`);
+        if(!pokeInfo) {
+            return;
+        }
         pokeInfo = pokeInfo._body;
 
         var imagePath = pokeInfo.sprites;
@@ -22,8 +25,6 @@ const getPokedex = async (msg) => {
         } else {
             imagePath = imagePath.front_default;
         }
-
-        console.log(imagePath);
     
         download.image({
             url: imagePath,
