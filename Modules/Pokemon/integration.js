@@ -298,7 +298,7 @@ var commands = [
             return;
         }
         havePokemon[id] = false;
-        getPokemon(msg);
+        await getPokemon(msg);
     }},
     { name: "!lllist", callback: (msg) => {
         const productsList = new List(
