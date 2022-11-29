@@ -297,6 +297,7 @@ var commands = [
             msg.reply("Somente Admins.");
             return;
         }
+        havePokemon[id] = false;
         getPokemon(msg);
     }},
     { name: "!lllist", callback: (msg) => {
@@ -330,9 +331,7 @@ var havePokemon = [];
 const getPokemon = async (msg, private) => {
     var id = msg.from ? msg.from : msg.chatId;
     if(havePokemon[id]) {
-        setTimeout(() => {
-            havePokemon[id] = false;
-        }, 60000 * 5)
+        havePokemon[id] = false;
         return;
     }
     havePokemon[id] = true;
@@ -420,9 +419,7 @@ const onMessage = async (msg) => {
         }
         var id = msg.from ? msg.from : msg.chatId;
         if(havePokemon[id]) {
-            setTimeout(() => {
-                havePokemon[id] = false;
-            }, 60000 * 5)
+            havePokemon[id] = false;
             return;
         }
         var chat = await msg.getChat();
