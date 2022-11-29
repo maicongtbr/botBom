@@ -54,7 +54,7 @@ const getPokedex = async (msg) => {
                 message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
             }
         
-            msg.reply(sprite, msg.from, {caption: message, sendMediaAsSticker: true});
+            msg.reply(sprite, msg.from, {caption: message});
             fs.unlink("/home/life4gamming2/bot-aop/temp/dex.gif", (err) => {
                 if (!err) return;
                 console.log(err)
