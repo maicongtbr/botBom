@@ -15,6 +15,14 @@ const backgroundTemplate = ""; //background file
 const badgeTemplate = "";
 const partyIcons = [ ];
 
+const pokeTest = {
+    name: Refe,
+    level: 4,
+    icon: await jimp.read('./iconTest.png'),
+    hp: 5,
+    
+}
+
 const getIcons = async (pokeParty) => {
     for (e in pokeParty) {
         partyIcons.push(await jimp.read(pokeParty[e].icon));
@@ -34,16 +42,16 @@ const createPokeBadge = async (pokeParty) => {
                     pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[e].level);
                     break;
                 case 2:
-                    pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].Icon);
+                    pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].icon);
                     break;
                 case 3:
-                    pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].Hp);
+                    pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].hp);
                     break;
                 case 4:
-                    pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].HPMax);
+                    pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].hpMax);
                     break;
                 case 5:
-                    pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].HPBar);
+                    pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].hpBar);
                     pokebadges.push(pokeBadge);
                     break;
             }
