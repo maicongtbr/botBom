@@ -2,6 +2,12 @@ const { getRandomIntRange, getStorageValue, getRandomInt } = require("../../libs
 const superagent = require("superagent");
 var capitalize = require('capitalize');
 
+const shunyNonus = [
+    {
+        date: new Date("2022-11-29 17:30:00"),
+        chance: 10
+    }
+]
 
 const isShiny = () => {
     return getRandomInt(4096) == 4096;

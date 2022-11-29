@@ -13,6 +13,10 @@ const exp = [
     }
 ]
 
+process.on("uncaughtException", (e) => {
+    
+})
+
 const getExpMultply = () => {
     var date = new Date();
 
