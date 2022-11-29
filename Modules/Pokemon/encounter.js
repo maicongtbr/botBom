@@ -14,7 +14,6 @@ const isShiny = () => {
         console.log(bonus, bonus.date, new Date());
         if (bonus.date >= new Date()) {
             var rng =  getRandomInt(bonus.chance);
-            console.log(bonus.chance, rng)
             return 2 == rng;
         }
     }
@@ -77,7 +76,6 @@ const getEncounter = async (msg, private, index) => {
 
     var id = getRandomInt(locales.length - 1);
     var pokes = locales[id];
-    var _isShiny = isShiny();
     if(!pokes || !pokes.pokemon || pokes.pokemon.length -1 <= 0) {
         return;
     }
@@ -143,6 +141,11 @@ const getEncounter = async (msg, private, index) => {
     var phrase = private ? encounterMessages.private : encounterMessages.group;
     phrase = phrase[getRandomInt(phrase.length - 1)];
     var name = capitalize(speciesBody.name);
+    var _isShiny = isShiny();
+
+    if(_isShiny) {
+        console.log("SHINY POKEMON ABAIXO!")
+    }
 
     phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("mode", pokemon.condition.string);
     var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance, shiny: _isShiny};
