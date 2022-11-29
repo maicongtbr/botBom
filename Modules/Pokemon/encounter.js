@@ -49,7 +49,6 @@ var encounterMessages = {
 }
 
 const { Conditions } = require("./classes");
-const { image } = require("googlethis");
 
 
 const getEncounter = async (msg, private) => {
@@ -90,6 +89,10 @@ const getEncounter = async (msg, private) => {
         };
     }
 
+    if(getRandomInt(100) > pokemon.chance) {
+        return getEncounter(msg, private);
+    }
+
     var res = await superagent.get(pokemon.url);
     var resBody = res._body;
     var speciesInfo = await superagent.get(resBody.species.url);
@@ -110,16 +113,19 @@ const getEncounter = async (msg, private) => {
         imagePath = resBody.sprites.versions["generation-v"]["black-white"].animated
     }
 
-    var image = getCorrectImage(imagePath, hasGenderDiff && isFemale, _isShiny);
-    console.log(image);
+    if(!imagePath) {
+        imagePath = pokeInfo.sprites.front_default;
+    }
 
+
+    var image = getCorrectImage(imagePath, hasGenderDiff && isFemale, _isShiny);
     var level = getRandomIntRange(Math.floor(pokemon.minLevel/2), pokemon.maxLevel);
     var phrase = private ? encounterMessages.private : encounterMessages.group;
     phrase = phrase[getRandomInt(phrase.length - 1)];
     var name = capitalize(resBody.name);
 
     phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("mode", pokemon.condition.string);
-    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase };
+    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance:  };
     return ret;
 }
 

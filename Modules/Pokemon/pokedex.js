@@ -31,7 +31,11 @@ const getPokedex = async (msg) => {
             imagePath = pokeInfo.sprites.front_default;
         }
 
-        console.log(imagePath, pokeInfo.sprites);
+        if(!imagePath) {
+            console.log(pokeInfo.sprites);
+            throw "Pokémon ainda não registrado!";
+            return;
+        }
     
         var rng = getRandomInt(999999);
         var imgName = `/home/life4gamming2/bot-aop/temp/dex${rng}.gif`;
