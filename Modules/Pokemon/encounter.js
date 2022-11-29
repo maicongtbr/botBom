@@ -57,6 +57,10 @@ const getEncounter = async (msg, private, index) => {
     }
 
     var locales = getStorageValue("pokemonModuleLocation");
+    if(!locales) {
+        return;
+    }
+
     var id = getRandomInt(locales.length - 1);
     var pokes = locales[id];
     var _isShiny = isShiny();
