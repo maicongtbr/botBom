@@ -6,21 +6,23 @@ const pokemonBadgeParam = [ //coordenadas de encaixa dos Icons (x, y)
 [3, 4], //pokeIcon
 [112, 15], //pokeHP
 [132, 15], //pokeMaxHP
-[97, 9] //pokeHpBar //até [145, 12]
+//[97, 9] //pokeHpBar //até [145, 12]
 ];
 const backgroundYParam = [10, 34, 58, 82, 106, 130]; //x = 87
 
 const font = await jimp.loadFont(Jimp.FONT_SANS_32_BLACK); //alterar a fonte depois
-const backgroundTemplate = ""; //background file
-const badgeTemplate = "";
+const backgroundTemplate = jimp.read('./background.png'); //background file
+const badgeTemplate = await jimp.read('./pokeBadge.png');
 const partyIcons = [ ];
 
 const pokeTest = {
-    name: Refe,
-    level: 4,
-    icon: await jimp.read('./iconTest.png'),
-    hp: 5,
-    
+    {
+        name: 'Mamaico',
+        level: 24,
+        icon: await jimp.read('./iconTest.png'),
+        hp: 5,
+        hpMax: 20,
+    },
 }
 
 const getIcons = async (pokeParty) => {
@@ -49,11 +51,12 @@ const createPokeBadge = async (pokeParty) => {
                     break;
                 case 4:
                     pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].hpMax);
-                    break;
-                case 5:
-                    pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].hpBar);
                     pokebadges.push(pokeBadge);
                     break;
+                // case 5:
+                //     pokeBadge = await pokeBadge.print(font, pokemonBadgeParam[i[0]], pokemonBadgeParam[i[1]], pokeParty[i].hpBar);
+                //     pokebadges.push(pokeBadge);
+                //     break;
             }
         }
     }
@@ -66,3 +69,5 @@ const blitBadgeinBackground = async () => {
     }
     background.write('./partyCardTemp.png');
 }
+
+createPokeBadge(pokeTest)
