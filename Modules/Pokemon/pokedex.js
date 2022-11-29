@@ -4,6 +4,7 @@ var capitalize = require('capitalize');
 const download = require('image-downloader');
 const webp = require('webp-converter');
 const fs = require('fs');
+const { getRandomInt } = require("../../libs");
 
 const getPokedex = async (msg) => {
     var splited = msg.body.split(" ");
@@ -28,12 +29,15 @@ const getPokedex = async (msg) => {
             imagePath = imagePath.front_default;
         }
     
+        var rng = getRandomInt(999999);
+        var imgName = `/home/life4gamming2/bot-aop/temp/dex${rng}.gif`;
+
         download.image({
             url: imagePath,
-            dest: "/home/life4gamming2/bot-aop/temp/dex.gif",
+            dest: imgName,
             extractFilename: false,
         }).then(async ({filename}) => {
-            var sprite = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/dex.gif");
+            var sprite = MessageMedia.fromFilePath(imgName);
             if(!sprite) {
                 return;
             }
@@ -55,7 +59,7 @@ const getPokedex = async (msg) => {
             }
         
             msg.reply(sprite, msg.from, {caption: message});
-            fs.unlink("/home/life4gamming2/bot-aop/temp/dex.gif", (err) => {
+            fs.unlink(imgName, (err) => {
                 if (!err) return;
                 console.log(err)
             });

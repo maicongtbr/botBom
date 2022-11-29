@@ -300,14 +300,17 @@ const getPokemon = async (msg, private) => {
         return;
     }
 
+    var rng = getRandomIntRange(0, 9999);
+    var imgName = `/home/life4gamming2/bot-aop/temp/out${id}${rng}.gif`;
+    var imgNameWebp = `/home/life4gamming2/bot-aop/temp/out${id}${rng}.webp`;
     download.image({
         url: pokemon.image,
-        dest: "/home/life4gamming2/bot-aop/temp/out.gif",
+        dest: imgName,
         extractFilename: false,
     }).then(({filename}) => {
         console.log(filename);
-        webp.gwebp("/home/life4gamming2/bot-aop/temp/out.gif","/home/life4gamming2/bot-aop/temp/poke.webp","-q 80",logging="-v").then(async e=> {
-            const pokemonGif = MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/temp/poke.webp");
+        webp.gwebp(imgName,imgNameWebp,"-q 80",logging="-v").then(async e=> {
+            const pokemonGif = MessageMedia.fromFilePath(imgNameWebp);
             havePokemon[id] = true;
     
             var storage = getStorage("pokemonModuleCurrentServerPokemon");
@@ -339,11 +342,11 @@ const getPokemon = async (msg, private) => {
                 sendMediaAsSticker:true
             });
             await bot.sendMessage(id, "O *primeiro* a acerter o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!");
-            fs.unlink("/home/life4gamming2/bot-aop/temp/out.gif", (err) => {
+            fs.unlink(imgName, (err) => {
                 if (!err) return;
                 console.log(err)
             });
-            fs.unlink("/home/life4gamming2/bot-aop/temp/poke.webp", (err) => {
+            fs.unlink(imgNameWebp, (err) => {
                 if (!err) return;
                 console.log(err)
             });
