@@ -292,7 +292,7 @@ var commands = [
     { name: "!pokedex", callback: (msg) => getPokedex(msg) },
     { name: "!pokestop", callback: (msg) => stopModule(msg)},
     { name: "!pokespawnrate", callback: (msg) => changeSpawnRate(msg)},
-    { name: "!summonPokemon", callback: async (msg) => {
+    { name: "!pokemonsummon", callback: async (msg) => {
         if (!userIsAdmin(await msg.getChat(), msg.author)) {
             msg.reply("Somente Admins.");
             return;
