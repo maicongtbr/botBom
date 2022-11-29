@@ -48,16 +48,17 @@ const getPokedex = async (msg) => {
         
         
             var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName.toLowerCase()}/`);
-            var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
-        
-            var chain = getChain(evolutionsInfo._body.chain);
-            var evolutionsMessages = await getChainString(chain);
-
             var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.height/10}kg\nTipos: ${types.join(", ")}`;
-            if(evolutionsMessages.length > 0) {
-                message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
+            if(speciesInfo._body.evolution_chain && speciesInfo._body.evolution_chain.url) {
+                var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
+            
+                var chain = getChain(evolutionsInfo._body.chain);
+                var evolutionsMessages = await getChainString(chain);
+                if(evolutionsMessages.length > 0) {
+                    message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
+                }
             }
-        
+            
             msg.reply(sprite, msg.from, {caption: message});
             fs.unlink(imgName, (err) => {
                 if (!err) return;
