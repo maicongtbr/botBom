@@ -125,7 +125,7 @@ const getEncounter = async (msg, private) => {
     var name = capitalize(resBody.name);
 
     phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("mode", pokemon.condition.string);
-    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance:  };
+    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance};
     return ret;
 }
 
