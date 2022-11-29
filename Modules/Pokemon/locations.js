@@ -3,39 +3,41 @@ const { Storage } = require("../../libs");
 const Areas = require("./areas");
 
 global.regions = [
-    "kanto", "johto", "hoenn"
+    "kanto", "johto", "hoenn" // por as regioes em ordem, nao pular nenhuma
 ]
 
 const updateLocationCache = async () => {
     var parsedRegions = [ ];
+    var timeBefore = new Date();
 
-    regions.forEach(async (region, i) => {
-        superagent.get(`https://pokeapi.co/api/v2/region/${region}`)
-            .then((res, data) => {
-                const _result = res._body;
-                _result.locations.forEach(location => {
-                    superagent.get(location.url)
-                        .then((res) => {
-                            var infos = res._body;
-                            var name = infos.names.find(x => x.language.name == "en");
-                            res._body.areas.forEach( async area => {
-                                parsedRegions.push(await Areas.getPokemonArea(area, name.name))
-                            })
-                        });
-                }) 
-                
-            })
-    })
+    for (region in regions) {
+        var res = await superagent.get(`https://pokeapi.co/api/v2/region/${parseInt(region) + 1}`)
+        const _result = res._body;
+        for (location of _result.locations) {
+            var _res = await superagent.get(location.url)
+            var infos = _res._body;
+            var name = infos.names.find(x => x.language.name == "en");
+            var areas = _res._body.areas;
+            for (area of areas) {
+                parsedRegions.push(await Areas.getPokemonArea(area, name.name))
+            }
+            console.log(`Carregado a location ${location.name} da regiao ${parseInt(region) + 1} (${global.regions[parseInt(region)]})`);
+
+        }
+    }
+
+    console.log(parsedRegions.length);
     new Storage("pokemonModuleLocation", (storage) => {
-        console.log("Localizações atualizadas");
+        var timeAfter = new Date();
+        console.log("Localizações atualizadas em " + new Date(timeAfter - timeBefore).getSeconds());
         global.locales = storage;
     }, parsedRegions);
 }
 
-module.exports = { updateCache: (cb) => {
-    updateLocationCache(cb);
-    setTimeout(() => {
-        cb();
-        new Storage("pokemonModuleLoaded", () => console.log("Pokemon Module Done"), true);
-    }, 1000)
+updateLocationCache();
+
+module.exports = { updateCache: async (cb) => {
+    await updateLocationCache(cb);
+    cb();
+    new Storage("pokemonModuleLoaded", () => console.log("Pokemon Module Done"), true);
 }}

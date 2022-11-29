@@ -88,8 +88,7 @@ const getEncounter = async (msg, private, index) => {
         }
 
         if(!canCatch) {
-            console.log("NAo da para pegar o pokemon", pokemon);
-            return;
+            return await getEncounter(msg, private, index || 0);
         };
     }
 
@@ -103,8 +102,7 @@ const getEncounter = async (msg, private, index) => {
     var speciesBody = speciesInfo._body;
 
     if(speciesBody.is_legendary && getRandomInt(100) >= 5) {
-        console.log("NAo da para pegar o pokemon", pokemon);
-        return await getEncounter(); 
+        return await getEncounter(msg, private, index || 0);
     }// Se for lendario 5% de chance de continuar, se nao gera outro
 
     var genderRate = speciesBody.gender_rate;
