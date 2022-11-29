@@ -98,9 +98,10 @@ const getEvoString = async (baseName, evolution) => {
     if(evolution.min_affection) {
         methods.push(`Amizade: ${evolution.min_affection}`);
     }
-    if(evolution.trigger.name=="trade") {
+    if(evolution.trigger && evolution.trigger.name=="trade") {
         methods.push("Durante uma Troca");
     }
+
     if(evolution.time_of_day) {
         switch(evolution.time_of_day) {
             case "night":
