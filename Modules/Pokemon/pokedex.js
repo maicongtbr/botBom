@@ -22,19 +22,11 @@ const getPokedex = async (msg) => {
         }
         pokeInfo = pokeInfo._body;
 
-        var imagePath = pokeInfo.sprites;
-        if(imagePath.versions && imagePath.versions["generation-v"]  && imagePath.versions["generation-v"]["black-white"] && imagePath.versions["generation-v"]["black-white"].animated) {
-            imagePath = pokeInfo.sprites.versions["generation-v"]["black-white"].animated.front_default;
-        }
-        
-        if(!imagePath) {
-            imagePath = pokeInfo.sprites.front_default;
-        }
+        var imagePath = pokeInfo.sprites.other["official-artwork"].front_default;
 
         if(!imagePath) {
             console.log(pokeInfo.sprites);
             throw "Pokémon ainda não registrado!";
-            return;
         }
     
         var rng = getRandomInt(999999);
