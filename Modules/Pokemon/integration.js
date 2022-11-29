@@ -292,6 +292,13 @@ var commands = [
     { name: "!pokedex", callback: (msg) => getPokedex(msg) },
     { name: "!pokestop", callback: (msg) => stopModule(msg)},
     { name: "!pokespawnrate", callback: (msg) => changeSpawnRate(msg)},
+    { name: "!summonPokemon", callback: async (msg) => {
+        if (!userIsAdmin(await msg.getChat(), msg.author)) {
+            msg.reply("Somente Admins.");
+            return;
+        }
+        getPokemon(msg);
+    }},
     { name: "!lllist", callback: (msg) => {
         const productsList = new List(
             "Here's our list of products at 50% off",
