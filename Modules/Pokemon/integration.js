@@ -38,7 +38,16 @@ const tryCatch = async (msg) => {
     if(!storage || storage.catch || !storage.pokemon) return;
 
     if(pokeName.toUpperCase() == storage.pokemon.toUpperCase()) {
-        await msg.reply("Você acertou e capturou um " + storage.pokemon);
+        var PokemonPlayerDB = db.getModel("PokemonPlayer");
+        var player = await PokemonPlayerDB.findOne({
+            id: msg.author
+        });
+        if(player && player.pokemon && player.pokemon.length >= 6) {
+            await msg.reply("Você acertou e capturou um " + storage.pokemon + "\nVocê já tem 6 Pokémon na Party, seu novo Pokémon foi para a Box!\nPara conferir a box digite !boxpokemon");
+        } else {
+            await msg.reply("Você acertou e capturou um " + storage.pokemon);
+
+        }
         storage.catch = true;
         storage.ignora = true;
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
