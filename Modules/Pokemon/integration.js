@@ -325,8 +325,8 @@ var commands = [
         marketState[msg.author] = 1;
         var buttons = new Buttons("Bem-vindo ao Mercado Pokémon",
         [
-            { buttonId:'1',buttonText:{'displayText':'Comprar Items'},type: 1 },
-            { buttonId:'2',buttonText:{'displayText':'Vender Items (em breve)'},type: 1 },
+            { buttonId:'1',body:'Comprar Items',type: 1 },
+            { buttonId:'2',body:"Vender Items (em breve)",type: 1 },
         ])
         msg.reply(buttons);
     }},
