@@ -465,7 +465,7 @@ const addItem = async (msg, item) => {
 
     var itens = player.itens;
 
-    thisItem = itens.find(x => x.internalinternalName == item.internalName);
+    thisItem = itens.find(x => x.internalName == item.internalName);
     if (thisItem) {
         thisItem.amount++;
     } else {
