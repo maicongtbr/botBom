@@ -522,6 +522,7 @@ const onMessage = async (msg) => {
                 return buyItem(msg);
             }
         } else if (msg.type == MessageTypes.BUTTONS_RESPONSE) {
+            console.log(msg.body, marketState[msg.from]);
             if(marketState[msg.from]) {
                 if(msg.body == "Comprar Items") {
                     marketState[msg.from]++
