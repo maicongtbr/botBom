@@ -313,7 +313,7 @@ var commands = [
     { name: "!compraritems", callback: async (msg) => {
         var chat = await msg.getChat();
         if(chat.isGroup) return;
-        marketState[msg.author] = 0;
+        marketState[msg.author] = 1;
         getMarket(msg);
     }}
 ]
@@ -424,8 +424,7 @@ const onMessage = async (msg) => {
         if(msg.type == MessageTypes.LIST_RESPONSE) {
             if(starterState[msg.author]) {
                 return getStarter(msg);
-            }
-            if(marketState[msg.author]) {
+            }else if(marketState[msg.author]) {
                 return buyItem(msg);
             }
         }
