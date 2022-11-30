@@ -403,6 +403,22 @@ const pokeGroups = [
     "bot test chamber"
 ]
 
+const buyItem = async (msg) => {
+    var args = msg.split("\nPreço: ")
+    var name = args[0];
+    var price = args[1].split(" ")[0];
+    console.log(args, name);
+    var PokemonPlayerDB = db.getModel("PokemonPlayer");
+    var player = await PokemonPlayerDB.findOne({
+        id: msg.author
+    });
+
+    if (!player || player.coins <= price) {
+        msg.reply("Você já tem um inicial!");
+        return;
+    }
+}
+
 const onMessage = async (msg) => {
     try {
         if(msg.type == MessageTypes.LIST_RESPONSE) {
