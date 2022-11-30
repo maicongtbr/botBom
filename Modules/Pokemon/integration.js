@@ -525,10 +525,12 @@ const onMessage = async (msg) => {
             console.log(msg.body, marketState[msg.from]);
             if(marketState[msg.from]) {
                 if(msg.body == "Comprar Items") {
+                    console.log("comprar em");
                     marketState[msg.from]++
                     getMarket(msg);
                 } else {
-                    msg.reply("Feature em construção");
+                    marketState[msg.from]++
+                    await msg.reply("Feature em construção");
                 }
             }
         }
