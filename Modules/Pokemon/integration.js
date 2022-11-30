@@ -528,12 +528,11 @@ const onMessage = async (msg) => {
                     var list = new List(
                         "Seja bem-vindo ao Mercado Pokémon!\nClique abaixo para Comprar Items!",
                         "Comprar Itens",
-                        global.MarketItems
+                        global.MarketItems,
+                        "Pokébom Market"
                     )
 
-                    console.log(list, global.MarketItems, list);
-                
-                    await msg.reply(list);
+                    await msg.send(msg.from, list);
                     marketState[msg.from]++
                 } else {
                     marketState[msg.from]++
