@@ -491,7 +491,7 @@ const commandList = (msg, bot) => {
                     { id: "pokestop", title: "!pokestop", description: "Ativar ou desativar o módulo do PokéBom."},
                     { id: "pokespawnrate", title: "!pokespawnrate [%]", description: "Alterar a chance de aparição de Pokémon."},
                     { id: "pokesummon", title: "!pokesummon", description: "Forçar a aparição de Pokémon."},
-                    { id: "compraritens", title: "!compraritens", description: "Abrir a loja para compra de ítens."},
+                    // { id: "compraritens", title: "!compraritens", description: "Abrir a loja para compra de ítens."},
                 ]
             }
         ],
