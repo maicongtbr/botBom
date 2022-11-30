@@ -479,9 +479,7 @@ const commandList = (msg, bot) => {
                     { id: "down", title: "!down [membro]", description: "Rebaixa o membro marcado ou da mensagem mencionada."},
                     { id: "level", title: "!level [membro]", description: "Retorna o level do membro marcado."},
                 ]
-          }
-        ], 
-        [
+            },
             {
                 title: "Comandos do PokéBom",
                 rows: [
