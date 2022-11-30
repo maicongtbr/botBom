@@ -489,12 +489,12 @@ const buyItem = async (msg) => {
     console.log(price, name);
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     var player = await PokemonPlayerDB.findOne({
-        id: msg.author
+        id: msg.from
     });
 
     if (!player || player.coins < parseInt(price)) {
         msg.reply(`Você não tem ${price} BomCoins para comprar o item ${name}`);
-        console.log(player.coins, player, msg.author);
+        console.log(player.coins, player, msg.from);
         return;
     }
     await addItem(msg, global.itemMap[name]);
