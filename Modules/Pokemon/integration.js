@@ -12,6 +12,7 @@ var myModule = {};
 const webp = require('webp-converter');
 const fs = require('fs');
 const download = require('image-downloader');
+const { getMarket } = require("./market");
 
 
 
@@ -307,24 +308,7 @@ var commands = [
         havePokemon[id] = false;
         await getPokemon(msg);
     }},
-    { name: "!lllist", callback: (msg) => {
-        const productsList = new List(
-            "Here's our list of products at 50% off",
-            "View all products",
-            [
-              {
-                title: "Products list",
-                rows: [
-                  { id: "apple", title: "Apple" },
-                  { id: "mango", title: "Mango" },
-                  { id: "banana", title: "Banana" },
-                ],
-              },
-            ],
-            "Please select a product"
-          );
-          myModule.bot.sendMessage(msg.from, productsList);
-    }}
+    { name: "!compraritems", callback: (msg) => getMarket(msg) }
 ]
 
 var commandsMap = new Map();

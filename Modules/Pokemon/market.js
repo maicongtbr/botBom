@@ -1,22 +1,24 @@
-const superagent = require("superagent")
+const { List } = require("whatsapp-web.js");
+const updatePokeballCache = require("./pokeballs");
 
-const normalPokeballs = {
-    title: "Pokébolas Normais",
-    
+global.MarketItems = [];
+global.Items = {
+    pokeballs: []
 }
-// 33 34
-var PokeballsItemCategories = [ 34 ]
-const updatePokeballCache = async () => {
-    try {
-        for (category of PokeballsItemCategories) {
-            var res = await superagent.get(`https://pokeapi.co/api/v2/item-category/${category}/`);
-            let body = res._body;
-            for (item of body.items) {
-                var item = await superagent.get(`https://pokeapi.co/api/v2/item-category/${category}/`);
-            }
-        }
-    } catch (e) {
-        console.warn(e);
-    }
+
+const updateMarket = async () => {
+    await updatePokeballCache();
 }
-updatePokeballCache();
+
+const getMarket = async (msg) => {
+    var list = new List(
+        "Mercado Pokémon!",
+        "Comprar Itens",
+        global.MarketItems
+    )
+
+    msg.reply(list);
+}
+
+
+module.exports = { getMarket, updateMarket };

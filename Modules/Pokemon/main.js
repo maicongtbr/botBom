@@ -1,8 +1,9 @@
 
-const { getEncounter } = require("./encounter");
-const { updateCache } = require("./locations");
+// const { getEncounter } = require("./encounter");
+// const { updateCache } = require("./locations");
 const superagent = require("superagent");
 const { Storage } = require("../../libs");
+const { updateMarket } = require("./market");
 
 superagent.get('https://pokeapi.co/api/v2/growth-rate/').then((res) => {
     var levels = [];
@@ -14,4 +15,5 @@ superagent.get('https://pokeapi.co/api/v2/growth-rate/').then((res) => {
     new Storage("pokemonModuleLevels", () => {}, levels);
 })
 
-updateCache(getEncounter);
+updateMarket();
+// updateCache(getEncounter);
