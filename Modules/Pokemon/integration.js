@@ -463,22 +463,20 @@ const addItem = async (msg, item) => {
         return;
     }
 
-    var items = player.items;
+    var itens = player.itens;
 
-    thisItem = items.find(x => x.internalinternalName == item.internalName);
+    thisItem = itens.find(x => x.internalinternalName == item.internalName);
     if (thisItem) {
         thisItem.amount++;
     } else {
-        items.push({ ...item, amount: 1});
+        itens.push({ ...item, amount: 1});
     }
 
     var ret = await PokemonPlayerDB.updateOne({
         id: msg.author
     },{
-        items
+        itens
     });
-
-    console.log(ret);
     return ret;
 }
 
