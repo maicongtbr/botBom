@@ -414,7 +414,7 @@ const buyItem = async (msg) => {
     });
 
     if (!player || player.coins <= price) {
-        msg.reply("Você já tem um inicial!");
+        msg.reply(`Você não tem ${price} BomCoins para comprar o item ${name}`);
         return;
     }
 }
