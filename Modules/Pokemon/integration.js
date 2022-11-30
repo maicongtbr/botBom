@@ -28,6 +28,10 @@ const tryCatch = async (msg) => {
         return;
     }
 
+    if(!player) {
+        return;
+    }
+
     var splited = msg.body.split(" ");
     var pokeName = splited[1];
 
@@ -75,6 +79,10 @@ const tryCatch = async (msg) => {
 }
 
 const addPokemonToPlayer = (msg, pokemon, isStarter) => {
+    if(!msg.author) {
+        return;
+    }
+
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
         PokemonPlayerDB.findOne({
             id: msg.author
@@ -451,6 +459,10 @@ const addItem = async (msg, item) => {
         id: msg.author
     });
 
+    if(!player) {
+        return;
+    }
+
     var items = player.items;
 
     thisItem = items.find(x => x.internalinternalName == item.internalName);
@@ -505,6 +517,10 @@ const onMessage = async (msg) => {
         var player = await PokemonPlayerDB.findOne({
             id: msg.author
         });
+
+        if(!player) {
+            return;
+        }
 
         if(player && !player.playing) {
             return;
