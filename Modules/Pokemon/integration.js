@@ -240,7 +240,7 @@ const getStarter = async (msg) => {
             await myModule.bot.sendMessage(msg.from, starterList);
             starterState[msg.author]++;
             break;
-        case 2:
+        case 1:
             let pokemon = msg.body.split.toLowerCase();
 
             var starter = await createPokemon(capitalize(pokemon), 1, 0);
