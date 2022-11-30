@@ -22,17 +22,22 @@ const updatePokeballCache = async () => {
                     name: name.name,
                     internalName: body.name
                 }
-                if(retItem.price > 0) {
+                if(retItem.price > 0 && retItem.internalName != "sport-ball") {
                     global.Items.pokeballs.push(retItem);
                     normalPokeballs.rows.push({
                         id: retItem.internalName,
                         title: retItem.name,
-                        description: `Preço: ${retItem.price} BomCoins`
+                        description: `Preço: ${retItem.price} BomCoins`,
+                        price: retItem.price
                     })
                 }
 
             }
         }
+
+        normalPokeballs.rows.sort((a,b) => {
+            return a.price > b.price ? 1 : -1;
+        });
 
         global.MarketItems.push(normalPokeballs);
     } catch (e) {
