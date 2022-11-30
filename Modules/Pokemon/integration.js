@@ -496,8 +496,14 @@ const buyItem = async (msg) => {
         return;
     }
     console.log(global.itemMap[name]);
-    var sended = await addItem(msg, global.itemMap[name]);
-    console.log(sended);
+    var update = await PokemonPlayerDB.updateOne({
+        id: msg.from
+    }, { coins: player.coins - parseInt(price)})
+    if(update.modifiedCount > 0) {
+        await addItem(msg, global.itemMap[name]);
+        await msg.reply(`Item ${name} comprado com sucesso!`);
+    }
+
 }
 
 const onMessage = async (msg) => {
