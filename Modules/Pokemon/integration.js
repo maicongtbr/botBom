@@ -319,11 +319,16 @@ var commands = [
         havePokemon[id] = false;
         await getPokemon(msg);
     }},
-    { name: "!compraritems", callback: async (msg) => {
+    { name: "!pokemarket", callback: async (msg) => {
         var chat = await msg.getChat();
         if(chat.isGroup) return;
         marketState[msg.author] = 1;
-        getMarket(msg);
+        var buttons = new Buttons("Bem-vindo ao Mercado Pokémon",
+        [
+            { buttonId:'1',buttonText:{'displayText':'Comprar Items'},type: 1 },
+            { buttonId:'2',buttonText:{'displayText':'Vender Items (em breve)'},type: 1 },
+        ])
+        msg.reply(buttons);
     }},
     { name: "!pokeitems", callback: async (msg) => getMyItems(msg)}
 ]
@@ -493,6 +498,7 @@ const buyItem = async (msg) => {
     if (!player || player.coins < parseInt(price)) {
         msg.reply(`Você não tem ${price} BomCoins para comprar o item ${name}`);
         console.log(player.coins, player, msg.from);
+        marketState[msg.from] = 0;
         return;
     }
     console.log(global.itemMap[name]);
@@ -500,6 +506,7 @@ const buyItem = async (msg) => {
         id: msg.from
     }, { coins: player.coins - parseInt(price)})
     if(update.modifiedCount > 0) {
+        marketState[msg.from] = 0;
         await addItem(msg, global.itemMap[name]);
         await msg.reply(`Item ${name} comprado com sucesso!`);
     }
@@ -511,8 +518,17 @@ const onMessage = async (msg) => {
         if(msg.type == MessageTypes.LIST_RESPONSE) {
             if(starterState[msg.author]) {
                 return getStarter(msg);
-            }else if(marketState[msg.author]) {
+            }else if(marketState[msg.from]) {
                 return buyItem(msg);
+            }
+        } else if (msg.type == MessageTypes.BUTTONS_RESPONSE) {
+            if(marketState[msg.from]) {
+                if(msg.body == "Comprar Items") {
+                    marketState[msg.from]++
+                    getMarket(msg);
+                } else {
+                    msg.reply("Feature em construção");
+                }
             }
         }
 
