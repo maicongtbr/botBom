@@ -18,7 +18,7 @@ const getMarket = async (msg) => {
         global.MarketItems
     )
 
-    msg.reply(list);
+    await msg.reply(list);
 }
 
 

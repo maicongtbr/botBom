@@ -527,7 +527,7 @@ const onMessage = async (msg) => {
                 if(msg.body == "Comprar Items") {
                     console.log("comprar em");
                     marketState[msg.from]++
-                    getMarket(msg);
+                    await getMarket(msg);
                 } else {
                     marketState[msg.from]++
                     await msg.reply("Feature em construção");
