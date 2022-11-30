@@ -532,7 +532,7 @@ const onMessage = async (msg) => {
                         "Pokébom Market"
                     )
 
-                    await msg.send(msg.from, list);
+                    await myBot.bot.sendMessage(msg.from, list);
                     marketState[msg.from]++
                 } else {
                     marketState[msg.from]++
