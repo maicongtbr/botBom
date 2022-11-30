@@ -20,7 +20,8 @@ const updatePokeballCache = async () => {
                 let retItem = {
                     price: body.cost,
                     name: name.name,
-                    internalName: body.name
+                    internalName: body.name,
+                    type: "Pokébola"
                 }
                 if(retItem.price > 0 && retItem.internalName != "sport-ball") {
                     global.Items.pokeballs.push(retItem);
@@ -30,6 +31,8 @@ const updatePokeballCache = async () => {
                         description: `Preço: ${retItem.price} BomCoins`,
                         price: retItem.price
                     })
+
+                    global.itemMap[name.name] = retItem;
                 }
 
             }

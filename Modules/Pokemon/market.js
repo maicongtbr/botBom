@@ -5,6 +5,7 @@ global.MarketItems = [];
 global.Items = {
     pokeballs: []
 }
+global.itemMap = [];
 
 const updateMarket = async () => {
     await updatePokeballCache();

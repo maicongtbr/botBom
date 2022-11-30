@@ -13,6 +13,7 @@ const webp = require('webp-converter');
 const fs = require('fs');
 const download = require('image-downloader');
 const { getMarket } = require("./market");
+const { title } = require("process");
 
 
 
@@ -315,7 +316,8 @@ var commands = [
         if(chat.isGroup) return;
         marketState[msg.author] = 1;
         getMarket(msg);
-    }}
+    }},
+    { name: "!pokeitems", callback: async (msg) => getMyItems}
 ]
 
 var commandsMap = new Map();
@@ -403,6 +405,71 @@ const pokeGroups = [
     "bot test chamber"
 ]
 
+// {
+//     title: "Pokébolas",
+//     rows: []
+// }
+
+const getMyItems = async(msg) => {
+    var spec = [];
+    var list = new List("Sua Mochila", "Abrir Mochila", spec);
+
+    var PokemonPlayerDB = db.getModel("PokemonPlayer");
+    var player = await PokemonPlayerDB.findOne({
+        id: msg.author
+    });
+
+    if(!player || player.items.length <= 0) {
+        msg.reply("Você não tem nenhum item");
+        return;
+    }
+
+    for (item of player.items) {
+        var _spec = spec.find(x => x.title == item.type);
+        if(!spec) {
+            _spec = {
+                title: item.type,
+                rows: []
+            }
+
+            _spec.rows.push({title: item.name, description: `Quantidade: ${title.amount}`});
+            spec.push(_spec);
+            continue;
+        }
+        _spec.rows.push({title: item.name, description: `Quantidade: ${title.amount}`});
+    }
+
+    msg.reply(list);
+}
+
+const addItem = async (msg, item) => {
+    if(!item) {
+        return;
+    }
+    var PokemonPlayerDB = db.getModel("PokemonPlayer");
+    var player = await PokemonPlayerDB.findOne({
+        id: msg.author
+    });
+
+    var items = player.items;
+
+    thisItem = items.find(x => x.internalinternalName == item.internalName);
+    if (thisItem) {
+        thisItem.amount++;
+    } else {
+        items.push({ ...item, amount: 1});
+    }
+
+    var ret = await PokemonPlayerDB.updateOne({
+        id: msg.author
+    },{
+        items
+    });
+
+    console.log(ret);
+    return ret;
+}
+
 const buyItem = async (msg) => {
     var args = msg.body.split("\nPreço: ")
     var name = args[0];
@@ -417,6 +484,7 @@ const buyItem = async (msg) => {
         msg.reply(`Você não tem ${price} BomCoins para comprar o item ${name}`);
         return;
     }
+    await addItem(msg, global.itemMap[name]);
 }
 
 const onMessage = async (msg) => {
