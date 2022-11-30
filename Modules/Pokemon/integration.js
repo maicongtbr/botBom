@@ -241,7 +241,7 @@ const getStarter = async (msg) => {
             starterState[msg.author]++;
             break;
         case 1:
-            let pokemon = msg.body.split.toLowerCase();
+            let pokemon = msg.body.toLowerCase();
 
             var starter = await createPokemon(capitalize(pokemon), 1, 0);
             if(typeof(starter) == "string") {
