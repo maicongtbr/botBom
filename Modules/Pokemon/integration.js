@@ -1,7 +1,7 @@
 const {Module} = require("../mod");
 const { getRandomIntRange, Storage, getStorage, getStorageValue, userIsAdmin } = require("../../libs");
 const { getEncounter } = require("./encounter");
-const { MessageMedia, Buttons, List } = require("whatsapp-web.js");
+const { MessageMedia, Buttons, List, MessageTypes } = require("whatsapp-web.js");
 const db = require("../../database");
 const { PlayerPokemon, createPokemon } = require("./classes");
 const superagent = require("superagent");
@@ -170,16 +170,55 @@ const showBox = (msg) => {
     })
 }
 
-const starters = {
-    kanto: [ "Charmander", "Squirtle", "Bulbasaur", "Voltar" ],
-    johto: [ "Cyndaquil", "Totodile", "Chicorita", "Voltar" ],
-    hoenn: [ "Torchic", "Mudkip", "Treecko", "Voltar" ],
-    sinnoh: [ "Chimchar", "Piplup", "Turtwig", "Voltar" ],
-}
+const starterList =  new List(
+    "Escolhe seu Pokémon Inicial",
+    "Ver todos Iniciais",
+    [
+      {
+        title: "Kanto",
+        rows: [
+          { id: "Charmander", title: "Charmander" },
+          { id: "Squirtle", title: "Squirtle" },
+          { id: "Bulbasaur", title: "Bulbasaur" },
+        ],
+      },
+      {
+        title: "Johto",
+        rows: [
+          { id: "Cyndaquil", title: "Cyndaquil" },
+          { id: "Totodile", title: "Totodile" },
+          { id: "Chikorita", title: "Chikorita" },
+        ],
+      },
+      {
+        title: "Hoenn",
+        rows: [
+          { id: "Torchic", title: "Torchic" },
+          { id: "Mudkip", title: "Mudkip" },
+          { id: "Treecko", title: "Treecko" },
+        ],
+      },
+      {
+        title: "Sinnoh",
+        rows: [
+          { id: "Chimchar", title: "Chimchar" },
+          { id: "Piplup", title: "Piplup" },
+          { id: "Turtwig", title: "Turtwig" },
+        ],
+      },
+      {
+        title: "Unova",
+        rows: [
+          { id: "Oshawott", title: "Oshawott" },
+          { id: "Tepig", title: "Tepig" },
+          { id: "Snivy", title: "Snivy" },
+        ],
+      },
+    ]
+  );
 
-const enabledRegions = [ "Kanto", "Johto", "Hoenn", "Sinnoh" ]
 
-const state = [];
+const starterState = [];
 
 const getStarter = async (msg) => {
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
@@ -191,63 +230,30 @@ const getStarter = async (msg) => {
         return;
     }
 
-    if(!state[msg.author]) {
-        state[msg.author] = 0;
+    if(!starterState[msg.author]) {
+        starterState[msg.author] = 0;
     }
 
-    switch(state[msg.author]) {
+    switch(starterState[msg.author]) {
         case 0:
-            let buttons = [];
-            enabledRegions.forEach(e => {
-                buttons.push({
-                    buttonId: e,
-                    type: 1,
-                    body: "!inicial "+e
-                })
-            })
-            let button = new Buttons('Escolha sua região!', buttons);
-            await myModule.bot.sendMessage(msg.from, button);
-            state[msg.author]++;
-            break;
-        case 1:
-            var splited = msg.body.split(" ");
-            var region = splited[1] && splited[1].toLowerCase();
-            if(!region) {
-                state[msg.author]--;
-                return getStarter(msg);
-            }
-            if(!starters[region]) return;
-            let _buttons = [];
-            starters[region].forEach(e => {
-                _buttons.push({
-                    buttonId: e,
-                    type: 1,
-                    body: "!inicial "+e
-                })
-            })
-            let _button = new Buttons('Escolha seu inicial!', _buttons);
-            state[msg.author]++;
-            await myModule.bot.sendMessage(msg.from, _button);
+
+            await myModule.bot.sendMessage(msg.from, starterList);
+            starterState[msg.author]++;
             break;
         case 2:
-            let _splited = msg.body.split(" ");
-            let pokemon = _splited[1] && _splited[1].toLowerCase();
-            if(pokemon == "Voltar") {
-                state[msg.author]--;
-                return getStarter(msg);
-            }
+            let pokemon = msg.body.split.toLowerCase();
 
             var starter = await createPokemon(capitalize(pokemon), 1, 0);
             if(typeof(starter) == "string") {
                 msg.reply(starter);
-                state[msg.author]--;
+                starterState[msg.author]--;
                 return;
             }
             
             addPokemonToPlayer(msg, starter, true);
             myModule.bot.sendMessage(msg.from, `Você escolheu o inicial ${capitalize(pokemon)}.`);
 
-            state[msg.author]++;
+            starterState[msg.author]++;
             break;
         default:
             msg.reply(`Opção inválida.`);
@@ -413,6 +419,12 @@ const pokeGroups = [
 
 const onMessage = async (msg) => {
     try {
+        if(msg.type == MessageTypes.LIST_RESPONSE) {
+            if(starterState[msg.author]) {
+                return getStarter(msg);
+            }
+        }
+
         if(!myModule.enabled){
             return;
         }
