@@ -507,6 +507,15 @@ const textToSpeach = (msg, bot) => {
     tts(msg.body.slice(4), msg, bot);
 }
 
+const update = async (msg) => {
+    const { exec } = require("child_process");
+    if(!userIsAdmin(await msg.getChat(), msg.authorId)) return;
+    exec("git pull", (err) => {
+        if(err) console.warn(err);
+    })
+}
+
+
 const commands = [
     { name: '!ban', callback: (msg, bot) => banMember(msg, bot)},
     { name: '!up', callback: (msg, bot) => promoteMember(msg, bot)},
@@ -520,7 +529,8 @@ const commands = [
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
     { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)},
     { name: '!comandos', callback: (msg, bot) => commandList(msg, bot)},
-    { name: '!roleta', callback: (msg, bot) => roletaRussa(msg, bot)}
+    { name: '!roleta', callback: (msg, bot) => roletaRussa(msg, bot)},
+    { name: "!update", callback: (msg) => update(msg) }
 ]
 
 const trigger = [
