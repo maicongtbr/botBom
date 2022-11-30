@@ -325,7 +325,7 @@ var commands = [
         marketState[msg.author] = 1;
         getMarket(msg);
     }},
-    { name: "!pokeitems", callback: async (msg) => getMyItems}
+    { name: "!pokeitems", callback: async (msg) => getMyItems(msg)}
 ]
 
 var commandsMap = new Map();
