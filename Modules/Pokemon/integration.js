@@ -171,7 +171,7 @@ const showBox = (msg) => {
 }
 
 const starterList =  new List(
-    MessageMedia.fromFilePath("/home/life4gamming2/bot-aop/Modules/Pokemon/iconTest.png"),
+    "Escolhe seu Pokémon Inicial",
     "Ver todos Iniciais",
     [
       {
