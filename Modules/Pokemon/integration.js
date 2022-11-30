@@ -406,6 +406,11 @@ const getPokemon = async (msg, private) => {
 
 }
 
+const pokeGroups = [
+    "Aldeia Oculta dos Patos",
+    "bot test chamber"
+]
+
 const onMessage = async (msg) => {
     try {
         if(!myModule.enabled){
@@ -427,6 +432,11 @@ const onMessage = async (msg) => {
         var chat = await msg.getChat();
         let ep = encounterPercentage;
         if(!chat.isGroup || chat.name == "bot test chamber") ep = 999999; /// lock pra test chamber
+
+        if(!pokeGroups.find(x => x == chat.name)) {
+            return;
+        }
+    
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         var id = msg.from ? msg.from : msg.chatId;
 

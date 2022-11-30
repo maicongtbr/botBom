@@ -10,20 +10,32 @@ const pokemonBadgeParam = [ //coordenadas de encaixa dos Icons (x, y)
 ];
 const backgroundYParam = [10, 34, 58, 82, 106, 130]; //x = 87
 
-const font = await jimp.loadFont(Jimp.FONT_SANS_32_BLACK); //alterar a fonte depois
-const backgroundTemplate = jimp.read('./background.png'); //background file
-const badgeTemplate = await jimp.read('./pokeBadge.png');
-const partyIcons = [ ];
+//SOCORRO NÃO CONSIGO USAR AWAIT EM TOP LEVEL E NÃO QUERO ENCHER ESSA PORRA DE .THEN
 
-const pokeTest = {
+const font = (async () => {
+    await jimp.loadFont(jimp.FONT_SANS_32_BLACK);
+})(); //alterar a fonte depois
+(async () => {
+    const backgroundTemplate = await jimp.read('./background.png');
+    console.log('\n\n\nkek\n\n\n');
+})(); //background file
+(async () => {
+    await jimp.read('./pokeBadge.png');
+})();
+const partyIcons = (async () => {
+    await jimp.read('./iconTest.png');
+})();
+var pokebadges = [ ];
+
+const pokeTest = [
     {
         name: 'Mamaico',
         level: 24,
-        icon: await jimp.read('./iconTest.png'),
+        icon: partyIcons,
         hp: 5,
         hpMax: 20,
     },
-}
+]
 
 const getIcons = async (pokeParty) => {
     for (e in pokeParty) {
@@ -32,7 +44,6 @@ const getIcons = async (pokeParty) => {
 }
 
 const createPokeBadge = async (pokeParty) => { 
-    var pokebadges = [ ];
     for (e in pokeParty) {
         for (i = 0; i >= pokemonBadgeParam.lenght; i++) {
             let pokeBadge = badgeTemplate;
@@ -64,6 +75,7 @@ const createPokeBadge = async (pokeParty) => {
 
 const blitBadgeinBackground = async () => {
     var background = backgroundTemplate;
+
     for (i = 0; i >= pokebadges[i]; i++) {
         background = await background.blit(pokebadges[i], 87, backgroundYParam[i]);
     }
@@ -71,3 +83,6 @@ const blitBadgeinBackground = async () => {
 }
 
 createPokeBadge(pokeTest)
+blitBadgeinBackground()
+
+module.exports = {};
