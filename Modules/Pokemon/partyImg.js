@@ -11,17 +11,17 @@ const pokemonBadgeParam = [ //coordenadas de encaixa dos Icons (x, y)
 const backgroundYParam = [10, 34, 58, 82, 106, 130]; //x = 87
 
 //SOCORRO ESQUECI QUE NÃO CONSIGO USAR AWAIT EM TOP LEVEL E NÃO QUERO ENCHER ESSA PORRA DE .THEN
-
 const font = (async () => {
-    await jimp.loadFont(jimp.FONT_SANS_32_BLACK);
+    return await jimp.loadFont(jimp.FONT_SANS_32_BLACK);
 })(); //alterar a fonte depois
-(async () => {
-    const backgroundTemplate = await jimp.read('./background.png');
-    console.log('\n\n\nkek\n\n\n');
+const backgroundTemplate = (async () => {
+    return await jimp.read('./background.png');
 })(); //background file
+
 (async () => {
     await jimp.read('./pokeBadge.png');
 })();
+
 const partyIcons = (async () => {
     await jimp.read('./iconTest.png');
 })();
@@ -75,6 +75,7 @@ const createPokeBadge = async (pokeParty) => {
 
 const blitBadgeinBackground = async () => {
     var background = backgroundTemplate;
+    console.log(backgroundTemplate);
 
     for (i = 0; i >= pokebadges[i]; i++) {
         background = await background.blit(pokebadges[i], 87, backgroundYParam[i]);

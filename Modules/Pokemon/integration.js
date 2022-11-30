@@ -216,7 +216,7 @@ const starterList =  new List(
         ],
       },
     ]
-  );
+);
 
 
 const starterState = [];
@@ -254,7 +254,7 @@ const getStarter = async (msg) => {
             addPokemonToPlayer(msg, starter, true);
             myModule.bot.sendMessage(msg.from, `Você escolheu o inicial ${capitalize(pokemon)}.`);
 
-            starterState[msg.author]++;
+            starterState[msg.author] = 0;
             break;
         default:
             msg.reply(`Opção inválida.`);
@@ -291,6 +291,8 @@ const changeSpawnRate = async (msg) => {
 
 }
 
+const marketState = [];
+
 var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
     { name:'!pokemon', callback: (msg) => showPokemon(msg) },
@@ -308,7 +310,12 @@ var commands = [
         havePokemon[id] = false;
         await getPokemon(msg);
     }},
-    { name: "!compraritems", callback: (msg) => getMarket(msg) }
+    { name: "!compraritems", callback: async (msg) => {
+        var chat = await msg.getChat();
+        if(!chat.isGroup) return;
+        marketState[msg.author] = 1;
+        getMarket(msg);
+    }}
 ]
 
 var commandsMap = new Map();
@@ -389,11 +396,6 @@ const getPokemon = async (msg, private) => {
         });
     })
 
-    
-    
-
-    
-
 }
 
 const pokeGroups = [
@@ -406,6 +408,8 @@ const onMessage = async (msg) => {
         if(msg.type == MessageTypes.LIST_RESPONSE) {
             if(starterState[msg.author]) {
                 return getStarter(msg);
+            } else if(marketState[msg.author]) {
+                return buyItem(msg);
             }
         }
 
