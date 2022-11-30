@@ -83,6 +83,11 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
         return;
     }
 
+    if (isStarter) {
+        var items = { ... global.itemMap["Poké Ball"], amount: 10};
+        addItem(msg, items);
+    }
+
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
         PokemonPlayerDB.findOne({
             id: msg.author
@@ -423,6 +428,10 @@ const pokeGroups = [
 //     rows: []
 // }
 
+const giveMoneyToPlayer = async (msg, amount) => {
+
+}
+
 const getMyItems = async(msg) => {
     var spec = [];
     var list = new List("Sua Mochila", "Abrir Mochila", spec);
@@ -474,7 +483,8 @@ const addItem = async (msg, item) => {
     if (thisItem) {
         thisItem.amount++;
     } else {
-        itens.push({ ...item, amount: 1});
+        amount = item.amount || 1;
+        itens.push({ ...item, amount});
     }
 
     var ret = await PokemonPlayerDB.updateOne({
@@ -497,11 +507,9 @@ const buyItem = async (msg) => {
 
     if (!player || player.coins < parseInt(price)) {
         msg.reply(`Você não tem ${price} BomCoins para comprar o item ${name}`);
-        console.log(player.coins, player, msg.from);
         marketState[msg.from] = 0;
         return;
     }
-    console.log(global.itemMap[name]);
     var update = await PokemonPlayerDB.updateOne({
         id: msg.from
     }, { coins: player.coins - parseInt(price)})
