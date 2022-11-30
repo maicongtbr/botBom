@@ -404,7 +404,7 @@ const pokeGroups = [
 ]
 
 const buyItem = async (msg) => {
-    var args = msg.split("\nPreço: ")
+    var args = msg.body.split("\nPreço: ")
     var name = args[0];
     var price = args[1].split(" ")[0];
     console.log(args, name);
