@@ -484,7 +484,14 @@ const commandList = (msg, bot) => {
                 title: "Comandos do PokéBom",
                 rows: [
                     { id: "capturar", title: "!capturar [nome do Pokémon]", description: "Tenta capturar um pokemón."},
-                    { id: "pokemon", title: "!pokebom", description: "Retorna o level do membro marcado."},
+                    { id: "pokemon", title: "!pokebom", description: "Retorna sua party de Pokémon."},
+                    { id: "boxpokemon", title: "!boxpokemon", description: "Retorna sua box de Pokémon."},
+                    { id: "inicial", title: "!inicial", description: "Para escolher seu Pokémon inicial."},
+                    { id: "pokedex", title: "!pokedex [nome do Pokémon]", description: "Retorna as informações da Pokédex do Pokémon citado."},
+                    { id: "pokestop", title: "!pokestop", description: "Ativar ou desativar o módulo do PokéBom."},
+                    { id: "pokespawnrate", title: "!pokespawnrate [%]", description: "Alterar a chance de aparição de Pokémon."},
+                    { id: "pokesummon", title: "!pokesummon", description: "Forçar a aparição de Pokémon."},
+                    { id: "compraritens", title: "!compraritens", description: "Abrir a loja para compra de ítens."},
                 ]
             }
         ],

@@ -15,7 +15,7 @@ const getPokedex = async (msg) => {
     try {
 
         pokeName = pokeName.toLowerCase();
-        var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName.toLowerCase()}/`);
+        var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName}/`);
         var speciesBody = speciesInfo._body;
         var pokeInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon/${speciesBody.id}/`);
         if(!pokeInfo) {
