@@ -455,6 +455,34 @@ const roletaRussa = async (msg, bot) => {
 }
 
 const commandList = (msg, bot) => {
+    const _commandList = new List(
+        "Esta é a lista de comandos do Bot Bom.",
+        "Lista de comandos",
+        [
+          {
+            title: "Comandos gerais",
+            rows: [
+              { id: "sticker", title: "!s", description: "Cria uma figurinha a partir da imagem enviada ou mencionada." },
+              { id: "img", title: "!img [palavra para pesquisar]", description: "Pesquisa uma imagem e retorna ela."},
+              { id: "encaminhado", title: "!encaminhado", description: "Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada."},
+              { id: "gratis", title: "!gratis", description: "Retorna os jogos grátis na Epic Games da semana atual e da próxima."},
+              { id: "tabela", title: "!tabela", description: "Retorna a tabela atualizada do Brasileirão Serie A."},
+              { id: "level", title: "!level", description: "Retorna seu level no grupo atual (Se enviado no PV do bot, retorna seu level em todos os grupos que o bot participa)."},
+              { id: "ranking", title: "!ranking", description: "Retorna o Top 10 do grupo."}
+            ],
+          },
+          {
+            title: "Comandos de Administrador",
+            rows: [
+              { id: "ban", title: "!ban [membro]", description: "Bane o membro marcado ou da mensagem mencionada."},
+              { id: "up", title: "!up [membro]", description: "Remove o membro marcado ou da mensagem mencionada."},
+              { id: "down", title: "!down [membro]", description: "Rebaixa o membro marcado ou da mensagem mencionada."},
+              { id: "level", title: "!level [membro]", description: "Retorna o level do membro marcado."},
+            ]
+          }
+        ],
+        "Comandos"
+      );
     const userCommandsList = [
         '🔹*!s* ➡ Cria uma figurinha a partir da imagem enviada ou mencionada.',
         '*!img* [palavra para pesquisar] ➡ Pesquisa uma imagem e retorna ela.',
@@ -466,12 +494,12 @@ const commandList = (msg, bot) => {
     ]
     const adminCommandsList = [
         '🔹*!ban* [membro] ➡ Bane o membro marcado ou da mensagem mencionada.',
-        '*!up* [membro] ➡ Promove o membro marcado ou da mensagem mencionada.',
+        '*!up* [membro] ➡ romove o membrPo marcado ou da mensagem mencionada.',
         '*!down* [membro] ➡ Rebaixa o membro marcado ou da mensagem mencionada.',
         '*!level* [membro] ➡ Retorna o level do membro marcado.'
     ]
 
-    bot.sendMessage(msg.from, `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n📄*Lista de comandos para Admin:* \n${adminCommandsList.join('\n🔹')}` );
+    bot.sendMessage(msg.from, _commandList );
 }
 
 const textToSpeach = (msg, bot) => {
