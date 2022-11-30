@@ -313,7 +313,7 @@ var commands = [
     { name: "!compraritems", callback: async (msg) => {
         var chat = await msg.getChat();
         if(chat.isGroup) return;
-        marketState[msg.author] = 1;
+        marketState[msg.author] = 0;
         getMarket(msg);
     }}
 ]
@@ -407,7 +407,7 @@ const buyItem = async (msg) => {
     var args = msg.body.split("\nPreço: ")
     var name = args[0];
     var price = args[1].split(" ")[0];
-    console.log(args, name);
+    console.log(price, name);
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     var player = await PokemonPlayerDB.findOne({
         id: msg.author
@@ -424,7 +424,8 @@ const onMessage = async (msg) => {
         if(msg.type == MessageTypes.LIST_RESPONSE) {
             if(starterState[msg.author]) {
                 return getStarter(msg);
-            } else if(marketState[msg.author]) {
+            }
+            if(marketState[msg.author]) {
                 return buyItem(msg);
             }
         }
