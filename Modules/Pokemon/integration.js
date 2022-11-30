@@ -482,7 +482,7 @@ const buyItem = async (msg) => {
 
     if (!player || player.coins < parseInt(price)) {
         msg.reply(`Você não tem ${price} BomCoins para comprar o item ${name}`);
-        console.log(player.coins);
+        console.log(player.coins, player, msg.author);
         return;
     }
     await addItem(msg, global.itemMap[name]);
