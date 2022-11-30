@@ -12,13 +12,7 @@ const updateMarket = async () => {
 }
 
 const getMarket = async (msg) => {
-    var list = new List(
-        "Seja bem-vindo ao Mercado Pokémon!\nClique abaixo para Comprar Items!",
-        "Comprar Itens",
-        global.MarketItems
-    )
 
-    await msg.reply(list);
 }
 
 
