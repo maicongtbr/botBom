@@ -312,7 +312,7 @@ var commands = [
     }},
     { name: "!compraritems", callback: async (msg) => {
         var chat = await msg.getChat();
-        if(!chat.isGroup) return;
+        if(chat.isGroup) return;
         marketState[msg.author] = 1;
         getMarket(msg);
     }}
