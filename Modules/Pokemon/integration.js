@@ -495,7 +495,8 @@ const buyItem = async (msg) => {
         console.log(player.coins, player, msg.from);
         return;
     }
-    await addItem(msg, global.itemMap[name]);
+    var sended = await addItem(msg, global.itemMap[name]);
+    console.log(sended);
 }
 
 const onMessage = async (msg) => {
