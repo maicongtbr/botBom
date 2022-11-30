@@ -10,7 +10,7 @@ const pokemonBadgeParam = [ //coordenadas de encaixa dos Icons (x, y)
 ];
 const backgroundYParam = [10, 34, 58, 82, 106, 130]; //x = 87
 
-//SOCORRO NÃO CONSIGO USAR AWAIT EM TOP LEVEL E NÃO QUERO ENCHER ESSA PORRA DE .THEN
+//SOCORRO ESQUECI QUE NÃO CONSIGO USAR AWAIT EM TOP LEVEL E NÃO QUERO ENCHER ESSA PORRA DE .THEN
 
 const font = (async () => {
     await jimp.loadFont(jimp.FONT_SANS_32_BLACK);
