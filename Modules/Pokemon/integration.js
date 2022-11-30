@@ -322,7 +322,7 @@ var commands = [
     { name: "!pokemarket", callback: async (msg) => {
         var chat = await msg.getChat();
         if(chat.isGroup) return;
-        marketState[msg.author] = 1;
+        marketState[msg.from] = 1;
         var buttons = new Buttons("Bem-vindo ao Mercado Pokémon",
         [
             { buttonId:'1',body:'Comprar Items',type: 1 },
