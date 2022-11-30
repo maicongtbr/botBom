@@ -456,7 +456,7 @@ const addItem = async (msg, item) => {
     }
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     var player = await PokemonPlayerDB.findOne({
-        id: msg.author
+        id: msg.author || msg.from
     });
 
     if(!player) {
@@ -473,7 +473,7 @@ const addItem = async (msg, item) => {
     }
 
     var ret = await PokemonPlayerDB.updateOne({
-        id: msg.author
+        id: msg.author || msg.from
     },{
         itens
     });
