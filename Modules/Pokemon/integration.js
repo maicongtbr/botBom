@@ -13,7 +13,6 @@ const webp = require('webp-converter');
 const fs = require('fs');
 const download = require('image-downloader');
 const { getMarket } = require("./market");
-const { title } = require("process");
 
 
 
@@ -25,10 +24,6 @@ const tryCatch = async (msg) => {
 
     if(player && !player.playing) {
         await msg.reply("Você não está jogando, comece a jogar com !inicial");
-        return;
-    }
-
-    if(!player) {
         return;
     }
 
@@ -79,15 +74,6 @@ const tryCatch = async (msg) => {
 }
 
 const addPokemonToPlayer = (msg, pokemon, isStarter) => {
-    if(!msg.author) {
-        return;
-    }
-
-    if (isStarter) {
-        var items = { ... global.itemMap["Poké Ball"], amount: 10};
-        addItem(msg, items);
-    }
-
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
         PokemonPlayerDB.findOne({
             id: msg.author
@@ -230,7 +216,7 @@ const starterList =  new List(
         ],
       },
     ]
-);
+  );
 
 
 const starterState = [];
@@ -268,7 +254,7 @@ const getStarter = async (msg) => {
             addPokemonToPlayer(msg, starter, true);
             myModule.bot.sendMessage(msg.from, `Você escolheu o inicial ${capitalize(pokemon)}.`);
 
-            starterState[msg.author] = 0;
+            starterState[msg.author]++;
             break;
         default:
             msg.reply(`Opção inválida.`);
@@ -286,7 +272,8 @@ const stopModule = async (msg) => {
     msg.reply("O estado do PokéModule está " + myModule.enabled ? "Ativado" : "Desativado")
 }
 
-const changeSpawnRate = async (msg) => {
+const 
+changeSpawnRate = async (msg) => {
     if (!userIsAdmin(await msg.getChat(), msg.author)) {
         msg.reply("Somente Admins.");
         return;
@@ -305,8 +292,6 @@ const changeSpawnRate = async (msg) => {
 
 }
 
-const marketState = [];
-
 var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
     { name:'!pokemon', callback: (msg) => showPokemon(msg) },
@@ -324,18 +309,7 @@ var commands = [
         havePokemon[id] = false;
         await getPokemon(msg);
     }},
-    { name: "!pokemarket", callback: async (msg) => {
-        var chat = await msg.getChat();
-        if(chat.isGroup) return;
-        marketState[msg.from] = 1;
-        var buttons = new Buttons("Bem-vindo ao Mercado Pokémon",
-        [
-            { buttonId:'1',body:'Comprar Items',type: 1 },
-            { buttonId:'2',body:"Vender Items (em breve)",type: 1 },
-        ])
-        msg.reply(buttons);
-    }},
-    { name: "!pokeitems", callback: async (msg) => getMyItems(msg)}
+    { name: "!compraritems", callback: (msg) => getMarket(msg) }
 ]
 
 var commandsMap = new Map();
@@ -403,7 +377,7 @@ const getPokemon = async (msg, private) => {
             await bot.sendMessage(id, pokemonGif, {
                 sendMediaAsSticker:true
             });
-            await bot.sendMessage(id, "O *primeiro* a acerter o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!");
+            await bot.sendMessage(id, "O *primeiro* a acertar o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!");
             fs.unlink(imgName, (err) => {
                 if (!err) return;
                 console.log(err)
@@ -416,6 +390,11 @@ const getPokemon = async (msg, private) => {
         });
     })
 
+    
+    
+
+    
+
 }
 
 const pokeGroups = [
@@ -423,129 +402,11 @@ const pokeGroups = [
     "bot test chamber"
 ]
 
-// {
-//     title: "Pokébolas",
-//     rows: []
-// }
-
-const giveMoneyToPlayer = async (msg, amount) => {
-
-}
-
-const getMyItems = async(msg) => {
-    var spec = [];
-    var list = new List("Sua Mochila", "Abrir Mochila", spec);
-
-    var PokemonPlayerDB = db.getModel("PokemonPlayer");
-    var player = await PokemonPlayerDB.findOne({
-        id: msg.author
-    });
-
-    if(!player || player.items.length <= 0) {
-        msg.reply("Você não tem nenhum item");
-        return;
-    }
-
-    for (item of player.items) {
-        var _spec = spec.find(x => x.title == item.type);
-        if(!spec) {
-            _spec = {
-                title: item.type,
-                rows: []
-            }
-
-            _spec.rows.push({title: item.name, description: `Quantidade: ${title.amount}`});
-            spec.push(_spec);
-            continue;
-        }
-        _spec.rows.push({title: item.name, description: `Quantidade: ${title.amount}`});
-    }
-
-    msg.reply(list);
-}
-
-const addItem = async (msg, item) => {
-    if(!item) {
-        return;
-    }
-    var PokemonPlayerDB = db.getModel("PokemonPlayer");
-    var player = await PokemonPlayerDB.findOne({
-        id: msg.author || msg.from
-    });
-
-    if(!player) {
-        return;
-    }
-
-    var itens = player.itens;
-
-    thisItem = itens.find(x => x.internalName == item.internalName);
-    if (thisItem) {
-        thisItem.amount++;
-    } else {
-        amount = item.amount || 1;
-        itens.push({ ...item, amount});
-    }
-
-    var ret = await PokemonPlayerDB.updateOne({
-        id: msg.author || msg.from
-    },{
-        itens
-    });
-    return ret;
-}
-
-const buyItem = async (msg) => {
-    var args = msg.body.split("\nPreço: ")
-    var name = args[0];
-    var price = args[1].split(" ")[0];
-    console.log(price, name);
-    var PokemonPlayerDB = db.getModel("PokemonPlayer");
-    var player = await PokemonPlayerDB.findOne({
-        id: msg.from
-    });
-
-    if (!player || player.coins < parseInt(price)) {
-        msg.reply(`Você não tem ${price} BomCoins para comprar o item ${name}`);
-        marketState[msg.from] = 0;
-        return;
-    }
-    var update = await PokemonPlayerDB.updateOne({
-        id: msg.from
-    }, { coins: player.coins - parseInt(price)})
-    if(update.modifiedCount > 0) {
-        marketState[msg.from] = 0;
-        await addItem(msg, global.itemMap[name]);
-        await msg.reply(`Item ${name} comprado com sucesso!`);
-    }
-
-}
-
 const onMessage = async (msg) => {
     try {
         if(msg.type == MessageTypes.LIST_RESPONSE) {
             if(starterState[msg.author]) {
                 return getStarter(msg);
-            }else if(marketState[msg.from]) {
-                return buyItem(msg);
-            }
-        } else if (msg.type == MessageTypes.BUTTONS_RESPONSE) {
-            if(marketState[msg.from]) {
-                if(msg.body == "Comprar Items") {
-                    console.log("comprar em");
-                    var list = new List(
-                        "Seja bem-vindo ao Mercado Pokémon!\nClique abaixo para Comprar Items!",
-                        "Comprar Itens",
-                        global.MarketItems,
-                        "Pokébom Market"
-                    )
-
-                    await myModule.bot.sendMessage(msg.from, list);
-                    marketState[msg.from]++
-                } else {
-                    marketState[msg.from]++
-                    await msg.reply("Feature em construção");
-                }
             }
         }
 
@@ -556,10 +417,6 @@ const onMessage = async (msg) => {
         var player = await PokemonPlayerDB.findOne({
             id: msg.author
         });
-
-        if(!player) {
-            return;
-        }
 
         if(player && !player.playing) {
             return;
