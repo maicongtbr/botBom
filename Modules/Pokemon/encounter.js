@@ -131,7 +131,7 @@ const getEncounter = async (msg, private, index) => {
     }
 
     if(!imagePath) {
-        imagePath = pokeInfo.sprites.front_default;
+        imagePath = pokeInfo.sprites;
     }
     var _isShiny = isShiny();
 
@@ -151,4 +151,4 @@ const getEncounter = async (msg, private, index) => {
     return ret;
 }
 
-module.exports = { getEncounter }
+module.exports = { getEncounter, getCorrectImage }

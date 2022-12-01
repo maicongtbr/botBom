@@ -4,6 +4,7 @@ const { updateCache } = require("./locations");
 const superagent = require("superagent");
 const { Storage } = require("../../libs");
 const { updateMarket } = require("./market");
+const PokeParty = require("./pokeParty.js")
 
 superagent.get('https://pokeapi.co/api/v2/growth-rate/').then((res) => {
     var levels = [];
@@ -16,4 +17,5 @@ superagent.get('https://pokeapi.co/api/v2/growth-rate/').then((res) => {
 })
 
 updateMarket();
-updateCache(getEncounter);
+PokeParty.init();
+updateCache();

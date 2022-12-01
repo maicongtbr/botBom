@@ -14,6 +14,7 @@ const fs = require('fs');
 const download = require('image-downloader');
 const { getMarket } = require("./market");
 const { title } = require("process");
+const PokeParty = require("./pokeParty.js");
 
 
 
@@ -63,7 +64,7 @@ const tryCatch = async (msg) => {
         var growthRate = pokemonSpecies._body.growth_rate.name;
         var levels = getStorageValue('pokemonModuleLevels');
         var pokeLevel = levels[growthRate][storage.level - 1];
-        var catchPokemon = await createPokemon(storage.pokemon, storage.level, pokeLevel ? pokeLevel.experience : 0, storage.shiny);
+        var catchPokemon = await createPokemon(storage.pokemon, storage.level, pokeLevel ? pokeLevel.experience : 0, storage.shiny, storage.gender);
         addPokemonToPlayer(msg, catchPokemon);
     } else {
         await msg.reply("Você errou!");
@@ -145,7 +146,7 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
         })
 }
 
-const showPokemon = (msg) => {
+const showPokemon = async (msg) => {
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     PokemonPlayerDB.findOne({
         id: msg.author
@@ -154,16 +155,16 @@ const showPokemon = (msg) => {
             msg.reply("Você não tem Pokémon na Party");
             return;
         }
+
+
+        var contact = await msg.getContact();
+        var playerInfos = { coins: player.coins, name: contact.name, image: await contact.getProfilePicUrl() }
         var Pokemon = [];
         player.pokemon.forEach(e=> {
-            var moves = [];
-            e.moves.forEach( m => {
-                moves.push(m.name);
-            })
-            Pokemon.push(`${e.name}, Level: ${e.level}, Moves: ${moves.join(", ")}, HP: ${e.currentHp}/${e.maxHp}`);
+            Pokemon.push({name: e.name, level: e.level, hp: { min: e.currentHp, max: e.maxHp }, shiny: e.shiny });
         })
-        var _m = "Seus Pokémon na Party:\n"+ Pokemon.join("\n");
-        msg.reply(_m);
+        var img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
+        msg.reply(img);
     })
 }
 
@@ -382,6 +383,7 @@ const getPokemon = async (msg, private) => {
             svStorage.gender = pokemon.gender;
             svStorage.level = pokemon.level;
             svStorage.shiny = pokemon.shiny;
+            svStorage.gender = pokemon.gender;
             svStorage.ignore = false;
             var chat = await msg.getChat();
             svStorage.server = chat.name;

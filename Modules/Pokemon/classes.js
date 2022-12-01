@@ -15,12 +15,13 @@ class Pokemon {
 }
 
 class PlayerPokemon {
-    constructor(name, level, exp, shiny){
+    constructor(name, level, exp, shiny, gender){
         this.name = name
         this.level = level
         this.exp = exp
         this.id = v4();
         this.shiny = shiny
+        this.gender = gender
     }
 
     async levelUp() {
@@ -97,9 +98,9 @@ class PlayerPokemon {
     }
 }
 
-const createPokemon = async (name, level, exp, shiny) => {
+const createPokemon = async (name, level, exp, shiny, gender) => {
     try {
-        var Pokemon = new PlayerPokemon(name, level, exp, shiny);
+        var Pokemon = new PlayerPokemon(name, level, exp, shiny, gender);
         await Pokemon.generateMove();
         await Pokemon.generateHealth();
         //await Pokemon.generateAbility();
