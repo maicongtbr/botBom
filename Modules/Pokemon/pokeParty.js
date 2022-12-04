@@ -30,8 +30,8 @@ const init = async () => {
             }, 
             {
                 pokeName: { x: 6, y: 835 }, 
-                pokeHp: { x: 56, y: 912-8}, 
-                pokeLvl: { x: 56, y: 937-9}, 
+                pokeHp: { x: 56, y: 912-9}, 
+                pokeLvl: { x: 56, y: 937-11}, 
                 pokeIcon: { x: 300, y: 780 }, 
                 pokeHealthBar: { x: 8, y: 890 - 4} 
             }, 
@@ -51,8 +51,8 @@ const init = async () => {
             }, 
             {
                 pokeName: { x: 686, y: 826 }, 
-                pokeHp: { x: 738, y: 903 }, 
-                pokeLvl: { x: 738, y: 928 }, 
+                pokeHp: { x: 738, y: 903 - 2}, 
+                pokeLvl: { x: 738, y: 928 + 2}, 
                 pokeIcon: { x: 470, y: 771 }, 
                 pokeHealthBar: { x: 689, y: 881 } 
             }
