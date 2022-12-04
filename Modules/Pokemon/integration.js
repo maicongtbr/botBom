@@ -432,7 +432,7 @@ const giveMoneyToPlayer = async (msg, amount) => {
 
 }
 
-const getMyItems = async(msg) => {
+const getMyItems = async (msg) => {
     var spec = [];
     var list = new List("Sua Mochila", "Abrir Mochila", spec);
 
@@ -441,12 +441,12 @@ const getMyItems = async(msg) => {
         id: msg.author
     });
 
-    if(!player || player.items.length <= 0) {
+    if(!player || player.itens.length <= 0) {
         msg.reply("Você não tem nenhum item");
         return;
     }
 
-    for (item of player.items) {
+    for (item of player.itens) {
         var _spec = spec.find(x => x.title == item.type);
         if(!spec) {
             _spec = {
