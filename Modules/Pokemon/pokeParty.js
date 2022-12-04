@@ -73,13 +73,14 @@ const getPokemonPartyImage = async (player, party) => {
     var playerCoords = global.PartyConfig.playerCoords;
     var font = global.PartyConfig.font;
     var playerfont = global.PartyConfig.playerNameFont;
-    var playerIcon = await jimp.read(player.image);
+    var playerIcon = player.image && await jimp.read(player.image);
     playerIcon = playerIcon.resize(242, 242);
 
     template.print(playerfont, playerCoords.playerName.x, playerCoords.playerName.y, player.name);
     template.print(global.PartyConfig.bcoinFont, playerCoords.playerCoins.x, playerCoords.playerCoins.y, player.coins);
-    template.blit(playerIcon, playerCoords.playerIcon.x, playerCoords.playerIcon.y);
-    
+    if(playerIcon) {
+        template.blit(playerIcon, playerCoords.playerIcon.x, playerCoords.playerIcon.y);
+    }
 
     for(i in party) {
         let coords = global.PartyConfig.pokeCoords[i];
@@ -115,11 +116,9 @@ const getPokemonPartyImage = async (player, party) => {
 
     fs.unlink(`./img/temp/party${int}${int}.png`, (err) => { //delete partyImg
         if (err) return;
-        console.log(`party${int}${int}.png foi deletada`);
     });
     fs.unlink(`./img/temp/icon${int}${int}.png`, (err) => { //delete Icon
         if (err) return;
-        console.log(`icon${int}${int}.png foi deletada`);
     });
     return ret;
 }
