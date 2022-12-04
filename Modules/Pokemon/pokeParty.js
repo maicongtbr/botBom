@@ -151,16 +151,4 @@ const getHealthBar = async (health) => {
     
 }
 
-init().then( () => {
-    getPokemonPartyImage({name: "João Raphael", image: "https://i.pinimg.com/236x/c6/ab/55/c6ab55e21551826cfec62e656c651786.jpg", coins: 20 },
-    [
-        { name: "Pikachu", level: 15, hp: { current: 1, max: 15 }, shiny: true },
-        { name: "Charizard", level: 15, hp: { current: 5, max: 15 } },
-        { name: "Eevee", level: 15, hp: { current: 5, max: 15 } },
-        { name: "Snorlax", level: 15, hp: { current: 15, max: 15 } },
-        { name: "Blastoise", level: 15, hp: { current: 5, max: 15 } },
-        { name: "Venusaur", level: 15, hp: { current: 5, max: 15 } },
-    ])
-})
-
 module.exports = { init, getPokemonPartyImage };
