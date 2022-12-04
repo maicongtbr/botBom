@@ -57,6 +57,5 @@ const updateLocationCache = async () => {
 
 module.exports = { updateCache: async (cb) => {
     await updateLocationCache(cb);
-    cb();
     new Storage("pokemonModuleLoaded", () => console.log("Pokemon Module Done"), true);
 }}
