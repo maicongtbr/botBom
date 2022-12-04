@@ -12,8 +12,8 @@ const init = async () => {
         font: await jimp.loadFont(jimp.FONT_SANS_32_BLACK),
         levelFont: await jimp.loadFont(jimp.FONT_SANS_16_BLACK),
         playerNameFont: await jimp.loadFont(jimp.FONT_SANS_64_BLACK),
-        template: await jimp.read('./img/background.png'),
-        healthBarTemplate: await jimp.read('./img/healthBarTemplate.png'),
+        template: await jimp.read('/home/life4gamming2/bot-aop/Modules/Pokemon/img/background.png'),
+        healthBarTemplate: await jimp.read('/home/life4gamming2/bot-aop/Modules/Pokemon/img/healthBarTemplate.png'),
         pokeCoords: [
             {
                 pokeName: { x: 6, y: 455 },
@@ -94,7 +94,7 @@ const getPokemonPartyImage = async (player, party) => {
         let pokeBody = await superagent.get("https://pokeapi.co/api/v2/pokemon/" + pokemon.name.toLowerCase())
         pokeBody = pokeBody._body;
         var image = getCorrectImage(pokeBody.sprites, pokemon.gender == "Fêmea", pokemon.shiny);
-        var iconLocation = "./home/life4gamming2/bot-aop/Modules/Pokemon/img/temp"+int+int+".png";
+        var iconLocation = "/home/life4gamming2/bot-aop/Modules/Pokemon/img/temp"+int+int+".png";
         await download.image(({
             url: image,
             dest: iconLocation,
