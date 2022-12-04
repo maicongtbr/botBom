@@ -12,7 +12,7 @@ const init = async () => {
         font: await jimp.loadFont("/home/life4gamming2/bot-aop/font/tome_48.fnt"),
         levelFont: await jimp.loadFont("/home/life4gamming2/bot-aop/font/tome_24.fnt"),
         bcoinFont: await jimp.loadFont("/home/life4gamming2/bot-aop/font/tome_32.fnt"),
-        playerNameFont: await jimp.loadFont(jimp.FONT_SANS_64_BLACK),
+        playerNameFont: await jimp.loadFont("/home/life4gamming2/bot-aop/font/tome_64.fnt"),
         pokeCoords: [
             {
                 pokeName: { x: 6, y: 445 }, // -10
