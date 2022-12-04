@@ -85,7 +85,7 @@ const getPokemonPartyImage = async (player, party) => {
     for(i in party) {
         let coords = global.PartyConfig.pokeCoords[i];
         if(!coords.pokeName) break;
-        let pokemon = party[i]; // = { name: ..., level: ..., hp: { current, max }}
+        let pokemon = party[i];
         let levelFont = global.PartyConfig.levelFont
         template.print(font, coords.pokeName.x, coords.pokeName.y, capitalize(pokemon.name));
         template.print(levelFont, coords.pokeHp.x, coords.pokeHp.y, `${pokemon.hp.current}/${pokemon.hp.max}`);
@@ -148,7 +148,6 @@ const getHealthBar = async (health) => {
     if(healthPercentage == 0) {
         healthPercentage = 1;
     }
-    console.log(308 * (healthPercentage/100));
     await healthBar.resize(308 * (healthPercentage/100), 17);
 
     return healthBar;
