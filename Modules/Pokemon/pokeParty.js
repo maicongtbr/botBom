@@ -4,6 +4,8 @@ const { getCorrectImage } = require("./encounter");
 const superagent = require('superagent');
 const download = require('image-downloader');
 const { getRandomInt } = require('../../libs');
+const fs = require('fs');
+const { MessageMedia } = require('whatsapp-web.js');
 
 const init = async () => {
     let defaults = {
@@ -92,7 +94,7 @@ const getPokemonPartyImage = async (player, party) => {
         let pokeBody = await superagent.get("https://pokeapi.co/api/v2/pokemon/" + pokemon.name.toLowerCase())
         pokeBody = pokeBody._body;
         var image = getCorrectImage(pokeBody.sprites, pokemon.gender == "Fêmea", pokemon.shiny);
-        var iconLocation = "/Users/ceetros/Documents/BotAOP/Modules/Pokemon/img/temp/icon"+int+int+".png";
+        var iconLocation = "/Users/micha/Documents/BotAOP/Modules/Pokemon/img/temp/icon"+int+int+".png";
         await download.image(({
             url: image,
             dest: iconLocation,
@@ -106,16 +108,21 @@ const getPokemonPartyImage = async (player, party) => {
         template.blit(icon, coords.pokeIcon.x, coords.pokeIcon.y);
         let healthBar = await getHealthBar(pokemon.hp);
         template.blit(healthBar, coords.pokeHealthBar.x, coords.pokeHealthBar.y);
-
-        // break;
     }
 
     await template.writeAsync(`./img/temp/party${int}${int}.png`);
 
-    //var ret = await MessageMedia.fromPath();
+    var ret = await MessageMedia.fromFilePath(`./img/temp/party${int}${int}.png`);
 
-    // deletar imgs
-    //return ret;
+    fs.unlink(`./img/temp/party${int}${int}.png`, (err) => { //delete partyImg
+        if (err) throw err;
+        console.log(`party${int}${int}.png foi deletada`);
+    });
+    fs.unlink(`./img/temp/icon${int}${int}.png`, (err) => { //delete Icon
+        if (err) throw err;
+        console.log(`icon${int}${int}.png foi deletada`);
+    });
+    return ret;
 }
 
 //308
