@@ -116,8 +116,8 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                         });
                     } else {
                         var arr = [];
-                        arr.push(pokemon);
                         var newPokemon = arr.concat(box.pokemon);
+                        newPokemon.push(pokemon);
                         boxModel.updateOne({
                             id: msg.author
                         },
@@ -130,7 +130,7 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                 } else {
                     var arr = [];
                     var newPokemon = arr.concat(user.pokemon);
-                    arr.push(pokemon);
+                    newPokemon.push(pokemon);
                     PokemonPlayerDB.updateOne({
                         id: msg.author
                     },{
