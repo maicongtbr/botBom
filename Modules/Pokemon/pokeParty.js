@@ -89,6 +89,7 @@ const getPokemonPartyImage = async (player, party) => {
         template.print(levelFont, coords.pokeHp.x, coords.pokeHp.y, `${pokemon.hp.current}/${pokemon.hp.max}`);
         template.print(levelFont, coords.pokeLvl.x, coords.pokeLvl.y, pokemon.level);
 
+        template.print(global.PartyConfig.font, coords.pokeName.x, coords.pokeName.y, capitalize(pokemon.name));
         let pokeBody = await superagent.get("https://pokeapi.co/api/v2/pokemon/" + pokemon.name.toLowerCase())
         pokeBody = pokeBody._body;
         var image = getCorrectImage(pokeBody.sprites, pokemon.gender == "Fêmea", pokemon.shiny);
