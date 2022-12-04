@@ -158,7 +158,7 @@ const showPokemon = async (msg) => {
 
 
         var contact = await msg.getContact();
-        var playerInfos = { coins: player.coins, name: contact.name, image: await contact.getProfilePicUrl() }
+        var playerInfos = { coins: player.coins, name: contact.name ? contact.name : contact.pushname, image: await contact.getProfilePicUrl() }
         console.log(playerInfos);
         var Pokemon = [];
         player.pokemon.forEach(e=> {
