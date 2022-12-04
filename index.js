@@ -13,9 +13,9 @@ const exp = [
     }
 ]
 
-// process.on("uncaughtException", (e) => {
-//     console.warn("IA CRASHAR EM\n\n_________"+e+"__________");
-// })
+process.on("uncaughtException", (e) => {
+    console.warn("IA CRASHAR EM\n\n_________"+e+"__________");
+})
 
 const getExpMultply = () => {
     var date = new Date();
