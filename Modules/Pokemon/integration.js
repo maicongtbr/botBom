@@ -337,7 +337,7 @@ var commands = [
         ])
         msg.reply(buttons);
     }},
-    { name: "!pokeitems", callback: async (msg) => getMyItems(msg)}
+    { name: "!pokebag", callback: async (msg) => getMyItems(msg)}
 ]
 
 var commandsMap = new Map();

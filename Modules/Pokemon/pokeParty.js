@@ -12,8 +12,6 @@ const init = async () => {
         font: await jimp.loadFont(jimp.FONT_SANS_32_BLACK),
         levelFont: await jimp.loadFont(jimp.FONT_SANS_16_BLACK),
         playerNameFont: await jimp.loadFont(jimp.FONT_SANS_64_BLACK),
-        template: await jimp.read('/home/life4gamming2/bot-aop/Modules/Pokemon/img/background.png'),
-        healthBarTemplate: await jimp.read('/home/life4gamming2/bot-aop/Modules/Pokemon/img/healthBarTemplate.png'),
         pokeCoords: [
             {
                 pokeName: { x: 6, y: 455 },
@@ -69,7 +67,7 @@ const init = async () => {
 }
 
 const getPokemonPartyImage = async (player, party) => {
-    var template = global.PartyConfig.template;
+    var template = await jimp.read('/home/life4gamming2/bot-aop/Modules/Pokemon/img/background.png');
     var int = getRandomInt(99999);
     var playerCoords = global.PartyConfig.playerCoords;
     var font = global.PartyConfig.font;
@@ -129,7 +127,7 @@ const getPokemonPartyImage = async (player, party) => {
 
 const getHealthBar = async (health) => {
     let healthPercentage = (100 * health.current) / health.max;
-    var healthBar = global.PartyConfig.healthBarTemplate;
+    var healthBar = await jimp.read('/home/life4gamming2/bot-aop/Modules/Pokemon/img/healthBarTemplate.png');
 
     if(healthPercentage <= 50 && healthPercentage >= 10) {
         await healthBar.color([
