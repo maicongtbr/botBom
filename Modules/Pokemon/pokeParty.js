@@ -30,29 +30,29 @@ const init = async () => {
             }, 
             {
                 pokeName: { x: 6, y: 835 }, 
-                pokeHp: { x: 56, y: 912 }, 
-                pokeLvl: { x: 56, y: 937 }, 
+                pokeHp: { x: 56, y: 912-8}, 
+                pokeLvl: { x: 56, y: 937-9}, 
                 pokeIcon: { x: 300, y: 780 }, 
                 pokeHealthBar: { x: 8, y: 890 - 4} 
             }, 
             {
                 pokeName: { x: 686, y: 440 }, 
-                pokeHp: { x: 738, y: 517 + 1}, 
+                pokeHp: { x: 738, y: 517 - 2}, 
                 pokeLvl: { x: 738, y: 542 + 1}, 
                 pokeIcon: { x: 470, y: 381 }, 
                 pokeHealthBar: { x: 687, y: 495 } 
             },
             {
                 pokeName: { x: 686, y: 636 }, 
-                pokeHp: { x: 738, y: 716 }, 
-                pokeLvl: { x: 738, y: 746 }, 
+                pokeHp: { x: 738, y: 716 - 8}, 
+                pokeLvl: { x: 738, y: 746 - 8}, 
                 pokeIcon: { x: 470, y: 584 }, 
                 pokeHealthBar: { x: 689, y: 689 } 
             }, 
             {
                 pokeName: { x: 686, y: 826 }, 
-                pokeHp: { x: 738, y: 903 + 5}, 
-                pokeLvl: { x: 738, y: 928 + 10}, 
+                pokeHp: { x: 738, y: 903 }, 
+                pokeLvl: { x: 738, y: 928 }, 
                 pokeIcon: { x: 470, y: 771 }, 
                 pokeHealthBar: { x: 689, y: 881 } 
             }
