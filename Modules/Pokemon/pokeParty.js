@@ -145,6 +145,10 @@ const getHealthBar = async (health) => {
         ]);
     }
 
+    if(healthPercentage == 0) {
+        healthPercentage = 1;
+    }
+    console.log(308 * (healthPercentage/100));
     await healthBar.resize(308 * (healthPercentage/100), 17);
 
     return healthBar;
