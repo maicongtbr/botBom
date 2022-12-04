@@ -115,11 +115,11 @@ const getPokemonPartyImage = async (player, party) => {
     var ret = await MessageMedia.fromFilePath(`./img/temp/party${int}${int}.png`);
 
     fs.unlink(`./img/temp/party${int}${int}.png`, (err) => { //delete partyImg
-        if (err) throw err;
+        if (err) return;
         console.log(`party${int}${int}.png foi deletada`);
     });
     fs.unlink(`./img/temp/icon${int}${int}.png`, (err) => { //delete Icon
-        if (err) throw err;
+        if (err) return;
         console.log(`icon${int}${int}.png foi deletada`);
     });
     return ret;
