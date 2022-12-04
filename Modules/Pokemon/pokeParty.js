@@ -94,7 +94,7 @@ const getPokemonPartyImage = async (player, party) => {
         let pokeBody = await superagent.get("https://pokeapi.co/api/v2/pokemon/" + pokemon.name.toLowerCase())
         pokeBody = pokeBody._body;
         var image = getCorrectImage(pokeBody.sprites, pokemon.gender == "Fêmea", pokemon.shiny);
-        var iconLocation = "/Users/micha/Documents/BotAOP/Modules/Pokemon/img/temp/icon"+int+int+".png";
+        var iconLocation = "./home/life4gamming2/bot-aop/Modules/Pokemon/img/temp"+int+int+".png";
         await download.image(({
             url: image,
             dest: iconLocation,
