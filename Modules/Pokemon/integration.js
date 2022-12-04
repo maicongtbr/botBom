@@ -129,11 +129,8 @@ const addPokemonToPlayer = (msg, pokemon, isStarter) => {
                    })
                 } else {
                     var arr = [];
-                    // console.log(user.pokemon)
-                    arr.push(pokemon);
-                    // console.log(arr);
                     var newPokemon = arr.concat(user.pokemon);
-                    // console.log(newPokemon);
+                    arr.push(pokemon);
                     PokemonPlayerDB.updateOne({
                         id: msg.author
                     },{
