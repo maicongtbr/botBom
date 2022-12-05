@@ -74,11 +74,11 @@ const getPokemonPartyImage = async (player, party) => {
     var font = global.PartyConfig.font;
     var playerfont = global.PartyConfig.playerNameFont;
     var playerIcon = player.image && await jimp.read(player.image);
-    playerIcon = playerIcon.resize(242, 242);
 
     template.print(playerfont, playerCoords.playerName.x, playerCoords.playerName.y, player.name);
     template.print(global.PartyConfig.bcoinFont, playerCoords.playerCoins.x, playerCoords.playerCoins.y, player.coins);
     if(playerIcon) {
+        playerIcon = playerIcon.resize(242, 242);
         template.blit(playerIcon, playerCoords.playerIcon.x, playerCoords.playerIcon.y);
     }
 
