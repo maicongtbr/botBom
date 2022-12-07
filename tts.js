@@ -1,5 +1,5 @@
 const Say = require ('say').Say;
-const { MessageMedia, Client } = require('whatsapp-web.js');
+const { MessageMedia } = require('whatsapp-web.js');
 
 const say = new Say('win32');
 

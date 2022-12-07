@@ -1,73 +1,14 @@
-const { MessageMedia, Client, List, Buttons } = require('whatsapp-web.js');
-const { getGames } = require ('epic-free-games');
-const fs = require ('fs');
-const superagent = require('superagent');
-const db = require('./database');
+const { MessageMedia, List } = require('whatsapp-web.js');
+const getGames = require ('epic-free-games');
 const google = require('googlethis');
-const tts = require('./tts');
+const { tts } = require('./tts');
 const { getTabela } = require('./tabela brasileirao');
+const { getRandomInt, getRandomIntRange, userIsAdmin } = require('./libs');
+const { sendRandomSticker, sendSticker, makeSticker } = require('./sticker');
 
 
 const callbackMap = new Map();
 const commandsMap = new Map();
-
-
-const getNextLevelExp = (level) => {
-    if(level < 50) {
-        return Math.floor((Math.pow(level, 2) * ( 100 - level )) / 50);
-    } else if(level <= 68) {
-        return Math.floor((Math.pow(level, 2) * ( 150 - level )) / 100);
-    } else if(level <= 98) {
-        return Math.floor((Math.pow(level, 2) * ( (1911 - (10 * level)) / 3)) / 500);
-    } else if(level <= 100) {
-        return Math.floor((Math.pow(level, 2) * ( 160 - level )) / 100);
-    } else {
-        return 10000;
-    }
-}
-
-const randomNumber = (max) => {
-    return Math.floor(Math.random() * (max - 1 + 1));
-}
-
-const sendRandomSticker = (msg, fileName, num, bot) => {
-    media = MessageMedia.fromFilePath(`./${fileName[randomNumber(num)]}`);
-    bot.sendMessage(msg.from, media, {
-        sendMediaAsSticker:true
-        })
-}
-
-const sendSticker = async (msg, fileName, bot) => {
-    media = MessageMedia.fromFilePath(`./${fileName}`);
-    return bot.sendMessage(msg.from, media, {
-        sendMediaAsSticker:true
-    })
-}
-
-const downloadMessageMedia = async (msg) => {
-    var messageToDowloadMedia = msg;
-    if (msg.hasQuotedMsg){
-        let quotedMsg = await msg.getQuotedMessage();
-        return; //só enquanto o bot ta crashando com quotedMsg
-        if (quotedMsg.hasMedia){
-            messageToDowloadMedia = quotedMsg;
-        }
-    }
-    var ret = await messageToDowloadMedia.downloadMedia();
-    return ret;
-}
-
-const makeSticker = async (msg) => {
-    if (msg.type === 'chat') return msg.reply('O comando de Sticker não está funcionando mencionando mensagens. Tente enviando diretamente a imagem.');
-    if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
-
-    var media = await downloadMessageMedia(msg);
-    msg.reply(media, undefined, {
-        sendMediaAsSticker:true,
-        stickerName: 'Feito com o Bot Bom da AOP',
-        sticketAuthor: 'Bot Bom'
-    })
-}
 
 const getGroup = async (msg) => {
     var chat = await msg.getChat();
@@ -76,32 +17,23 @@ const getGroup = async (msg) => {
     return undefined;
 }
 
-const userIsAdmin = async (chat, authorId) => {
-    for(let participant of chat.participants) {
-        if(participant.id._serialized === authorId && participant.isAdmin) {
-            return true;
-        }
-    }
-    return false;
-}
-
 const banMember = (msg, bot) => {
     var hasMentions = msg.getMentions();
     if (!msg.hasQuotedMsg && !hasMentions){
         return msg.reply('Para banir, você deve mencionar um usuário ou responder a mensagem do usuário a ser banido.');
     }
 
-    const group = getGroup(msg).then((group) => {
+    getGroup(msg).then((group) => {
         if (!group){
             return msg.reply('Você precisa estar em um grupo para isso');
         }
 
-        const isAdmin = userIsAdmin(group, msg.author).then((isAdmin) => {
+        userIsAdmin(group, msg.author).then((isAdmin) => {
             if (!isAdmin) {
                 return msg.reply('Você não é Admin.');
             }
 
-            const botIsAdmin = userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+            userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
                 if (!botIsAdmin){
                     return msg.reply('O Bot não é Admin.');
                 }
@@ -263,7 +195,7 @@ const imgSearch = async (msg, bot) => {
 
     try {
         const image = await google.image(palavraChave.replace(/[\u0300-\u036f]/g, ""), { safe: true });
-        const foundImage = image[randomNumber(10)];
+        const foundImage = image[getRandomInt(10)];
         const img = await MessageMedia.fromUrl(foundImage.url, {
             unsafeMime: true
         });
@@ -278,125 +210,7 @@ const imgSearch = async (msg, bot) => {
     }
 }
 
-const getLevel = async (msg, bot) => {
-    const Exp = db.getModel('Experiencia');
-    const group = await getGroup(msg);
-    const mentionedUsers = await msg.getMentions();
-    if (group) {
-        var isAdmin = await userIsAdmin(group, msg.author);
-    }
-
-    if (!group) {
-        Exp.find({
-            id: msg.id.remote
-        }).then(async user => {
-            if(!user) {
-                msg.reply('*Você ainda não tem exp.*');
-                return;
-            }
-
-            var userLevelArr = [];
-
-            for (element of user) {
-                let exp = element.exp;
-                let level = element.level;
-                let group = element.groupName;
-                let expToNextLevel = getNextLevelExp(level + 1) - exp;
-
-                let userLevel = `💎Nível no grupo *${group}*\n✨Exp: ${exp}\n🎇Level: ${level}\n🎆Exp para o próximo level: ${expToNextLevel}`
-
-                userLevelArr.push(userLevel);
-            }
-            let _userLevel = `💎*Esse é seu nível em cada grupo:*\n\n${userLevelArr.join('\n\n')}`;
-            bot.sendMessage(msg.from, _userLevel); 
-        })
-        return;
-    }
-
-    if (mentionedUsers && mentionedUsers.length > 0) {
-        if (isAdmin) {
-            console.log(mentionedUsers);
-            Exp.findOne({
-                id: mentionedUsers[0].id._serialized,
-                group: group.id._serialized
-            }).then(async user => {
-                let userName = user.userName;
-                let exp = user.exp;
-                let level = user.level;
-                let group = user.groupName;
-                let expToNextLevel = getNextLevelExp(level + 1) - exp;
-
-                bot.sendMessage(msg.from, `Nível de *${userName}* no grupo *${group}*\n\n✨Exp: ${exp}\n🎇Level: ${level}\n🎆Exp para o próximo level: ${expToNextLevel}`);
-            })
-            return;
-        }
-    }
-
-    Exp.findOne({
-        id: msg.author,
-        group: group.id._serialized
-    }).then(async user => {
-        if(!user) {
-            msg.reply('*Você ainda não tem exp.*');
-            return;
-        }
-        let userName = user.userName;
-        let exp = user.exp;
-        let level = user.level;
-        let group = user.groupName;
-        let expToNextLevel = getNextLevelExp(level + 1) - exp;
-
-        bot.sendMessage(msg.from, `Nível de *${userName}* no grupo *${group}*\n\n✨Exp: ${exp}\n🎇Level: ${level}\n🎆Exp para o próximo level: ${expToNextLevel}`);
-    })
-}
-
-const getRanking = async (msg, bot) => {
-    const Exp = db.getModel('Experiencia');
-    const group = await getGroup(msg);
-    
-    Exp.find({
-        group: group.id._serialized
-    }).then(async users => {
-        users.sort((a, b) => {
-            if (a.level == b.level){
-                return (a.exp > b.exp) ? -1 : 1;
-            }
-            return (a.level > b.level) ? -1 : 1;
-        })
-        
-        let ranking = [];
-
-        var max = 10;
-        if(users.length < 10) {
-            max = users.length;
-        }
-
-        for (var i = 0; i < max; i++) {
-            let element = users[i];
-            let place = users.indexOf(element) + 1;
-            let placeMessage = "";
-            switch(place) {
-                case 1:
-                    placeMessage = "🥇";
-                    break;
-                case 2:
-                    placeMessage = "🥈";
-                    break;
-                case 3:
-                    placeMessage = "🥉";
-                    break;
-                default:
-                    break;
-            }
-            let message = `${placeMessage} *${place}° Lugar*: ${element.userName}, *Level*: ${element.level}, *Exp*: ${element.exp}.`;
-            ranking.push(message);
-        }
-
-        let _message = `🏆 Top 10 no grupo *${group.name}*\n\n${ranking.join("\n")}`;
-        bot.sendMessage(msg.from, _message);
-    });
-}
-
+// -- Ainda em teste
 const roletaRussa = async (msg, bot) => {
     // iniciar o jogo
     bot.sendMessage(msg.from, 'A ROLETA RUSSA COMEÇOU \nEnvie !atirar para testar sua sorte.');
@@ -406,7 +220,7 @@ const roletaRussa = async (msg, bot) => {
             return;
         }
         else if (message === '!atirar') {
-            if (randomNumber(5) === 1) {
+            if (getRandomInt(5) === 1) {
                 // group.removeParticipants(message.author);
                 bot.sendMessage(message.from, 'Alguma mensagem dizendo que vc morreu + um gif'); //encerrar o jogo aqui
                 return;
@@ -417,6 +231,7 @@ const roletaRussa = async (msg, bot) => {
         }
     });
 }
+// --
 
 const commandList = (msg, bot) => {
     const _commandList = new List(
@@ -465,10 +280,12 @@ const commandList = (msg, bot) => {
     bot.sendMessage(msg.from, _commandList );
 }
 
+// -- Ainda em teste
 const textToSpeach = (msg, bot) => {
     console.log('coe');
     tts(msg.body.slice(4), msg, bot);
 }
+// --
 
 const update = async (msg) => {
     const { exec } = require("child_process");
@@ -488,7 +305,7 @@ const commands = [
     { name: '!gratis', callback: (msg, bot) => freeGames(bot, msg)},
     { name: '!tts', callback: (msg, bot) => textToSpeach(msg, bot)},
     { name: '!tabela', callback: (msg, bot) => getTabela(msg, bot)},
-    // { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
+    { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
     { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)},
     { name: '!comandos', callback: (msg, bot) => commandList(msg, bot)},
@@ -676,4 +493,4 @@ trigger.forEach((value) => {
     }
 })   
 
-module.exports = { callbackMap, commandsMap, getGroup, getNextLevelExp };
+module.exports = { callbackMap, commandsMap, getGroup };

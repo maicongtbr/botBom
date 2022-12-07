@@ -2,16 +2,19 @@ const superagent = require('superagent');
 
 const getTabela = async (msg, bot) => {
     var rodada = await superagent.get('https://api.api-futebol.com.br/v1/campeonatos/10/rodadas').set('Authorization', 'Bearer live_5da0f7f9ac2040f89d6bd1d862a39d');
-    for (element of rodada._body){
-        if(element.status === 'agendada'){
-            var rodadaAtual = element.rodada;
+    for (e of rodada._body){
+        if(e.status === 'agendada'){
+            var rodadaAtual = e.rodada;
             break;
+        }
+        else if (!e.rodada){
+            var rodadaAtual = 38;
         }
     }
 
     var tabela = await superagent.get('https://api.api-futebol.com.br/v1/campeonatos/10/tabela').set('Authorization', 'Bearer live_5da0f7f9ac2040f89d6bd1d862a39d');
     var teamStats = `⚽️Campeonato Brasileiro Série A⚽️\n\n🔘Rodada ${rodadaAtual}/${rodada._body.length}\n\n🔵${tabela._body[0].posicao}° - ${tabela._body[0].time.nome_popular} ▶️Pts: ${tabela._body[0].pontos}\n`;
-    
+
     for (let i = 1; i <= 19; i++) {
         var team = tabela._body[i].time.nome_popular;
         if(i <= 3){//libertadores
