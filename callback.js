@@ -5,7 +5,7 @@ const superagent = require('superagent');
 const db = require('./database');
 const google = require('googlethis');
 const tts = require('./tts');
-const getTabela = require('./tabela brasileirao');
+const { getTabela } = require('./tabela brasileirao');
 
 
 const callbackMap = new Map();
