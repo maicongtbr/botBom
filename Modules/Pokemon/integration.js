@@ -453,11 +453,11 @@ const getMyItems = async (msg) => {
                 rows: []
             }
 
-            _spec.rows.push({title: item.name, description: `Quantidade: ${title.amount}`});
+            _spec.rows.push({title: item.name, description: `Quantidade: ${item.amount}`});
             spec.push(_spec);
             continue;
         }
-        _spec.rows.push({title: item.name, description: `Quantidade: ${title.amount}`});
+        _spec.rows.push({title: item.name, description: `Quantidade: ${item.amount}`});
     }
 
     var list = new List("Sua Mochila", "Abrir Mochila", spec);
