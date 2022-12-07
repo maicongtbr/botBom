@@ -14,7 +14,7 @@ const exp = [
 ]
 
 process.on("uncaughtException", (e) => {
-    console.warn("IA CRASHAR EM\n\n_________"+e+"__________");
+    console.warn("\n\nIA CRASHAR EM\n\n_________\n\n"+e+"\n\n__________\n\n");
 })
 
 const getExpMultply = () => {
