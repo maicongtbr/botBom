@@ -275,7 +275,7 @@ const getStarter = async (msg) => {
 }
 
 const stopModule = async (msg) => {
-    if (!userIsAdmin(await msg.getChat(), msg.author)) {
+    if (! await userIsAdmin(await msg.getChat(), msg.author)) {
         msg.reply("Somente Admins.");
         return;
     }
@@ -285,7 +285,7 @@ const stopModule = async (msg) => {
 }
 
 const changeSpawnRate = async (msg) => {
-    if (!userIsAdmin(await msg.getChat(), msg.author)) {
+    if (! await userIsAdmin(await msg.getChat(), msg.author)) {
         msg.reply("Somente Admins.");
         return;
     }
@@ -314,7 +314,7 @@ var commands = [
     { name: "!pokestop", callback: (msg) => stopModule(msg)},
     { name: "!pokespawnrate", callback: (msg) => changeSpawnRate(msg)},
     { name: "!pokesummon", callback: async (msg) => {
-        if (!userIsAdmin(await msg.getChat(), msg.author)) {
+        if (! await userIsAdmin(await msg.getChat(), msg.author)) {
             msg.reply("Somente Admins.");
             return;
         }
@@ -433,15 +433,14 @@ const giveMoneyToPlayer = async (msg, amount) => {
 
 const getMyItems = async (msg) => {
     var spec = [];
-    var list = new List("Sua Mochila", "Abrir Mochila", spec);
 
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     var player = await PokemonPlayerDB.findOne({
-        id: msg.author
+        id: msg.author || msg.from
     });
 
     if(!player || player.itens.length <= 0) {
-        msg.reply("Você não tem nenhum item");
+        await msg.reply("Você não tem nenhum item");
         return;
     }
 
@@ -460,7 +459,9 @@ const getMyItems = async (msg) => {
         _spec.rows.push({title: item.name, description: `Quantidade: ${title.amount}`});
     }
 
-    msg.reply(list);
+    var list = new List("Sua Mochila", "Abrir Mochila", spec);
+
+    await msg.reply(list);
 }
 
 const addItem = async (msg, item) => {
