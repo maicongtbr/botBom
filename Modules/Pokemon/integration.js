@@ -373,7 +373,6 @@ const getPokemon = async (msg, private) => {
         dest: imgName,
         extractFilename: false,
     }).then(({filename}) => {
-        console.log(filename);
         webp.gwebp(imgName,imgNameWebp,"-q 80",logging="-v").then(async e=> {
             const pokemonGif = MessageMedia.fromFilePath(imgNameWebp);
     
@@ -449,7 +448,6 @@ const getMyItems = async (msg) => {
         return;
     }
 
-    console.log(player.itens)
     for (item of player.itens) {
         var _spec = spec.find(x => x.title == item.type);
         if(!_spec) {
@@ -506,7 +504,6 @@ const buyItem = async (msg) => {
     var args = msg.body.split("\nPreço: ")
     var name = args[0];
     var price = args[1].split(" ")[0];
-    console.log(price, name);
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     var player = await PokemonPlayerDB.findOne({
         id: msg.from
@@ -539,7 +536,6 @@ const onMessage = async (msg) => {
         } else if (msg.type == MessageTypes.BUTTONS_RESPONSE) {
             if(marketState[msg.from]) {
                 if(msg.body == "Comprar Items") {
-                    console.log("comprar em");
                     var list = new List(
                         "Seja bem-vindo ao Mercado Pokémon!\nClique abaixo para Comprar Items!",
                         "Comprar Itens",
