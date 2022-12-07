@@ -1,8 +1,8 @@
 const { Client, MessageMedia, LocalAuth, AuthStrategy, MessageAck, List } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const { callbackMap, commandsMap, getGroup, getNextLevelExp } = require('./callback.js');
+const { callbackMap, commandsMap, getGroup } = require('./callback.js');
+const { getNextLevelExp } = require('./level system');
 const db = require('./database');
-const { get } = require('superagent');
 
 const PokemonModule = require("./Modules/Pokemon/integration");
 
@@ -13,9 +13,9 @@ const exp = [
     }
 ]
 
-process.on("uncaughtException", (e) => {
-    console.warn("\n\nIA CRASHAR EM\n\n_________\n\n"+e+"\n\n__________\n\n");
-})
+// process.on("uncaughtException", (e) => {
+//     console.warn("\n\nIA CRASHAR EM\n\n_________\n\n"+e+"\n\n__________\n\n");
+// })
 
 const getExpMultply = () => {
     var date = new Date();
