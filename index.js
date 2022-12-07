@@ -1,8 +1,9 @@
 const { Client, MessageMedia, LocalAuth, AuthStrategy, MessageAck, List } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const { callbackMap, commandsMap, getGroup } = require('./callback.js');
+const { callbackMap, commandsMap } = require('./callback.js');
 const { getNextLevelExp } = require('./level system');
 const db = require('./database');
+const { getGroup } = require('./libs');
 
 const PokemonModule = require("./Modules/Pokemon/integration");
 

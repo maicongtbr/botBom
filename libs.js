@@ -7,6 +7,13 @@ const StorageTypes = {
     String: 3
 }
 
+const getGroup = async (msg) => {
+    var chat = await msg.getChat();
+    if (chat.isGroup) return chat;
+
+    return undefined;
+}
+
 const userIsAdmin = async (chat, authorId) => {
     for(let participant of chat.participants) {
         if(participant.id._serialized === authorId && participant.isAdmin) {
@@ -90,4 +97,4 @@ const getRandomIntRange = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
 } 
 
-module.exports = { getUserStorage, UserStorage, StorageTypes, Storage, getStorage, getStorageValue, getRandomInt, getRandomIntRange, userIsAdmin }
+module.exports = { getUserStorage, UserStorage, StorageTypes, Storage, getStorage, getStorageValue, getRandomInt, getRandomIntRange, userIsAdmin, getGroup }

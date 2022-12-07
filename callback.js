@@ -3,20 +3,13 @@ const getGames = require ('epic-free-games');
 const google = require('googlethis');
 const { tts } = require('./tts');
 const { getTabela } = require('./tabela brasileirao');
-const { getRandomInt, getRandomIntRange, userIsAdmin } = require('./libs');
+const { getRandomInt, getRandomIntRange, userIsAdmin, getGroup } = require('./libs');
 const { sendRandomSticker, sendSticker, makeSticker } = require('./sticker');
 const { getRanking, getLevel } = require('./level system');
 
 
 const callbackMap = new Map();
 const commandsMap = new Map();
-
-const getGroup = async (msg) => {
-    var chat = await msg.getChat();
-    if (chat.isGroup) return chat;
-
-    return undefined;
-}
 
 const banMember = (msg, bot) => {
     var hasMentions = msg.getMentions();
