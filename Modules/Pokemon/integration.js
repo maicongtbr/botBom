@@ -460,7 +460,8 @@ const getMyItems = async (msg) => {
         _spec.rows.push({title: item.name, description: `Quantidade: ${item.amount}`});
     }
 
-    var list = new List("Sua Mochila", "Abrir Mochila", spec);
+    var contact = await msg.getContact();
+    var list = new List(`Mochila de ${contact.pushname}`, "Abrir Mochila", spec);
 
     await msg.reply(list);
 }
