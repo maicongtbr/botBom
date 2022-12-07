@@ -444,6 +444,7 @@ const getMyItems = async (msg) => {
         return;
     }
 
+    console.log(player.itens)
     for (item of player.itens) {
         var _spec = spec.find(x => x.title == item.type);
         if(!spec) {
