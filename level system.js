@@ -19,6 +19,7 @@ const getNextLevelExp = (level) => {
 
 const getLevel = async (msg, bot) => {
     const Exp = db.getModel('Experiencia');
+    console.log(typeof(getGroup));
     const group = await getGroup(msg);
     const mentionedUsers = await msg.getMentions();
     if (group) {
