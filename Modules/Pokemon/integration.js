@@ -324,7 +324,12 @@ var commands = [
     }},
     { name: "!pokemarket", callback: async (msg) => {
         var chat = await msg.getChat();
-        if(chat.isGroup) return;
+        if(chat.isGroup) 
+        {
+            await msg.reply("Não é possível utilizar em grupos.");
+            return;
+        }
+
         marketState[msg.from] = 1;
         var buttons = new Buttons("Bem-vindo ao Mercado Pokémon",
         [
