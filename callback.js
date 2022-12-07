@@ -5,7 +5,7 @@ const { tts } = require('./tts');
 const { getTabela } = require('./tabela brasileirao');
 const { getRandomInt, getRandomIntRange, userIsAdmin } = require('./libs');
 const { sendRandomSticker, sendSticker, makeSticker } = require('./sticker');
-const { getRanking, getLevel, getNextLevelExp } = require('./level system');
+const { getRanking, getLevel } = require('./level system');
 
 
 const callbackMap = new Map();
