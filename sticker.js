@@ -1,4 +1,5 @@
 const { MessageMedia } = require('whatsapp-web.js');
+const { getRandomInt } = require('./libs');
 
 const downloadMessageMedia = async (msg) => {
     var messageToDowloadMedia = msg;
