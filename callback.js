@@ -169,12 +169,16 @@ const freeGames = (bot, msg) => {
     getGames('BR', false).then(res => {
         var currentGamesInfo = [];
         var nextGamesInfo = [];
+
         res.currentGames.forEach(game => {
             currentGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}\n`)
         })
-        res.nextGames.forEach(game => {
-            nextGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}`)
-        })
+        if(res.nextGames) {
+            res.nextGames.forEach(game => {
+                nextGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}`)
+            })
+        }
+        
         bot.sendMessage(msg.from, `🎮*Jogos grátis na Epic hoje:* \n\n${currentGamesInfo.join('\n\n')}\n\n 🎮*Próximos jogos grátis na Epic:* \n\n${nextGamesInfo.join('\n\n')}`);
     })
 }
