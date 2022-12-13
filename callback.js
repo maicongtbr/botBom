@@ -1,5 +1,5 @@
 const { MessageMedia, List } = require('whatsapp-web.js');
-const getGames = require ('epic-free-games');
+const { getGames } = require ('epic-free-games');
 const google = require('googlethis');
 const { tts } = require('./tts');
 const { getTabela } = require('./tabela brasileirao');
@@ -178,7 +178,7 @@ const freeGames = (bot, msg) => {
                 nextGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}`)
             })
         }
-        
+
         bot.sendMessage(msg.from, `🎮*Jogos grátis na Epic hoje:* \n\n${currentGamesInfo.join('\n\n')}\n\n 🎮*Próximos jogos grátis na Epic:* \n\n${nextGamesInfo.join('\n\n')}`);
     })
 }
