@@ -178,6 +178,9 @@ const freeGames = (bot, msg) => {
                 nextGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}`)
             })
         }
+        else {
+            nextGamesInfo.push('Informação ainda não disponível');
+        }
 
         bot.sendMessage(msg.from, `🎮*Jogos grátis na Epic hoje:* \n\n${currentGamesInfo.join('\n\n')}\n\n 🎮*Próximos jogos grátis na Epic:* \n\n${nextGamesInfo.join('\n\n')}`);
     })
