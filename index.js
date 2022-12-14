@@ -4,8 +4,52 @@ const { callbackMap, commandsMap } = require('./callback.js');
 const { getNextLevelExp } = require('./level system');
 const db = require('./database');
 const { getGroup } = require('./libs');
+const { getGames } = require ('epic-free-games');
+
 
 const PokemonModule = require("./Modules/Pokemon/integration");
+
+const sendEpicFreeGames = async (bot) => {
+    var interval
+    var currentGameId
+    var pastNextGameId
+    var currentGamesInfo = [];
+    var nextGamesInfo = [];
+
+    var res = await getGames('BR', false)
+
+    //salva o Id do jogo de graça da semana atual para a checagem do if abaixo
+    if(!pastNextGameId) {
+        pastNextGameId = res.nextGames[0][0].id;
+    }
+    currentGameId = res.currentGames[0][0].id; 
+
+
+    //se o Id do jogo de graça dessa semana for o mesmo do nextGame da semana passada
+    if (currentGameId == pastNextGameId){ 
+        res.currentGames.forEach(game => {
+            currentGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}\n`)
+        })
+        if(res.nextGames) {
+            res.nextGames.forEach(game => {
+                nextGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}`)
+            })
+        }
+        else {
+            nextGamesInfo.push('Informação ainda não disponível');
+        }
+
+        bot.sendMessage('5521969164962-1519130052@g.us', `🎮*Jogos grátis na Epic hoje:* \n\n${currentGamesInfo.join('\n\n')}\n\n 🎮*Próximos jogos grátis na Epic:* \n\n${nextGamesInfo.join('\n\n')}`);
+
+        pastNextGameId = res.nextGames[0][0].id; //atualiza o nextGame para o da semana atual
+        interval = 10000//604700000 //7 dias de timeout
+    }
+    else {
+        interval = 2000//7200000 //2h de timeout
+    }
+    
+    setTimeout(sendEpicFreeGames, interval);
+}
 
 const exp = [
     {
@@ -69,6 +113,7 @@ bot.on('disconnected', () => {
 bot.on('ready', () => {
     console.log("BOT ONLINE")
     PokemonModule.initPokemonModule(bot);
+    sendEpicFreeGames(bot);
 })
 
 bot.on('group_leave', (notification) => {
