@@ -1,8 +1,0 @@
-const fs = require('fs');
-const client = require('https');
-
-const downloadImage = (url, filePath) => {
-    client.get(url, (res) => {
-        res.pipe(fs.createWriteStream(filepath));
-    });
-}
