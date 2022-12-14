@@ -9,6 +9,7 @@ const { getGames } = require ('epic-free-games');
 
 const PokemonModule = require("./Modules/Pokemon/integration");
 
+//--Preciso salvar o pastNextGameId na DB e tratar o loop com datas em vez de timeout com ms
 const sendEpicFreeGames = async (bot) => {
     var interval
     var currentGameId
@@ -21,15 +22,17 @@ const sendEpicFreeGames = async (bot) => {
     //salva o Id do jogo de graça da semana atual para a checagem do if abaixo
     console.log('res.currentGames[0][0].id: ' + res.currentGames[0][0]);
     console.log('res: ' + res);
+
     currentGameId = res.currentGames[0][0].id;
     if(!pastNextGameId) {
         pastNextGameId = res.nextGames[0][0].id;
+    }
+    else {
         return setTimeout(sendEpicFreeGames, interval);
     }
 
-
     //se o Id do jogo de graça dessa semana for o mesmo do nextGame da semana passada
-    if (currentGameId == pastNextGameId){ 
+    if (currentGameId == pastNextGameId){
         res.currentGames.forEach(game => {
             currentGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}\n`)
         })
