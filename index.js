@@ -15,17 +15,17 @@ const sendEpicFreeGames = async (bot) => {
     var pastNextGameId
     var currentGamesInfo = [];
     var nextGamesInfo = [];
-
-    var res = await getGames('BR', false)
+    
+    var res = setTimeout(await getGames('BR', false), 10000);
 
     //salva o Id do jogo de graça da semana atual para a checagem do if abaixo
     console.log('res.currentGames[0][0].id: ' + res.currentGames[0][0]);
     console.log('res: ' + res);
-    // currentGameId = res.currentGames[0][0].id;
-    // if(!pastNextGameId) {
-    //     pastNextGameId = res.nextGames[0][0].id;
-    //     return;
-    // }
+    currentGameId = res.currentGames[0][0].id;
+    if(!pastNextGameId) {
+        pastNextGameId = res.nextGames[0][0].id;
+        return setTimeout(sendEpicFreeGames, interval);
+    }
 
 
     //se o Id do jogo de graça dessa semana for o mesmo do nextGame da semana passada
