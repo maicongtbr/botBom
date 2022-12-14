@@ -19,7 +19,7 @@ const sendEpicFreeGames = async (bot) => {
     var res = await getGames('BR', false)
 
     //salva o Id do jogo de graça da semana atual para a checagem do if abaixo
-    console.log('res.currentGames[0][0].id: ' + res.currentGames[0][0].id);
+    console.log('res.currentGames[0][0].id: ' + res.currentGames[0][0]);
     console.log('res: ' + res);
     // currentGameId = res.currentGames[0][0].id;
     // if(!pastNextGameId) {
