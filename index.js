@@ -21,11 +21,11 @@ const sendEpicFreeGames = async (bot) => {
     //salva o Id do jogo de graça da semana atual para a checagem do if abaixo
     console.log('res.currentGames[0][0].id: ' + res.currentGames[0][0].id);
     console.log('res: ' + res);
-    currentGameId = res.currentGames[0][0].id;
-    if(!pastNextGameId) {
-        pastNextGameId = res.nextGames[0][0].id;
-        return;
-    }
+    // currentGameId = res.currentGames[0][0].id;
+    // if(!pastNextGameId) {
+    //     pastNextGameId = res.nextGames[0][0].id;
+    //     return;
+    // }
 
 
     //se o Id do jogo de graça dessa semana for o mesmo do nextGame da semana passada
