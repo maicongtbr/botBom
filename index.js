@@ -11,55 +11,6 @@ const PokemonModule = require("./Modules/Pokemon/integration");
 
 const EpicFreeGameModule = require("./Modules/freeGames/main");
 
-//--Preciso salvar o pastNextGameId na DB e tratar o loop com datas em vez de timeout com ms
-//--Aprender a tratar Data()
-const sendEpicFreeGames = async (bot) => {
-    var interval
-    var currentGameId
-    var pastNextGameId
-    var currentGamesInfo = [];
-    var nextGamesInfo = [];
-    
-    var res = setTimeout(await getGames('BR', false), 10000);
-
-    //salva o Id do jogo de graça da semana atual para a checagem do if abaixo
-    console.log('res.currentGames[0][0].id: ' + res.currentGames[0][0]);
-    console.log('res: ' + res);
-
-    currentGameId = res.currentGames[0][0].id;
-    if(!pastNextGameId) {
-        pastNextGameId = res.nextGames[0][0].id;
-    }
-    else {
-        return setTimeout(sendEpicFreeGames, interval);
-    }
-
-    //se o Id do jogo de graça dessa semana for o mesmo do nextGame da semana passada
-    if (currentGameId == pastNextGameId){
-        res.currentGames.forEach(game => {
-            currentGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}\n`)
-        })
-        if(res.nextGames) {
-            res.nextGames.forEach(game => {
-                nextGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}`)
-            })
-        }
-        else {
-            nextGamesInfo.push('Informação ainda não disponível');
-        }
-
-        bot.sendMessage('5521969164962-1519130052@g.us', `🎮*Jogos grátis na Epic hoje:* \n\n${currentGamesInfo.join('\n\n')}\n\n 🎮*Próximos jogos grátis na Epic:* \n\n${nextGamesInfo.join('\n\n')}`);
-
-        pastNextGameId = res.nextGames[0][0].id; //atualiza o nextGame para o da semana atual
-        interval = 10000//604700000 //7 dias de timeout
-    }
-    else {
-        interval = 2000//7200000 //2h de timeout
-    }
-    
-    setTimeout(sendEpicFreeGames, interval);
-}
-
 const exp = [
     {
         date: new Date("2022-11-27 00:00:00"),
