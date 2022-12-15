@@ -4,7 +4,6 @@ const { callbackMap, commandsMap } = require('./callback.js');
 const { getNextLevelExp } = require('./level system');
 const db = require('./database');
 const { getGroup } = require('./libs');
-const { getGames } = require ('epic-free-games');
 
 
 const PokemonModule = require("./Modules/Pokemon/integration");

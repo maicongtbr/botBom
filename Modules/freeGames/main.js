@@ -1,14 +1,25 @@
 const superagent = require('superagent');
 const {Module} = require("../mod");
+const db = require("../../database");
+
+const Cache = db.getModel('Cache');
+
 
 var myModule;
 
 var commands = [
     { name:'!epicgames', callback: (msg) => freeGames(msg) },
+    { name:'!getGroupId', callback: (msg) => console.log(msg.from)},
 ]
 
 const init = async (bot) => {
     myModule = new Module("freeGames", bot, { }, commands);
+}
+
+const mainLoop = async () => {
+    //
+
+    setTimeout(mainLoop, 60 * 1000 * 60);
 }
 
 const freeEpicGames = async () => {

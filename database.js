@@ -34,6 +34,12 @@ class Database {
         }, {
             collection: 'PokemonBoxModule'
         }));
+        this.connection.model('Cache', new mongoose.Schema({
+            info: Object,
+            name: Boolean,
+        }, {
+            collection: 'Cache'
+        }));
     };
 
     getModel(name){
