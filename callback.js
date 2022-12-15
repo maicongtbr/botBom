@@ -7,7 +7,6 @@ const { getRandomInt, getRandomIntRange, userIsAdmin, getGroup } = require('./li
 const { sendRandomSticker, sendSticker, makeSticker } = require('./sticker');
 const { getRanking, getLevel } = require('./level system');
 
-
 const callbackMap = new Map();
 const commandsMap = new Map();
 
@@ -48,7 +47,7 @@ const banMember = (msg, bot) => {
                     }
                     if (hasMentions){
                         msg.getMentions().then((mentionedUsers) => {
-                            for (let i = 0; i <= mentionedUsers; i++){
+                            for (let i = 0; i <= mentionedUsers.length; i++){
                                 if (mentionedUsers[i].id._serialized === '5521991241118@c.us') {
                                     console.log('mencionou o bot');
                                     msg.reply('*JAMAIS TENTE ISSO*');
@@ -161,27 +160,6 @@ const forwardingScore = (msg) => {
         else {
             msg.reply('Essa mensagem foi encaminhada ' + score + ' vezes.', undefined);
         }
-    })
-}
-
-const freeGames = (bot, msg) => {
-    getGames('BR', false).then(res => {
-        var currentGamesInfo = [];
-        var nextGamesInfo = [];
-
-        res.currentGames.forEach(game => {
-            currentGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}\n`)
-        })
-        if(res.nextGames) {
-            res.nextGames.forEach(game => {
-                nextGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}`)
-            })
-        }
-        else {
-            nextGamesInfo.push('Informação ainda não disponível');
-        }
-
-        bot.sendMessage(msg.from, `🎮*Jogos grátis na Epic hoje:* \n\n${currentGamesInfo.join('\n\n')}\n\n 🎮*Próximos jogos grátis na Epic:* \n\n${nextGamesInfo.join('\n\n')}`);
     })
 }
 
@@ -302,7 +280,6 @@ const commands = [
     { name: '!down', callback: (msg, bot) => demoteMember(msg, bot)},
     { name: '!s', callback: (msg) => makeSticker(msg)},
     { name: '!encaminhado', callback: (msg) => forwardingScore(msg)},
-    { name: '!gratis', callback: (msg, bot) => freeGames(bot, msg)},
     { name: '!tts', callback: (msg, bot) => textToSpeach(msg, bot)},
     { name: '!tabela', callback: (msg, bot) => getTabela(msg, bot)},
     { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},

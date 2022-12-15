@@ -9,6 +9,8 @@ const { getGames } = require ('epic-free-games');
 
 const PokemonModule = require("./Modules/Pokemon/integration");
 
+const EpicFreeGameModule = require("./Modules/freeGames/main");
+
 //--Preciso salvar o pastNextGameId na DB e tratar o loop com datas em vez de timeout com ms
 //--Aprender a tratar Data()
 const sendEpicFreeGames = async (bot) => {
@@ -120,6 +122,7 @@ bot.on('disconnected', () => {
 bot.on('ready', () => {
     console.log("BOT ONLINE")
     PokemonModule.initPokemonModule(bot);
+    EpicFreeGameModule.init(bot);
     sendEpicFreeGames(bot);
 })
 
@@ -168,8 +171,8 @@ bot.on('message', async msg => {
         } else {
             msgCallback(msg, group);
         }
-
-        if (group) { //Coleta de EXP
+        //Coleta de EXP
+        if (group) {
             var groupId = group.id._serialized;
             var groupName = group.name;
             let contact = await msg.getContact();
@@ -203,7 +206,7 @@ bot.on('message', async msg => {
                         group: groupId,
                         groupName,
                         nextLevelExp
-                    }).then(newFodase => {}).catch(console.error);
+                    }).then(x => {}).catch(console.error);
                 }
                 else {
                     Exp.create({ 
