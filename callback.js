@@ -42,7 +42,6 @@ const banMember = (msg, bot) => {
                             }
                             let usersToBan = [quotedMsg.author];
                             return group.removeParticipants(usersToBan);
-
                         })
                     }
                     if (hasMentions){
@@ -57,10 +56,11 @@ const banMember = (msg, bot) => {
                             }
                             let usersToBan = [];
                             mentionedUsers.forEach((element) => {
-                            usersToBan.push(element.id._serialized);
+                                usersToBan.push(element.id._serialized);
                             })
                             return group.removeParticipants(usersToBan);
                         })
+                        return;
                     }
                     msg.reply('Você precisa marcar ou mencionar um membro para ser banido.');
                 })
