@@ -9,7 +9,10 @@ var myModule;
 
 var commands = [
     { name:'!epicgames', callback: (msg) => freeGames(msg) },
-    { name:'!getGroupId', callback: (msg) => console.log(msg.from)},
+    { name:'!epicgid', callback: (msg) => {
+        console.log(msg.from);
+        console.log("CHAMOU EMKK");
+    }},
 ]
 
 const init = async (bot) => {
