@@ -32,39 +32,38 @@ const banMember = (msg, bot) => {
                     return msg.reply('O Bot não é Admin.');
                 }
 
-                sendSticker(msg, './img/delete this5.webp', bot).then(() => { //id do bot = 5521991241118@c.us
-                    msg.getQuotedMessage().then((quotedMsg) => {
-                        if (quotedMsg && quotedMsg.author === '5521991241118@c.us') {
-                            console.log('mencionou a msg do bot');
-                            msg.reply('*JAMAIS TENTE ISSO!*');
-                            group.removeParticipants([msg.author]);
-                            return;
-                        }
+                sendSticker(msg, './img/delete this5.webp', bot).then(() => { 
+                    if (msg.hasQuotedMsg){
+                        msg.getQuotedMessage().then((quotedMsg) => {
+                            if (quotedMsg && quotedMsg.author === '5521991241118@c.us') {
+                                console.log('mencionou a msg do bot');
+                                msg.reply('*JAMAIS TENTE ISSO!*');
+                                group.removeParticipants([msg.author]);
+                                return;
+                            }
+                            let usersToBan = [quotedMsg.author];
+                            return group.removeParticipants(usersToBan);
+
+                        })
+                    }
+                    if (hasMentions){
                         msg.getMentions().then((mentionedUsers) => {
-                            mentionedUsers.forEach((element) => {
-                                if (element.id._serialized === '5521991241118@c.us') {
+                            for (let i = 0; i <= mentionedUsers; i++){
+                                if (mentionedUsers[i].id._serialized === '5521991241118@c.us') {
                                     console.log('mencionou o bot');
                                     msg.reply('*JAMAIS TENTE ISSO*');
                                     group.removeParticipants([msg.author]);
                                     return;
                                 }
-                            })
-
-                            if (msg.hasQuotedMsg){
-                                    console.log(quotedMsg);
-                                    let usersToBan = [quotedMsg.author];
-                                    console.log(usersToBan);
-                                    group.removeParticipants(usersToBan);
-                                    return;
                             }
-                            
-                                var usersToBan = [];
-                                mentionedUsers.forEach((element) => {
-                                usersToBan.push(element.id._serialized);
-                                })
-                                group.removeParticipants(usersToBan);
                         })
-                    })
+                        let usersToBan = [];
+                        mentionedUsers.forEach((element) => {
+                            usersToBan.push(element.id._serialized);
+                        })
+                        return group.removeParticipants(usersToBan);
+                    }
+                    msg.reply('Você precisa marcar ou mencionar um membro para ser banido.');
                 })
             })
         })
