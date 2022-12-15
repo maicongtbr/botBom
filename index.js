@@ -74,7 +74,6 @@ bot.on('ready', () => {
     console.log("BOT ONLINE")
     PokemonModule.initPokemonModule(bot);
     EpicFreeGameModule.init(bot);
-    sendEpicFreeGames(bot);
 })
 
 bot.on('group_leave', (notification) => {
