@@ -10,6 +10,7 @@ const { getGames } = require ('epic-free-games');
 const PokemonModule = require("./Modules/Pokemon/integration");
 
 //--Preciso salvar o pastNextGameId na DB e tratar o loop com datas em vez de timeout com ms
+//--Aprender a tratar Data()
 const sendEpicFreeGames = async (bot) => {
     var interval
     var currentGameId
