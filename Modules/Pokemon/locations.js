@@ -21,8 +21,6 @@ const updateLocationCache = async () => {
             for (area of areas) {
                 parsedRegions.push(await Areas.getPokemonArea(area, name.name))
             }
-            console.log(`Carregado a location ${location.name} da regiao ${parseInt(region) + 1} (${global.regions[parseInt(region)]})`);
-
         }
     }
 
