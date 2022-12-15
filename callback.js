@@ -10,7 +10,7 @@ const { getRanking, getLevel } = require('./level system');
 const callbackMap = new Map();
 const commandsMap = new Map();
 
-const banMember = (msg, bot) => {
+const banMember = (msg, bot) => { 
     var hasMentions = msg.getMentions();
     if (!msg.hasQuotedMsg && !hasMentions){
         return msg.reply('Para banir, você deve mencionar um usuário ou responder a mensagem do usuário a ser banido.');
