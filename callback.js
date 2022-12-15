@@ -55,12 +55,12 @@ const banMember = (msg, bot) => {
                                     return;
                                 }
                             }
-                        })
-                        let usersToBan = [];
-                        mentionedUsers.forEach((element) => {
+                            let usersToBan = [];
+                            mentionedUsers.forEach((element) => {
                             usersToBan.push(element.id._serialized);
+                            })
+                            return group.removeParticipants(usersToBan);
                         })
-                        return group.removeParticipants(usersToBan);
                     }
                     msg.reply('Você precisa marcar ou mencionar um membro para ser banido.');
                 })
