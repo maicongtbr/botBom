@@ -39,7 +39,7 @@ const getFreeGameMessage = async () => {
     const gamesInfo = []
     for(let i = 0; i < games.length; i++){
         let game = games[i];
-        gamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}\n⏳Data de ínicio: ${game.startDate.toLocaleString('pt-BR')} \n⌛Data de encerramento: ${game.endDate.toLocaleString('pt-BR')}`);
+        gamesInfo.push(`🕹*${game.title}* \n🧾_*Descrição:*_ ${game.description}\n⏳_*Data de ínicio:*_ ${game.startDate.toLocaleString('pt-BR')} \n⌛_*Data de encerramento:*_ ${game.endDate.toLocaleString('pt-BR')}`);
     }
 
     const message = `🎮*Jogos grátis da Epic Games:* \n\n${gamesInfo.join('\n\n')}`;
