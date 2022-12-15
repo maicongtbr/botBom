@@ -175,7 +175,9 @@ bot.on('message', async msg => {
 
         global.modules.forEach(e => {
             if(e.mod.enabled) {
-                e.mod.callbacks.onMessage(msg);
+                if(e.mod.callbacks.onMessage){
+                    e.mod.callbacks.onMessage(msg);
+                }
             }
         })
     } catch (err) {
