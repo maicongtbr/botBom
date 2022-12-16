@@ -65,7 +65,7 @@ const tryCatch = async (msg) => {
         var levels = getStorageValue('pokemonModuleLevels');
         var pokeLevel = levels[growthRate][storage.level - 1];
         var catchPokemon = await createPokemon(storage.pokemon, storage.level, pokeLevel ? pokeLevel.experience : 0, storage.shiny, storage.gender);
-        addPokemonToPlayer(msg, catchPokemon);
+        await addPokemonToPlayer(msg, catchPokemon);
     } else {
         await msg.reply("Você errou!");
         storage.tries += 1;
@@ -79,9 +79,13 @@ const tryCatch = async (msg) => {
     }
 }
 
-const addPokemonToPlayer = (msg, pokemon, isStarter) => {
+const addPokemonToPlayer = async (msg, pokemon, isStarter) => {
     if(!msg.author) {
         return;
+    }
+
+    if(!pokemon.name) {
+        throw "Pokemon sem nome, tentnado adicionar para " + await msg.getContact().pushname;
     }
 
     if (isStarter) {
@@ -294,7 +298,7 @@ const getStarter = async (msg) => {
                 return;
             }
             
-            addPokemonToPlayer(msg, starter, true);
+           await  addPokemonToPlayer(msg, starter, true);
             myModule.bot.sendMessage(msg.from, `Você escolheu o inicial ${capitalize(pokemon)}.`);
 
             starterState[msg.author] = 0;
