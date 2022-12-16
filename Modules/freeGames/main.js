@@ -30,7 +30,7 @@ const mainLoop = async () => {
         var newGame = false;
         for(let i = 0; i < games.length; i++) {
             var game = games[i];
-            if(!curGames.infos.groups.includes(game.id)) {
+            if(curGames.infos &&  !curGames.infosgroups.includes(game.id)) {
                 newGame = true;
                 break;
             }
