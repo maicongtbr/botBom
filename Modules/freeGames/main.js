@@ -105,8 +105,6 @@ const getFreeGameMessage = async () => {
     return message;
 }
 
-getFreeGameMessage().then(console.log)
-
 const freeGames = async (msg) => {
     myModule.bot.sendMessage(msg.from, await getFreeGameMessage());
 }
