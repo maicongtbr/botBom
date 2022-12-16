@@ -169,10 +169,11 @@ const paginateBox = (info) => {
     const box = [];
 
     const boxAmount = Math.ceil((info.length - 1) /10);
-    console.log(boxAmount, info.length);
 
     for(var i = 0; i <= boxAmount; i++)
     {
+        if(i == 3) break;
+
         const thisBox = {
             title: `Box ${i + 1}`,
             rows: []
@@ -188,6 +189,7 @@ const paginateBox = (info) => {
         if(thisBox.rows.length<1) continue;
 
         box.push(thisBox);
+
 
     }
 
@@ -210,8 +212,7 @@ const showBox = async (msg) => {
 
     if(!player) {
         await msg.reply("Você não tem Pokémon na Box");
-         console.log("sp");
-         return;
+        return;
     }
 
     var box = paginateBox(player.pokemon);
