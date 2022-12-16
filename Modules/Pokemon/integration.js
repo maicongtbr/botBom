@@ -177,18 +177,13 @@ const paginateBox = (info) => {
             title: `Box ${i + 1}`,
             rows: []
         }
-        console.log(i)
 
         for( var j = i * 10; j <=( i + 1) * 10; j++)
         {
-            console.log(j, ( i + 1) * 10);
-            
             let pokemon = info[j];
             if(info.length < j || !pokemon) break;
             thisBox.rows.push({id: j, title: capitalize(pokemon.name), description: `Level: ${pokemon.level}`});
         }
-
-        console.log(thisBox);
 
         if(thisBox.rows.length<1) continue;
 
