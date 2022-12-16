@@ -36,7 +36,7 @@ class Database {
         }));
         this.connection.model('Cache', new mongoose.Schema({
             info: Object,
-            name: Boolean,
+            name: String,
         }, {
             collection: 'Cache'
         }));
