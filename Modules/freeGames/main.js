@@ -46,7 +46,7 @@ const mainLoop = async () => {
 
     let updated = await Cache.updateOne({
         name: "EpicGames",
-        _id: curGames._id
+        _id:  curGames && curGames._id
     },
     {
         name: "EpicGames",
