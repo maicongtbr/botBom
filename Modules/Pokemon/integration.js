@@ -192,8 +192,9 @@ const showBox = async (msg) => {
                 title: "Box Principal",
                 rows: Pokemon
             }
-        ])
-        myModule.bot.sendMessage(msg.from, list);
+        ]);
+    
+        await myModule.bot.sendMessage(msg.from, list);
     })
 }
 
