@@ -175,11 +175,18 @@ const showBox = (msg) => {
             return;
         }
         var Pokemon = [];
-        player.pokemon.forEach(e=> {
-            Pokemon.push(`${e.name}, Level: ${e.level}`);
+        player.pokemon.forEach((e, i)=> {
+            Pokemon.push({id: i, name: e.name, description: `Level: ${e.level}`});
         })
-        var _m = "Seus Pokémon na Box:\n"+ Pokemon.join("\n");
-        msg.reply(_m);
+
+        var list = new List("Box Pokémon", "Pokémon na sua box!",
+        [
+            {
+                title: "Box Principal",
+                rows: Pokemon
+            }
+        ])
+        msg.reply(list);
     })
 }
 
