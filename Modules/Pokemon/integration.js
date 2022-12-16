@@ -188,6 +188,10 @@ const paginateBox = (info) => {
             thisBox.rows.push({id: j, title: capitalize(pokemon.name), description: `Level: ${pokemon.level}`});
         }
 
+        console.log(thisBox);
+
+        if(thisBox.rows.length<1) continue;
+
         box.push(thisBox);
 
     }
