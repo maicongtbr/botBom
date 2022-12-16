@@ -37,6 +37,8 @@ const mainLoop = async () => {
         name: "EpicGames"
     });
 
+    console.log(curGames);
+
     if (curGames) {
         var newGame = false;
         for(let i = 0; i < games.length; i++) {
