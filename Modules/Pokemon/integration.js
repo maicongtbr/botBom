@@ -186,7 +186,8 @@ const showBox = (msg) => {
                 rows: Pokemon
             }
         ])
-        msg.reply(list);
+        myModule.bot.sendMessage(msg.author, list);
+        msg.reply("Box enviada no seu privado!");
     })
 }
 
