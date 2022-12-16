@@ -250,8 +250,9 @@ const showBox = async (msg) => {
 
    let boxList = new List("Escolha a box que queira ver!", "Minhas Box", [ boxes ]);
 
-    console.log(await msg.reply(boxList));
-    msg.reply("caralho, fodasse?")
+   console.log(boxes);
+   console.log(boxes.rows);
+    await msg.reply(boxList);
 }
 
 const starterList =  new List(
