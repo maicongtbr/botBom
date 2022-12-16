@@ -165,62 +165,35 @@ const showPokemon = async (msg) => {
     })
 }
 
-const boxState = [ ];
-
-const openBox = async (msg) => {
-    var args = msg.body.split("Box: ")
-    var id = parseInt(args[0]);
-    if(!id) return;
-
-    var box = getBox(msg, id - 1);
-
-    const list = new List("Box Pokémon", "Pokémon na sua Box " + id,
-    box);
-
-    console.log(lisg);
-    
-    await msg.reply(list);
-    boxState[msg.from] = null;
-}
-
-const getPlayerBox = async (msg) => {
-    var PokemonBox = db.getModel("PokemonBox");
-    var info = await PokemonBox.findOne({
-        id: msg.from
-    });
-
-    return info.pokemon;
-}
-
-
-const getBox =async  (msg, id) => {
-    const info = await getPlayerBox(msg);
+const paginateBox = (info) => {
     const box = [];
 
-    const thisBox = {
-        title: `Box ${id + 1}`,
-        rows: []
-    }
+    const boxAmount = Math.ceil((info.length - 1) /10);
 
-    for( var j = i * 10; j <=( i + 1) * 10; j++)
+    for(var i = 0; i <= boxAmount; i++)
     {
-        let pokemon = info[j];
-        if(info.length < j || !pokemon) break;
-        thisBox.rows.push({id: j, title: capitalize(pokemon.name), description: `Level: ${pokemon.level}`});
+        const thisBox = {
+            title: `Box ${i + 1}`,
+            rows: []
+        }
+
+        for( var j = i * 10; j <=( i + 1) * 10; j++)
+        {
+            let pokemon = info[j];
+            if(info.length < j || !pokemon) break;
+            thisBox.rows.push({title: capitalize(pokemon.name), description: `Level: ${pokemon.level}`});
+        }
+
+        if(thisBox.rows.length<1) continue;
+
+        box.push(thisBox);
+
+
     }
-
-    if(thisBox.rows.length<1) return;
-
-    box.push(thisBox);
 
     return box;
 }
 
-
-// {
-//     title: "Pokébolas",
-//     rows: []
-// }
 const showBox = async (msg) => {
     var chat = await msg.getChat();
     if(chat.isGroup) 
@@ -229,30 +202,24 @@ const showBox = async (msg) => {
         return;
     }
 
-    const box =  await getPlayerBox(msg);
+    var PokemonBox = db.getModel("PokemonBox");
+    var player = await PokemonBox.findOne({
+        id: msg.from
+    });
 
-    if(!box) {
+    if(!player) {
         await msg.reply("Você não tem Pokémon na Box");
         return;
     }
 
+    var box = paginateBox(player.pokemon);
 
-   const boxAmount = Math.ceil((box.length - 1) / 10)
+    const list = new List("Box Pokémon", "Pokémon na sua box!",
+    box);
 
-   var boxes = {
-        title: "Suas Box",
-        rows: []
-   }
+    console.log(box);
 
-   for(let i = 0; i < boxAmount; i++){
-     boxes.rows.push({title: `Box: ${i + 1}` });
-   }
-
-   let boxList = new List("Escolha a box que queira ver!", "Minhas Box", [ boxes ]);
-
-   console.log(boxes);
-   console.log(boxes.rows);
-    await msg.reply(boxList);
+    return await msg.reply(list);
 }
 
 const starterList =  new List(
@@ -583,6 +550,7 @@ const addItem = async (msg, item) => {
     });
     return ret;
 }
+
 const buyItem = async (msg) => {
     var args = msg.body.split("\nPreço: ")
     var name = args[0];
@@ -615,8 +583,6 @@ const onMessage = async (msg) => {
                 return getStarter(msg);
             }else if(marketState[msg.from]) {
                 return buyItem(msg);
-            } else if(boxState[msg.from]) {
-                return openBox(msg);
             }
         } else if (msg.type == MessageTypes.BUTTONS_RESPONSE) {
             if(marketState[msg.from]) {
