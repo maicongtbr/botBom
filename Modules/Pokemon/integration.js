@@ -165,6 +165,36 @@ const showPokemon = async (msg) => {
     })
 }
 
+const paginateBox = (info) => {
+    const box = [];
+
+    const boxAmount = Math.ceil(info.length- 1 /10);
+    console.log(boxAmount);
+
+    for(var i = 0; i <= boxAmount; i++)
+    {
+        const thisBox = {
+            title: `Box ${i + 1}`,
+            rows: []
+        }
+        console.log(i)
+
+        for( var j = i * 10; j <=( i + 1) * 10; j++)
+        {
+            console.log(j, ( i + 1) * 10);
+            
+            let pokemon = info[j];
+            if(info.length < j || !pokemon) vreak;
+            thisBox.rows.push(pokemon)
+        }
+
+        box.push(thisBox);
+
+    }
+
+    return box;
+}
+
 const showBox = async (msg) => {
     var chat = await msg.getChat();
     if(chat.isGroup) 
@@ -184,23 +214,17 @@ const showBox = async (msg) => {
          console.log("sp");
          return;
     }
-    var Pokemon = [];
+    var box = paginateBox(player.pokemon);
     player.pokemon.forEach((e, i)=> {
         Pokemon.push({id: i, title: e.name, description: `Level: ${e.level}`});
     })
 
     const list = new List("Box Pokémon", "Pokémon na sua box!",
-    [
-        {
-            title: "Box Principal",
-            rows: Pokemon
-        }
-    ]);
+    box);
 
-    console.log(Pokemon);
+    console.log(box);
 
-    await msg.reply(list);
-    console.log("msg send?")
+    return await msg.reply(list);
 }
 
 const starterList =  new List(
