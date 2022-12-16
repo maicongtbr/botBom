@@ -53,8 +53,6 @@ const mainLoop = async () => {
         infos : _gamnes
     });
 
-    console.log(a);
-
     const message = await getFreeGameMessage();
 
    const aop = await myModule.bot.getChats();
@@ -66,7 +64,7 @@ const mainLoop = async () => {
         }
    }
 
-    setTimeout(mainLoop, 60 * 1000 * 60);
+    setTimeout(mainLoop, 3,6e+6);
 }
 
 const freeEpicGames = async () => {
