@@ -44,6 +44,8 @@ const mainLoop = async () => {
         _gamnes.push(e.id);
     } 
 
+    console.log(_gamnes);
+
     let updated = await Cache.updateOne({
         name: "EpicGames",
         _id:  curGames && curGames._id
