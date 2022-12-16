@@ -184,7 +184,7 @@ const paginateBox = (info) => {
             console.log(j, ( i + 1) * 10);
             
             let pokemon = info[j];
-            if(info.length < j || !pokemon) vreak;
+            if(info.length < j || !pokemon) break;
             thisBox.rows.push(pokemon)
         }
 
