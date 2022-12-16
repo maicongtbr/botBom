@@ -165,10 +165,17 @@ const showPokemon = async (msg) => {
     })
 }
 
-const showBox = (msg) => {
+const showBox = async (msg) => {
+    var chat = await msg.getChat();
+    if(chat.isGroup) 
+    {
+        await msg.reply("Não é possível utilizar em grupos.");
+        return;
+    }
+
     var PokemonBox = db.getModel("PokemonBox");
     PokemonBox.findOne({
-        id: msg.author
+        id:  msg.from
     }).then(async player => {
         if(!player) {
             msg.reply("Você não tem Pokémon na Box");
@@ -186,8 +193,7 @@ const showBox = (msg) => {
                 rows: Pokemon
             }
         ])
-        myModule.bot.sendMessage(msg.author, list);
-        msg.reply("Box enviada no seu privado!");
+        myModule.bot.sendMessage(msg.from, list);
     })
 }
 
