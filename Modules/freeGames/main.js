@@ -63,8 +63,6 @@ const mainLoop = async () => {
         }
    }
 
-   msg.sendMessage()
-
     setTimeout(mainLoop, 60 * 1000 * 60);
 }
 
