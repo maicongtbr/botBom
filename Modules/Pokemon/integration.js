@@ -214,10 +214,8 @@ const showBox = async (msg) => {
 
     var box = paginateBox(player.pokemon);
 
-    const list = new List("Box Pokémon", "Pokémon na sua box!",
+    const list = new List("Suas Box", "Abrir",
     box);
-
-    console.log(box);
 
     return await msg.reply(list);
 }
