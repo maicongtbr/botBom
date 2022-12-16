@@ -41,8 +41,10 @@ const mainLoop = async () => {
         if(!newGame) return;
     }
 
+    const message = await getFreeGameMessage();
+
     async function sendMessageToGroup(group) {
-        myModule.bot.sendMessage(group, await getFreeGameMessage());
+        myModule.bot.sendMessage(group, message);
     }
 
     groups.forEach(group => {
