@@ -197,7 +197,7 @@ const paginateBox = (info) => {
 const showBox = async (msg) => {
      var PokemonBox = db.getModel("PokemonBox");
     var player = await PokemonBox.findOne({
-        id: msg.from
+        id: msg.author || msg.from
     });
 
     if(!player) {
@@ -207,7 +207,8 @@ const showBox = async (msg) => {
 
     var box = paginateBox(player.pokemon);
 
-    const list = new List("Suas Box", "Abrir",
+    var contact = await msg.getContact();
+    const list = new List(`Pokémons reservas de ${contact.pushname}`, "Abrir",
     box);
 
     return await msg.reply(list);
