@@ -245,7 +245,7 @@ const showBox = async (msg) => {
    }
 
    for(let i = 0; i < boxAmount; i++){
-     boxes.rows.push({ id: i, title: `Box: ${i + 1}` });
+     boxes.rows.push({title: `Box: ${i + 1}` });
    }
 
    let boxList = new List("Escolha a box que queira ver!", "Minhas Box", [ boxes ]);
