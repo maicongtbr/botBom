@@ -240,7 +240,7 @@ const showBox = async (msg) => {
    }
 
    for(let i = 0; i < boxAmount; i++){
-        row.push({ id: i, title: `Box: ${i + 1}` });
+     boxes.rows.push({ id: i, title: `Box: ${i + 1}` });
    }
 
    var list = new List("Escolha a box que queira ver!", "Box Pokémon", [ boxes ]);
