@@ -197,9 +197,10 @@ const showBox = async (msg) => {
         }
     ]);
 
-    console.log(list);
+    console.log(Pokemon);
 
     await msg.reply(list);
+    console.log("msg send?")
 }
 
 const starterList =  new List(
