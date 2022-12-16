@@ -208,7 +208,7 @@ const showBox = async (msg) => {
     var box = paginateBox(player.pokemon);
 
     var contact = await msg.getContact();
-    const list = new List(`Pokémons reservas de ${contact.pushname}`, "Abrir",
+    const list = new List(`Pokémon reservas de ${contact.pushname}`, "Abrir",
     box);
 
     return await msg.reply(list);
