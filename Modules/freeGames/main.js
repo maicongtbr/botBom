@@ -18,6 +18,7 @@ const init = async (bot) => {
 
 
 const mainLoop = async () => {
+    console.log("Checando jogos da epic games...");
     const games = await freeEpicGames();
 
     const curGames = await Cache.findOne({
@@ -34,7 +35,10 @@ const mainLoop = async () => {
                 break;
             }
         } 
-        if(!newGame) return;
+        if(!newGame) {
+            console.log("Nenhum jogo novo.");
+            return;
+        };
     }
 
     var databaseGames = [];
