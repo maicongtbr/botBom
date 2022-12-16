@@ -179,7 +179,7 @@ const showBox = async (msg) => {
     });
 
     if(!player) {
-        msg.reply("Você não tem Pokémon na Box");
+        await msg.reply("Você não tem Pokémon na Box");
         return;
     }
     var Pokemon = [];
@@ -195,7 +195,7 @@ const showBox = async (msg) => {
         }
     ]);
 
-    await msg.reply*(list);
+    await msg.reply(list);
 }
 
 const starterList =  new List(
