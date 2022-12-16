@@ -176,7 +176,7 @@ const showBox = (msg) => {
         }
         var Pokemon = [];
         player.pokemon.forEach((e, i)=> {
-            Pokemon.push({id: i, name: e.name, description: `Level: ${e.level}`});
+            Pokemon.push({id: i, title: e.name, description: `Level: ${e.level}`});
         })
 
         var list = new List("Box Pokémon", "Pokémon na sua box!",
