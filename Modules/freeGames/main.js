@@ -93,8 +93,8 @@ const getFreeGameMessage = async () => {
 
     const gamesInfo = [];
     games.sort((a, b) => {
-        if(a.startDate < b.startDate) return 1;
-        return -1;
+        if(a.startDate < b.startDate) return -1;
+        return 1;
     })
     for(let i = 0; i < games.length; i++){
         let game = games[i];
@@ -104,6 +104,8 @@ const getFreeGameMessage = async () => {
     const message = `🎮*Jogos grátis da Epic Games:* \n\n${gamesInfo.join('\n\n')}`;
     return message;
 }
+
+console.log(await getFreeGameMessage);
 
 const freeGames = async (msg) => {
     myModule.bot.sendMessage(msg.from, await getFreeGameMessage());
