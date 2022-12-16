@@ -9,9 +9,17 @@ var myModule;
 
 var commands = [
     { name:'!epicgames', callback: (msg) => freeGames(msg) },
-    { name:'!epicgid', callback: (msg) => {
+    { name:'!epicgid', callback: async (msg) => {
         console.log(msg.from);
-        console.log("CHAMOU EMKK");
+        Cache.update({
+            name: "EpicGames",
+        },
+        {
+            infos: { groups: [ msg ] }
+        },
+        {
+            _upsert: true
+        })
     }},
 ]
 
@@ -33,13 +41,26 @@ const mainLoop = async () => {
         var newGame = false;
         for(let i = 0; i < games.length; i++) {
             var game = games[i];
-            if(!curGames.includes(game.id)) {
+            if(!curGames.infos.groups.includes(game.id)) {
                 newGame = true;
                 break;
             }
         } 
         if(!newGame) return;
     }
+
+    const _gamnes = [];
+
+    curGames.infos.groups.forEach( e=> {
+        _gamnes.push(e.id);
+    })
+
+    await Cache.update({
+        name: "EpicGames"
+    },
+    {
+        infos : { ...curGames,  _gamnes }
+    });
 
     const message = await getFreeGameMessage();
 
