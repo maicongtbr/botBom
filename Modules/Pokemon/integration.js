@@ -216,6 +216,11 @@ const getBox =async  (msg, id) => {
     return box;
 }
 
+
+// {
+//     title: "Pokébolas",
+//     rows: []
+// }
 const showBox = async (msg) => {
     var chat = await msg.getChat();
     if(chat.isGroup) 
@@ -243,12 +248,9 @@ const showBox = async (msg) => {
      boxes.rows.push({ id: i, title: `Box: ${i + 1}` });
    }
 
-   var list = new List("Escolha a box que queira ver!", "Box Pokémon", [ boxes ]);
+   let boxList = new List("Escolha a box que queira ver!", "Minhas Box", [ boxes ]);
 
-
-    console.log(list);
-
-    return await msg.reply(list);
+    console.log(await msg.reply(boxList));
 }
 
 const starterList =  new List(
