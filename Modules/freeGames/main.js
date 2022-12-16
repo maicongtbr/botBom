@@ -45,8 +45,7 @@ const mainLoop = async () => {
     } 
 
    await Cache.updateOne({
-        name: "EpicGames",
-        _id:  curGames && curGames._id
+        name: "EpicGames"
     },
     {
         info : { games: databaseGames  }
@@ -92,7 +91,11 @@ const freeEpicGames = async () => {
 const getFreeGameMessage = async () => {
     let games = await freeEpicGames();
 
-    const gamesInfo = []
+    const gamesInfo = [];
+    games.sort((a, b) => {
+        if(a.startDate < b.startDate) return 1;
+        return -1;
+    })
     for(let i = 0; i < games.length; i++){
         let game = games[i];
         gamesInfo.push(`🕹*${game.title}* \n🧾_*Descrição:*_ ${game.description}\n⏳_*Data de ínicio:*_ ${game.startDate.toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })} \n⌛_*Data de encerramento:*_ ${game.endDate.toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })}`);
