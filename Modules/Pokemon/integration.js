@@ -185,7 +185,7 @@ const paginateBox = (info) => {
             
             let pokemon = info[j];
             if(info.length < j || !pokemon) break;
-            thisBox.rows.push(pokemon)
+            thisBox.rows.push({id: j, title: capitalize(pokemon.name), description: `Level: ${pokemon.level}`});
         }
 
         box.push(thisBox);
