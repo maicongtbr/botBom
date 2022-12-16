@@ -170,17 +170,19 @@ const showBox = async (msg) => {
     if(chat.isGroup) 
     {
         await msg.reply("Não é possível utilizar em grupos.");
-        return;
+         console.log("sla");
+         return;
     }
 
     var PokemonBox = db.getModel("PokemonBox");
     var player = await PokemonBox.findOne({
-        id:  msg.author || msg.from
+        id: msg.from
     });
 
     if(!player) {
         await msg.reply("Você não tem Pokémon na Box");
-        return;
+         console.log("sp");
+         return;
     }
     var Pokemon = [];
     player.pokemon.forEach((e, i)=> {
@@ -194,6 +196,8 @@ const showBox = async (msg) => {
             rows: Pokemon
         }
     ]);
+
+    console.log(list);
 
     await msg.reply(list);
 }
