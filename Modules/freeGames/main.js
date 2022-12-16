@@ -49,6 +49,7 @@ const mainLoop = async () => {
         _id: curGames._id
     },
     {
+        name: "EpicGames",
         infos : _gamnes
     });
 
