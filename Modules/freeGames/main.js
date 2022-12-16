@@ -17,10 +17,37 @@ var commands = [
 
 const init = async (bot) => {
     myModule = new Module("freeGames", bot, { }, commands);
+    mainLoop();
 }
 
+
+const groups = [  "5521969164962-1519130052@g.us" ]
 const mainLoop = async () => {
-    //
+    const games = await freeEpicGames();
+
+    const curGames = await Cache.findOne({
+        name: "EpicGames"
+    });
+
+    if (curGames) {
+        var newGame = false;
+        for(let i = 0; i < games.length; i++) {
+            var game = games[i];
+            if(!curGames.includes(game.id)) {
+                newGame = true;
+                break;
+            }
+        } 
+        if(!newGame) return;
+    }
+
+    async function sendMessageToGroup(group) {
+        myModule.bot.sendMessage(group, await getFreeGameMessage());
+    }
+
+    groups.forEach(group => {
+        sendMessageToGroup().then(e => console.log("Enviado os novos jogos da Epic Games!"));
+    })
 
     setTimeout(mainLoop, 60 * 1000 * 60);
 }
