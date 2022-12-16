@@ -11,7 +11,7 @@ var commands = [
     { name:'!epicgames', callback: (msg) => freeGames(msg) },
     { name:'!epicgid', callback: async (msg) => {
         console.log(msg.from);
-        Cache.update({
+        await Cache.update({
             name: "EpicGames",
         },
         {
