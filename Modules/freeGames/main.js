@@ -50,7 +50,7 @@ const mainLoop = async () => {
     {
         infos : { ...curGames,  _gamnes }
     },
-    {_upsert: true});
+    {upsert: true});
 
     const message = await getFreeGameMessage();
 
