@@ -40,17 +40,22 @@ const mainLoop = async () => {
 
     const _gamnes = [];
 
-    games.forEach( e=> {
+    for(let i = 0; i < games.length; i++) {
+        var e = games[i];
         _gamnes.push(e.id);
-    })
+    } 
+    
+    console.log(_gamnes);
 
-    await Cache.updateOne({
+    let a = await Cache.updateOne({
         name: "EpicGames"
     },
     {
-        infos : [_gamnes]
+        infos : _gamnes
     },
     {upsert: true});
+
+    console.log(a);
 
     const message = await getFreeGameMessage();
 
