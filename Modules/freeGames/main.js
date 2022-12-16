@@ -44,14 +44,13 @@ const mainLoop = async () => {
         _gamnes.push(e.id);
     } 
 
-    let a = await Cache.update({
+    let a = await Cache.replaceOne({
         name: "EpicGames",
         _id: curGames._id
     },
     {
         infos : _gamnes
-    },
-    {upsert: true});
+    });
 
     console.log(a);
 
