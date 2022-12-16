@@ -214,10 +214,8 @@ const showBox = async (msg) => {
          console.log("sp");
          return;
     }
+
     var box = paginateBox(player.pokemon);
-    player.pokemon.forEach((e, i)=> {
-        Pokemon.push({id: i, title: e.name, description: `Level: ${e.level}`});
-    })
 
     const list = new List("Box Pokémon", "Pokémon na sua box!",
     box);
