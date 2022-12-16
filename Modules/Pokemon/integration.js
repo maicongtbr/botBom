@@ -168,8 +168,8 @@ const showPokemon = async (msg) => {
 const paginateBox = (info) => {
     const box = [];
 
-    const boxAmount = Math.ceil(info.length- 1 /10);
-    console.log(boxAmount);
+    const boxAmount = Math.ceil((info.length - 1) /10);
+    console.log(boxAmount, info.length);
 
     for(var i = 0; i <= boxAmount; i++)
     {
