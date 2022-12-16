@@ -48,7 +48,7 @@ const mainLoop = async () => {
         name: "EpicGames"
     },
     {
-        infos : { ...curGames,  _gamnes }
+        infos : [_gamnes]
     },
     {upsert: true});
 
