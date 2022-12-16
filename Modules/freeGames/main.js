@@ -29,7 +29,7 @@ const mainLoop = async () => {
         var newGame = false;
         for(let i = 0; i < games.length; i++) {
             var game = games[i];
-            if(!curGames.infos ||curGames.infos &&  !curGames.infosgroups.includes(game.id)) {
+            if(!curGames.info || curGames.info && curGames.info.games &&  !curGames.info.games.includes(game.id)) {
                 newGame = true;
                 break;
             }
@@ -37,22 +37,19 @@ const mainLoop = async () => {
         if(!newGame) return;
     }
 
-    var _gamnes = [];
+    var databaseGames = [];
 
     for(let i = 0; i < games.length; i++) {
         var e = games[i];
-        _gamnes.push(e.id);
+        databaseGames.push(e.id);
     } 
-
-    console.log(_gamnes);
 
     Cache.updateOne({
         name: "EpicGames",
         _id:  curGames && curGames._id
     },
     {
-        name: "EpicGames",
-        infos : _gamnes
+        info : { games: databaseGames  }
     },
     { upsert: true }).then(console.log).catch(console.error);
 
