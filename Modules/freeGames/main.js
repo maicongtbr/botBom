@@ -44,14 +44,14 @@ const mainLoop = async () => {
         databaseGames.push(e.id);
     } 
 
-    Cache.updateOne({
+   await Cache.updateOne({
         name: "EpicGames",
         _id:  curGames && curGames._id
     },
     {
         info : { games: databaseGames  }
     },
-    { upsert: true }).then(console.log).catch(console.error);
+    { upsert: true });
 
     const message = await getFreeGameMessage();
 
