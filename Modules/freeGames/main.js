@@ -51,7 +51,7 @@ const mainLoop = async () => {
 
     const _gamnes = [];
 
-    curGames.infos.groups.forEach( e=> {
+    games.forEach( e=> {
         _gamnes.push(e.id);
     })
 
