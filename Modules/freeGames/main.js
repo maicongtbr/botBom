@@ -17,7 +17,6 @@ const init = async (bot) => {
 }
 
 
-const groups = [  "5521969164962-1519130052@g.us" ]
 const mainLoop = async () => {
     const games = await freeEpicGames();
 
@@ -30,7 +29,7 @@ const mainLoop = async () => {
         var newGame = false;
         for(let i = 0; i < games.length; i++) {
             var game = games[i];
-            if(curGames.infos &&  !curGames.infosgroups.includes(game.id)) {
+            if(!curGames.infos ||curGames.infos &&  !curGames.infosgroups.includes(game.id)) {
                 newGame = true;
                 break;
             }
@@ -38,14 +37,12 @@ const mainLoop = async () => {
         if(!newGame) return;
     }
 
-    const _gamnes = [];
+    var _gamnes = [];
 
     for(let i = 0; i < games.length; i++) {
         var e = games[i];
         _gamnes.push(e.id);
     } 
-    
-    console.log(_gamnes);
 
     let a = await Cache.updateOne({
         name: "EpicGames"
