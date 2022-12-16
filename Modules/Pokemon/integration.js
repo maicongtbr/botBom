@@ -174,28 +174,28 @@ const showBox = async (msg) => {
     }
 
     var PokemonBox = db.getModel("PokemonBox");
-    PokemonBox.findOne({
-        id:  msg.from
-    }).then(async player => {
-        if(!player) {
-            msg.reply("Você não tem Pokémon na Box");
-            return;
-        }
-        var Pokemon = [];
-        player.pokemon.forEach((e, i)=> {
-            Pokemon.push({id: i, title: e.name, description: `Level: ${e.level}`});
-        })
+    var player = await PokemonBox.findOne({
+        id:  msg.author || msg.from
+    });
 
-        var list = new List("Box Pokémon", "Pokémon na sua box!",
-        [
-            {
-                title: "Box Principal",
-                rows: Pokemon
-            }
-        ]);
-    
-        await myModule.bot.sendMessage(msg.from, list);
+    if(!player) {
+        msg.reply("Você não tem Pokémon na Box");
+        return;
+    }
+    var Pokemon = [];
+    player.pokemon.forEach((e, i)=> {
+        Pokemon.push({id: i, title: e.name, description: `Level: ${e.level}`});
     })
+
+    const list = new List("Box Pokémon", "Pokémon na sua box!",
+    [
+        {
+            title: "Box Principal",
+            rows: Pokemon
+        }
+    ]);
+
+    await msg.reply*(list);
 }
 
 const starterList =  new List(
