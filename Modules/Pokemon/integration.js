@@ -195,14 +195,7 @@ const paginateBox = (info) => {
 }
 
 const showBox = async (msg) => {
-    var chat = await msg.getChat();
-    if(chat.isGroup) 
-    {
-        await msg.reply("Não é possível utilizar em grupos.");
-        return;
-    }
-
-    var PokemonBox = db.getModel("PokemonBox");
+     var PokemonBox = db.getModel("PokemonBox");
     var player = await PokemonBox.findOne({
         id: msg.from
     });
