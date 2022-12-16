@@ -58,7 +58,7 @@ const mainLoop = async () => {
    {
         let group =aop[i]
         if(group.isGroup) {
-            aop.sendMessage(message);
+            group.sendMessage(message);
             break;
         }
    }
