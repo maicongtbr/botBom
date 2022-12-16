@@ -9,18 +9,6 @@ var myModule;
 
 var commands = [
     { name:'!epicgames', callback: (msg) => freeGames(msg) },
-    { name:'!epicgid', callback: async (msg) => {
-        console.log(msg.from);
-        await Cache.update({
-            name: "EpicGames",
-        },
-        {
-            infos: { groups: [ msg ] }
-        },
-        {
-            _upsert: true
-        })
-    }},
 ]
 
 const init = async (bot) => {
@@ -37,7 +25,6 @@ const mainLoop = async () => {
         name: "EpicGames"
     });
 
-    console.log(curGames);
 
     if (curGames) {
         var newGame = false;
@@ -66,13 +53,17 @@ const mainLoop = async () => {
 
     const message = await getFreeGameMessage();
 
-    async function sendMessageToGroup(group) {
-        myModule.bot.sendMessage(group, message);
-    }
+   const aop = await myModule.bot.getChats();
+   for ( var i = 0; i < aop.length; i++)
+   {
+        let group =aop[i]
+        if(group.isGroup) {
+            aop.sendMessage(message);
+            break;
+        }
+   }
 
-    groups.forEach(group => {
-        sendMessageToGroup().then(e => console.log("Enviado os novos jogos da Epic Games!"));
-    })
+   msg.sendMessage()
 
     setTimeout(mainLoop, 60 * 1000 * 60);
 }
