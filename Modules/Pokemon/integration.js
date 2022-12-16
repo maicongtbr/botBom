@@ -224,13 +224,13 @@ const showBox = async (msg) => {
         return;
     }
 
+    const box =  await getPlayerBox(msg);
 
-    if(!player) {
+    if(!box) {
         await msg.reply("Você não tem Pokémon na Box");
         return;
     }
 
-   const box =  await getPlayerBox(msg);
 
    const boxAmount = Math.ceil((box.length - 1) / 10)
 
