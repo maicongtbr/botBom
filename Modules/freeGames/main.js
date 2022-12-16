@@ -46,7 +46,7 @@ const mainLoop = async () => {
 
     console.log(_gamnes);
 
-    let updated = await Cache.updateOne({
+    Cache.updateOne({
         name: "EpicGames",
         _id:  curGames && curGames._id
     },
@@ -54,9 +54,7 @@ const mainLoop = async () => {
         name: "EpicGames",
         infos : _gamnes
     },
-    { upsert: true });
-
-    console.log(updated);
+    { upsert: true }).then(console.log).error(console.error);
 
     const message = await getFreeGameMessage();
 
