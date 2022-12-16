@@ -45,7 +45,8 @@ const mainLoop = async () => {
     } 
 
     let a = await Cache.updateOne({
-        name: "EpicGames"
+        name: "EpicGames",
+        _id: curGames._id
     },
     {
         infos : _gamnes
