@@ -432,7 +432,19 @@ const pokeGroups = [
 // }
 
 const giveMoneyToPlayer = async (msg, amount) => {
+    var PokemonPlayerDB = db.getModel("PokemonPlayer");
+    var player =  await PokemonPlayerDB.findOne({
+        id: msg.author
+    });
 
+    var coins = player.coins || 0;
+
+    awaitPokemonPlayerDB.updateOne({
+       id: msg.author
+    },
+    {
+        coins: coins + amount
+    }, { upsrt: true });
 }
 
 const getMyItems = async (msg) => {

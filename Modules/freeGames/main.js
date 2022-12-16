@@ -44,14 +44,17 @@ const mainLoop = async () => {
         _gamnes.push(e.id);
     } 
 
-    let a = await Cache.replaceOne({
+    let updated = await Cache.updateOne({
         name: "EpicGames",
         _id: curGames._id
     },
     {
         name: "EpicGames",
         infos : _gamnes
-    });
+    },
+    { upsert: true });
+
+    console.log(updated);
 
     const message = await getFreeGameMessage();
 
