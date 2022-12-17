@@ -13,7 +13,7 @@ class Module {
 
     log(...args) {
         console.log(this);
-        console.log(`[${this.name.toUpperCase()}]`, ...args);
+        console.log(`[${this.name}]`, ...args);
     }
 
     disable(msg) {
