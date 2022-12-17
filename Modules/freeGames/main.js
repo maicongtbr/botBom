@@ -18,11 +18,10 @@ const init = async (bot) => {
 
 const MAIN_LOOP_TIME = 60 * 60 * 1000; // 1h
 
-Date.prototype.getBrazilTime = () => {
-    return this.toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })
-}
+Date.prototype.getBrazilTime = () => this.toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" });
 
 const scheduleMainLoop = () => {
+    console.log(new Date.getBrazilTime());
     console.log(`Checando o novo jogo da epic em ${new Date(new Date() + MAIN_LOOP_TIME).getBrazilTime()}`)
     setTimeout(mainLoop, MAIN_LOOP_TIME);
 }
