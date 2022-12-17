@@ -67,7 +67,10 @@ const mainLoop = async () => {
         }
    }
 
-    setTimeout(mainLoop, 1*3600000 );
+    setTimeout(() => {
+        mainLoop()
+        .catch(console.log);
+    }, 1000 * 60);
 }
 
 const freeEpicGames = async () => {
