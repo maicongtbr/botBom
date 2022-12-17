@@ -6,13 +6,13 @@ class Module {
         this.enabled = true;
         this.callbacks = callbacks;
         this.commands = commands;
-        this.commands.push({ name:`!enable${name}`, callback: this.enable });
-        this.commands.push({ name:`!disable${name}`, callback: this.disable });
+        this.commands.push({ name:`!enable${name.toLowerCase()}`, callback: this.enable });
+        this.commands.push({ name:`!disable${name.toLowerCase()}`, callback: this.disable });
         global.modules.push({ name: name, mod: this });
     }
 
     log(...args) {
-        console.log(`[${this.name}]`, ...args);
+        console.log(`[${this.name}]`, args.join(", "));
     }
 
     disable(msg) {
