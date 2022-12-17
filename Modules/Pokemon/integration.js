@@ -660,7 +660,7 @@ const initPokemonModule = (bot) => {
     var callbacks = { onMessage, onLevelUp };
     myModule = new Module("Pokémon", bot, callbacks, commands);
     log = (...args) => myModule.log(args);
-    require("./main"); // start
+    require("./main")(log); // start
 
     new Storage("pokemonModuleEncounterRate", (value) => {
         encounterPercentage = value;
