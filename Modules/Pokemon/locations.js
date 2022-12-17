@@ -33,6 +33,7 @@ const updateLocationCache = async () => {
             var hours = timeAfter.getHours() - timeBefore.getHours();
             var minutes = timeAfter.getMinutes() - timeBefore.getMinutes();
             var seconds = timeAfter.getSeconds() - timeBefore.getSeconds();
+            log(timeAfter.toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" }), timeBefore.toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" }))
             var msg = "";
             if(hours) {
                 msg += hours + "h";
