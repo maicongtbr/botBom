@@ -21,9 +21,9 @@ const init = async (bot) => {
     } catch (error) {
         console.error(error);
     }
-    myModule.log("hm");
+    myModule.log("hm2");
     log = console.log;
-    mainLoop();
+    await mainLoop();
 }
 
 const MAIN_LOOP_TIME = 60 * 60 * 1000; // 1h

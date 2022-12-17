@@ -12,7 +12,6 @@ class Module {
     }
 
     log(...args) {
-        console.log(this);
         console.log(`[${this.name}]`, ...args);
     }
 
