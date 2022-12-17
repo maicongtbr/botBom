@@ -15,6 +15,7 @@ const download = require('image-downloader');
 const { getMarket } = require("./market");
 const { title } = require("process");
 const PokeParty = require("./pokeParty.js");
+var log;
 
 
 
@@ -444,11 +445,11 @@ const getPokemon = async (msg, private) => {
             await bot.sendMessage(id, "O *primeiro* a acerter o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!");
             fs.unlink(imgName, (err) => {
                 if (!err) return;
-                console.log(err)
+                log(err)
             });
             fs.unlink(imgNameWebp, (err) => {
                 if (!err) return;
-                console.log(err)
+                log(err)
             });
 
         });
@@ -658,6 +659,7 @@ const onLevelUp = (msg) => {
 const initPokemonModule = (bot) => {
     var callbacks = { onMessage, onLevelUp };
     myModule = new Module("Pokémon", bot, callbacks, commands);
+    log = (...args) => myModule.log(args);
     require("./main"); // start
 
     new Storage("pokemonModuleEncounterRate", (value) => {
@@ -668,7 +670,7 @@ const initPokemonModule = (bot) => {
         for (vae in value) {
             element = value[vae]
             if(!element.notificated && element.pokemon && element.server) {
-                console.log(`Um ${element.pokemon} selvagem apareceu no servidor ${element.server}!`);
+                log(`Um ${element.pokemon} selvagem apareceu no servidor ${element.server}!`);
                 element.notificated = true;
             }
         }

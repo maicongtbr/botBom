@@ -27,7 +27,7 @@ const updateLocationCache = async () => {
     var st = getStorage("pokemonModuleLocation");
     if (!st) {
         new Storage("pokemonModuleLocation", (storage) => {
-            console.log(`Carregadas ${parsedRegions.length} regiões com pokémon capturáveis.`)
+            log(`Carregadas ${parsedRegions.length} regiões com pokémon capturáveis.`)
             var timeAfter = new Date();
 
             var hours = timeAfter.getHours() - timeBefore.getHours();
@@ -43,7 +43,7 @@ const updateLocationCache = async () => {
             if(seconds) {
                 msg += seconds + "s";
             }
-            console.log("Localizações atualizadas em " + msg);
+            log("Localizações atualizadas em " + msg);
             global.locales = storage;
         }, parsedRegions);
     } else {
@@ -52,8 +52,10 @@ const updateLocationCache = async () => {
 
 }
 
+var log;
 
-module.exports = { updateCache: async (cb) => {
+module.exports = { updateCache: async (_log, cb) => {
+    log = _log;
     await updateLocationCache(cb);
-    new Storage("pokemonModuleLoaded", () => console.log("Pokemon Module Done"), true);
+    new Storage("pokemonModuleLoaded", () => log("Pokemon Module Done"), true);
 }}
