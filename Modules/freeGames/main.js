@@ -18,7 +18,7 @@ const init = async (bot) => {
 
 const MAIN_LOOP_TIME = 60 * 60 * 1000; // 1h
 
-Date.prototype.getBrazilTime = () => this.toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" });
+Date.getBrazilTime = () => this.toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" });
 
 const scheduleMainLoop = () => {
     const date = new Date();
