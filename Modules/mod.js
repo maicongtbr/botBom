@@ -13,10 +13,10 @@ class Module {
     }
 
     configureCommands() {
-        this.commands.push({ name:`!enable${this.name.toLowerCase()}`, callback: this.enable });
-        this.commands.push({ name:`!disable${this.name.toLowerCase()}`, callback: this.disable });
-        this.commands.push({ name:`!enable${this.name.toLowerCase()}log`, callback: this.enableLog });
-        this.commands.push({ name:`!disable${this.name.toLowerCase()}log`, callback: this.disableLog });
+        this.commands.push({ name:`!enable${this.name.toLowerCase()}`, callback: (msg) => this.enableimage.png });
+        this.commands.push({ name:`!disable${this.name.toLowerCase()}`, callback: (msg) => this.disableimage.png });
+        this.commands.push({ name:`!enable${this.name.toLowerCase()}log`, callback: (msg) => this.enableLogimage.png });
+        this.commands.push({ name:`!disable${this.name.toLowerCase()}log`, callback: (msg) => this.disableLog(msg) });
     }
 
     log(...args) {
