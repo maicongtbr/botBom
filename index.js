@@ -103,7 +103,7 @@ bot.on('message', async msg => {
         if (msg.body.startsWith('!')){
             global.modules.forEach(e => {
                 e.mod.commands.forEach(e => {
-                    if(msg.body.toLowerCase().includes(`${e.name} `)) {
+                    if(msg.body.toLowerCase().includes(`${e.name} `) || msg.body == e.name) {
                         e.callback(msg);
                     }
                 })
@@ -111,7 +111,7 @@ bot.on('message', async msg => {
 
             for (value of commandsMap) {
                 var key = value[0];
-                if (msg.body.toLowerCase().includes(`${key} `)) {
+                if (msg.body.toLowerCase().includes(`${key} `) || msg.body == key) {
                     var _callback = value[1];
                     _callback(msg, bot);
                     break;
