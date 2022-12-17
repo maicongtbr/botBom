@@ -38,10 +38,10 @@ const updateLocationCache = async () => {
                 msg += hours + "h";
             }
             if(minutes) {
-                msg += minutes + "m";
+                msg += (minutes < 0 ? minutes * -1 : minutes) + "m";
             }
             if(seconds) {
-                msg += seconds < 0 ? seconds * -1 : seconds + "s";
+                msg += (seconds < 0 ? seconds * -1 : seconds) + "s";
             }
             log("Localizações atualizadas em " + msg);
             global.locales = storage;
