@@ -648,7 +648,7 @@ const onMessage = async (msg) => {
         getPokemon(msg);
 
     } catch (e) {
-        console.warn("Erro onMessage Pokémon", e);
+        console.warn("Erro onMessage PokéBom", e);
     }
 }
 
@@ -658,7 +658,7 @@ const onLevelUp = (msg) => {
 
 const initPokemonModule = (bot) => {
     var callbacks = { onMessage, onLevelUp };
-    myModule = new Module("Pokémon", bot, callbacks, commands);
+    myModule = new Module("PokéBom", bot, callbacks, commands);
     log = (...args) => myModule.log(args);
     require("./main")(log); // start
 
