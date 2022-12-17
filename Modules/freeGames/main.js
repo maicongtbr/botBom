@@ -14,7 +14,7 @@ var commands = [
 
 const init = async (bot) => {
     myModule = new Module("freeGames", bot, { }, commands);
-    log = myModule.log;
+    log = (...args) => myModule.log(args);
     try {
     log("hm");
         
