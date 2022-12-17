@@ -16,6 +16,9 @@ const init = async (bot) => {
     mainLoop();
 }
 
+const scheduleMainLoop = () => {
+    setTimeout(mainLoop, 1000);
+}
 
 const mainLoop = async () => {
     console.log("Checando jogos da epic games...");
@@ -37,6 +40,7 @@ const mainLoop = async () => {
         } 
         if(!newGame) {
             console.log("Nenhum jogo novo.");
+            scheduleMainLoop();
             return;
         };
     }
@@ -69,9 +73,7 @@ const mainLoop = async () => {
 
    console.log("Jogos atualizados!");
 
-    setTimeout(() => {
-        mainLoop().catch(error);
-    }, 1000);
+   scheduleMainLoop();
 }
 
 const freeEpicGames = async () => {
