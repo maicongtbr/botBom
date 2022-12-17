@@ -16,8 +16,10 @@ const init = async (bot) => {
     mainLoop();
 }
 
+const MAIN_LOOP_TIME = 60 * 60 * 1000; // 1h
+
 const scheduleMainLoop = () => {
-    setTimeout(mainLoop, 1000);
+    setTimeout(mainLoop, MAIN_LOOP_TIME);
 }
 
 const mainLoop = async () => {
