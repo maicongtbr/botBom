@@ -67,10 +67,9 @@ const mainLoop = async () => {
         }
    }
 
-    setTimeout(() => {
-        mainLoop()
-        .catch(console.log);
-    }, 1000 * 60);
+   console.log("Jogos atualizados!");
+
+    setTimeout(mainLoop, 1000 * 60);
 }
 
 const freeEpicGames = async () => {
