@@ -56,6 +56,7 @@ var log;
 
 module.exports = { updateCache: async (_log, cb) => {
     log = _log;
+    log("Iniciando localizações...");
     await updateLocationCache(cb);
     new Storage("pokemonModuleLoaded", () => log("Pokemon Module Done"), true);
 }}
