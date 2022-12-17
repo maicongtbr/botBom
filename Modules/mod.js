@@ -9,6 +9,10 @@ class Module {
         global.modules.push({ name: name, mod: this });
     }
 
+    log(...args) {
+        console.log(`[${this.name.toUpperCase()}]`, ...args);
+    }
+
     disable() { this.enabled = false }
     enable() { this.enabled = true }
 }

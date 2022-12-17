@@ -6,6 +6,7 @@ const Cache = db.getModel('Cache');
 
 
 var myModule;
+var log;
 
 var commands = [
     { name:'!epicgames', callback: (msg) => freeGames(msg) },
@@ -13,18 +14,19 @@ var commands = [
 
 const init = async (bot) => {
     myModule = new Module("freeGames", bot, { }, commands);
+    log = myModule.log;
     mainLoop();
 }
 
 const MAIN_LOOP_TIME = 60 * 60 * 1000; // 1h
 
 const scheduleMainLoop = () => {
-    console.log(`Checando o novo jogo da epic em ${new Date(new Date() + MAIN_LOOP_TIME).toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })}`)
+    log(`Tempo para nova checagem: ${new Date(new Date().getTime()  + MAIN_LOOP_TIME).toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })}`)
     setTimeout(mainLoop, MAIN_LOOP_TIME);
 }
 
 const mainLoop = async () => {
-    console.log("Checando jogos da epic games...");
+    log("Checando jogos da epic games...");
     const games = await freeEpicGames();
 
     const curGames = await Cache.findOne({
@@ -42,7 +44,7 @@ const mainLoop = async () => {
             }
         } 
         if(!newGame) {
-            console.log("Nenhum jogo novo.");
+            log("Nenhum jogo novo.");
             scheduleMainLoop();
             return;
         };
@@ -74,7 +76,7 @@ const mainLoop = async () => {
         }
    }
 
-   console.log("Jogos atualizados!");
+   log("Jogos atualizados!");
 
    scheduleMainLoop();
 }
