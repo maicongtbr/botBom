@@ -648,7 +648,7 @@ const onMessage = async (msg) => {
         getPokemon(msg);
 
     } catch (e) {
-        console.warn("Erro onMessage PokémonModule", e);
+        console.warn("Erro onMessage Pokémon", e);
     }
 }
 
