@@ -15,8 +15,14 @@ var commands = [
 const init = async (bot) => {
     myModule = new Module("freeGames", bot, { }, commands);
     log = myModule.log;
+    try {
     log("hm");
+        
+    } catch (error) {
+        console.error(error);
+    }
     myModule.log("hm");
+    log = console.log;
     mainLoop();
 }
 
