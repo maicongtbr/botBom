@@ -49,7 +49,7 @@ const mainLoop = async () => {
             log("Nenhum jogo novo.");
             var nextTime = 0;
             const time = new Date();
-            curGames.forEach(element => {
+            games.forEach(element => {
                 if(element.startDate > time) {
                     nextTime = element.startDate.getTime();
                 }
