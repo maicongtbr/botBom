@@ -19,11 +19,11 @@ const init = async (bot) => {
     await mainLoop();
 }
 
-const MAIN_LOOP_TIME = 60 * 60 * 1000; // 1h
+const MAIN_LOOP_TIME = 10 * 60 * 1000; // 10min
 
-const scheduleMainLoop = () => {
+const scheduleMainLoop = (time) => {
     log(`Tempo para nova checagem: ${new Date(new Date().getTime()  + MAIN_LOOP_TIME).toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })}`)
-    setTimeout(mainLoop, MAIN_LOOP_TIME);
+    setTimeout(mainLoop, time || MAIN_LOOP_TIME);
 }
 
 const mainLoop = async () => {
@@ -46,7 +46,15 @@ const mainLoop = async () => {
         } 
         if(!newGame) {
             log("Nenhum jogo novo.");
-            scheduleMainLoop();
+            var nextTime = 0;
+            const time = new Date();
+            curGames.forEach(element => {
+                if(element.startDate > time) {
+                    nextTime = element.startDate.getTime();
+                }
+            });
+            scheduleMainLoop(); // marca para 10min
+            scheduleMainLoop(nextTime); // marca para quando o prox jogo sair
             return;
         };
     }
