@@ -22,8 +22,9 @@ const init = async (bot) => {
 const MAIN_LOOP_TIME = 10 * 60 * 1000; // 10min
 
 const scheduleMainLoop = (time) => {
-    log(`Tempo para nova checagem: ${new Date(new Date().getTime()  + MAIN_LOOP_TIME).toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })}`)
-    setTimeout(mainLoop, time || MAIN_LOOP_TIME);
+    var next = time || MAIN_LOOP_TIME
+    log(`Tempo para nova checagem: ${new Date(new Date().getTime()  + next).toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })}`)
+    setTimeout(mainLoop, next);
 }
 
 const mainLoop = async () => {
