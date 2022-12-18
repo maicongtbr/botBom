@@ -56,7 +56,9 @@ const mainLoop = async () => {
                 }
             });
             scheduleMainLoop(); // marca para 10min
-            if(newGameLoop) clearTimeout(newGameLoop);
+            if(newGameLoop){
+                clearTimeout(newGameLoop);
+            }
             newGameLoop = scheduleMainLoop(nextTime); // marca para quando o prox jogo sair
             return;
         };
