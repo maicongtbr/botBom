@@ -20,11 +20,12 @@ const init = async (bot) => {
 }
 
 const MAIN_LOOP_TIME = 10 * 60 * 1000; // 10min
+var newGameLoop;
 
 const scheduleMainLoop = (time) => {
     var next = time || MAIN_LOOP_TIME
     log(`Tempo para nova checagem: ${new Date(new Date().getTime()  + next).toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })}`)
-    setTimeout(mainLoop, next);
+    return setTimeout(mainLoop, next);
 }
 
 const mainLoop = async () => {
@@ -55,7 +56,8 @@ const mainLoop = async () => {
                 }
             });
             scheduleMainLoop(); // marca para 10min
-            scheduleMainLoop(nextTime); // marca para quando o prox jogo sair
+            if(newGameLoop) clearTimeout(newGameLoop);
+            newGameLoop = scheduleMainLoop(nextTime); // marca para quando o prox jogo sair
             return;
         };
     }
