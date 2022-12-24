@@ -33,29 +33,29 @@ const Areas = {
     getConditionMode: (encounterInfos) => {
         var condition = { ...encounterInfos }
             var method = encounterInfos.condition_values[0] ? encounterInfos.condition_values[0].name : encounterInfos.method.name;
-            console.log(method);
             if(method) {
-            switch(method) {
-                case "time-day":
-                    condition.mode = Conditions.Day;
-                    break;
-                case "time-night":
-                    condition.mode = Conditions.Night;
-                    break;
-                case "old-rod":
-                case "super-rod":
-                case "ultra-rod":
-                    condition.mode = Conditions.Fisb;
-                    break;
-                case "surf":
-                case "surfing":
-                    condition.mode = Conditions.Surf;
-                    break
-                default:
-                    condition.mode = Conditions.Walk;
-                    break;
+                switch(method) {
+                    case "time-day":
+                    case "time-morning":
+                        condition.mode = Conditions.Day;
+                        break;
+                    case "time-night":
+                        condition.mode = Conditions.Night;
+                        break;
+                    case "old-rod":
+                    case "super-rod":
+                    case "ultra-rod":
+                        condition.mode = Conditions.Fisb;
+                        break;
+                    case "surf":
+                    case "surfing":
+                        condition.mode = Conditions.Surf;
+                        break
+                    default:
+                        condition.mode = Conditions.Walk;
+                        break;
+                }
             }
-        }
 
         condition.string = Areas.getMethodString(condition.mode);
 
