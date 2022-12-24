@@ -627,6 +627,9 @@ const onMessage = async (msg) => {
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         if(havePokemon[id]) {
             var _storage = storage[id];
+            if(!_storage) {
+                return;
+            }
             _storage.pokemonAttempt--;
             if(_storage && _storage.pokemonAttempt <= 0) {
                 await flee(_storage, id);
