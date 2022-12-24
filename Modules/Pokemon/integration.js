@@ -77,12 +77,15 @@ const tryCatch = async (msg) => {
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
     }
 }
-
+const flees = []
 const flee = async (storage, id) =>
 {
+    if(flees[id]) return;
+    flees[id] = true;
     havePokemon[id] = false;
     await myModule.bot.sendMessage(id, `O Pokémon ${storage.pokemon} fugiu!`);
     storage.ignore = true;
+    flees[id] = false;
 }
 
 const addPokemonToPlayer = async (msg, pokemon, isStarter) => {
