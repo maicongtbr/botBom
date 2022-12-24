@@ -18,10 +18,17 @@ var log;
 
 
 const tryCatch = async (msg) => {
+    var __id = msg.from ? msg.from : msg.chatId;
+    if(flees[__id]) return;
+    var _storage = getStorageValue("pokemonModuleCurrentServerPokemon");
+    var storage = _storage[msg.from];
+    if(!storage || storage.catch || !storage.pokemon) return;
+
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     var player = await PokemonPlayerDB.findOne({
         id: msg.author
     });
+
 
     if(player && !player.playing) {
         await msg.reply("Você não está jogando, comece a jogar com !inicial");
@@ -39,12 +46,12 @@ const tryCatch = async (msg) => {
         return;
     }
 
-    var _storage = getStorageValue("pokemonModuleCurrentServerPokemon");
-    var storage = _storage[msg.from];
-    if(!storage || storage.catch || !storage.pokemon) return;
-    var __id = msg.from ? msg.from : msg.chatId;
-
     if(pokeName.toUpperCase() == storage.pokemon.toUpperCase()) {
+        storage.catch = true;
+        havePokemon[__id] = false;
+        storage.ignore = true;
+        _storage[__id] = storage;
+        getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
         var PokemonPlayerDB = db.getModel("PokemonPlayer");
         var player = await PokemonPlayerDB.findOne({
             id: msg.author
@@ -55,10 +62,6 @@ const tryCatch = async (msg) => {
             await msg.reply("Você acertou e capturou um " + storage.pokemon);
 
         }
-        storage.catch = true;
-        havePokemon[__id] = false;
-        storage.ignore = true;
-        getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
         var pokemonSpecies = await superagent.get('https://pokeapi.co/api/v2/pokemon-species/' + storage.pokemon.toLowerCase());
         var growthRate = pokemonSpecies._body.growth_rate.name;
         var levels = getStorageValue('pokemonModuleLevels');
@@ -626,6 +629,8 @@ const onMessage = async (msg) => {
         var id = msg.from ? msg.from : msg.chatId;
         var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         if(havePokemon[id]) {
+            if(flees[id]) return;
+
             var _storage = storage[id];
             if(!_storage) {
                 return;
