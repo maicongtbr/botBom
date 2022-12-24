@@ -400,8 +400,7 @@ const getPokemon = async (msg, private, force) => {
     var id = msg.from ? msg.from : msg.chatId;
     if(havePokemon[id]) {
         if(force) {
-            var storage = getStorage("pokemonModuleCurrentServerPokemon");
-            await flee(storage[id], id);
+            havePokemon[id] = false;
             await msg.reply("Nenhum Pokémon apareceu...");
         }
         return;
@@ -413,8 +412,6 @@ const getPokemon = async (msg, private, force) => {
     }
     if(!pokemon) {
         if(force) {
-            var storage = getStorage("pokemonModuleCurrentServerPokemon");
-            await flee(storage[id], id);
             await msg.reply("Nenhum Pokémon apareceu...");
         }
         havePokemon[id] = false
