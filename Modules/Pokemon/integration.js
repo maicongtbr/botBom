@@ -367,7 +367,7 @@ var commands = [
         }
         var id = msg.from ? msg.from : msg.chatId;
         havePokemon[id] = false;
-        await getPokemon(msg);
+        await getPokemon(msg, null, true);
     }},
     { name: "!pokemarket", callback: async (msg) => {
         var chat = await msg.getChat();
@@ -396,9 +396,14 @@ commands.forEach((value) => {
 
 var havePokemon = [];
 
-const getPokemon = async (msg, private) => {
+const getPokemon = async (msg, private, force) => {
     var id = msg.from ? msg.from : msg.chatId;
     if(havePokemon[id]) {
+        if(force) {
+            var storage = getStorage("pokemonModuleCurrentServerPokemon");
+            await flee(storage[id], id);
+            await getPokemon(msg, private, force);
+        }
         return;
     }
     havePokemon[id] = true;
@@ -407,7 +412,12 @@ const getPokemon = async (msg, private) => {
         // id = msg.author;
     }
     if(!pokemon) {
-        havePokemon[id] = false;
+        if(force) {
+            var storage = getStorage("pokemonModuleCurrentServerPokemon");
+            await flee(storage[id], id);
+            await getPokemon(msg, private, force);
+        }
+        havePokemon[id] = false
         return;
     }
 
