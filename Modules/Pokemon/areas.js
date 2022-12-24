@@ -32,8 +32,9 @@ const Areas = {
 
     getConditionMode: (encounterInfos) => {
         var condition = { ...encounterInfos }
-        if(encounterInfos.condition_values && encounterInfos.condition_values[0]) {
             var method = encounterInfos.condition_values[0] ? encounterInfos.condition_values[0].name : encounterInfos.method.name;
+            console.log(method);
+            if(method) {
             switch(method) {
                 case "time-day":
                     condition.mode = Conditions.Day;
