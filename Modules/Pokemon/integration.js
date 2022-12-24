@@ -70,6 +70,7 @@ const tryCatch = async (msg) => {
         storage.tries += 1;
         storage.pokemonAttempt--;
         var randomTries = getRandomIntRange(6, 10);
+        console.log(storage.tries, storage.pokemonAttempt);
         if(storage.tries >= randomTries || storage.pokemonAttempt <= 0) {
             await myModule.bot.sendMessage(msg.from, `O Pokémon ${storage.pokemon} fugiu!`);
             havePokemon[__id] = false;
@@ -388,7 +389,7 @@ var havePokemon = [];
 const getPokemon = async (msg, private) => {
     var id = msg.from ? msg.from : msg.chatId;
     if(havePokemon[id]) {
-        havePokemon[id] = false;
+        console.log(getStorage("pokemonModuleCurrentServerPokemon")[msg.from])
         return;
     }
     havePokemon[id] = true;
