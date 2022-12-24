@@ -6,15 +6,15 @@ const Areas = {
     getMethodString: (condition) => {
         switch(condition) {
             case Conditions.Walking:
-                return "Andando"
+                return "andando"
             case Conditions.Day:
-                return "Andando durante o dia"
+                return "andando durante o dia"
             case Conditions.Night:
-                return "Andando durante a noite"
+                return "andando durante a noite"
             case Conditions.Surf:
-                return "Surfando"
+                return "surfando"
             case Conditions.Fish:
-                return "Pescando"
+                return "pescando"
             default:
                 return;
         }   
