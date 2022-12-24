@@ -87,8 +87,8 @@ const getEncounter = async (msg, private, index) => {
         return;
     }
 
-    var id = getRandomInt(locales.length - 1);
-    var pokes = locales[id];
+    var id = getRandomInt(locales.length);
+    var pokes = locales[id - 1];
     var curDate = new Date();
     for(bonus of eventPokemon) {
         const rng = getRandomIntRange(0, 100);
