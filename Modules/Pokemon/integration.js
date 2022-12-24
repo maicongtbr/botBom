@@ -628,7 +628,7 @@ const onMessage = async (msg) => {
             if(_storage && _storage.pokemonAttempt <= 0) {
                 await flee(_storage, id);
             }
-            getStorageValue("pokemonModuleCurrentServerPokemon").setValue(storage);
+            getStorage("pokemonModuleCurrentServerPokemon").setValue(storage);
             return;
         }
         var chat = await msg.getChat();
