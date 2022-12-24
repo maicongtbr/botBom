@@ -33,27 +33,8 @@ const Areas = {
     getConditionMode: (encounterInfos) => {
         var condition = { ...encounterInfos }
         if(encounterInfos.condition_values && encounterInfos.condition_values[0]) {
-            switch(encounterInfos.condition_values[0].name) {
-                case "time-day":
-                    condition.mode = Conditions.Day;
-                    break;
-                case "time-night":
-                    condition.mode = Conditions.Night;
-                    break;
-                case "old-rod":
-                case "super-rod":
-                case "ultra-rod":
-                    condition.mode = Conditions.Fisb;
-                    break;
-                case "surf":
-                case "surfing":
-                    condition.mode = Conditions.Surf;
-                    break
-                default:
-                    condition.mode = Conditions.Walk;
-                    break;
-            }
-            switch(encounterInfos.method.name) {
+            var method = encounterInfos.condition_values[0] ? encounterInfos.condition_values[0].name : encounterInfos.method.name;
+            switch(method) {
                 case "time-day":
                     condition.mode = Conditions.Day;
                     break;
