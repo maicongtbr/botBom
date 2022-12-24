@@ -429,7 +429,7 @@ const getPokemon = async (msg, private) => {
             var chat = await msg.getChat();
             svStorage.server = chat.name;
             svStorage.tries = 0;
-            svStorage.pokemonAttempt = 10; // msgs para fugir
+            svStorage.pokemonAttempt = getRandomIntRange(10, 15); // msgs para fugir
     
             if(storage.value) {
                 storage.value[msg.from] = svStorage;
