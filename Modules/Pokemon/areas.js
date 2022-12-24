@@ -49,7 +49,9 @@ const Areas = {
                 }
             }
 
-            console.log(condition)
+            if(condition.min_level != condition.max_level) {
+                console.log(condition)
+            }
 
             var pokemonId = encounter.pokemon.url.replace("https://pokeapi.co/api/v2/pokemon/", "").replace("/", "")
 
