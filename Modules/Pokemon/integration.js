@@ -12,8 +12,6 @@ var myModule = {};
 const webp = require('webp-converter');
 const fs = require('fs');
 const download = require('image-downloader');
-const { getMarket } = require("./market");
-const { title } = require("process");
 const PokeParty = require("./pokeParty.js");
 var log;
 
@@ -70,13 +68,15 @@ const tryCatch = async (msg) => {
     } else {
         await msg.reply("Você errou!");
         storage.tries += 1;
+        storage.pokemonAttempt--;
         var randomTries = getRandomIntRange(6, 10);
-        if(storage.tries >= randomTries) {
-            await myModule.bot.sendMessage(msg.from, "O Pokémon fugiu!");
+        if(storage.tries >= randomTries || storage.pokemonAttempt <= 0) {
+            await myModule.bot.sendMessage(msg.from, `O Pokémon ${storage.pokemon} fugiu!`);
             havePokemon[__id] = false;
             storage.ignore = true;
+            _storage[msg.from] = storage;
             getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
-        }
+    }
     }
 }
 
@@ -425,6 +425,7 @@ const getPokemon = async (msg, private) => {
             var chat = await msg.getChat();
             svStorage.server = chat.name;
             svStorage.tries = 0;
+            svStorage.pokemonAttempt = 10; // msgs para fugir
     
             if(storage.value) {
                 storage.value[msg.from] = svStorage;
