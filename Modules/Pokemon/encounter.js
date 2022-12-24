@@ -66,9 +66,9 @@ const eventPokemon = [
     {
         date: new Date("2022-11-26 03:00:00"), 
         pokemon: [
-            { name: "Delibird", condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/delibird" },
-            { name: "Snover", condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 50, url: "https://pokeapi.co/api/v2/pokemon/snover" },
-            { name: "Starmie", condition: { string: "comemorando o natal" }, minLevel: 50, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/starmie" },
+            { name: "Delibird", chance: 100, condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/delibird" },
+            { name: "Snover", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 50, url: "https://pokeapi.co/api/v2/pokemon/snover" },
+            { name: "Starmie", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 50, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/starmie" },
         ]
     }
 ]
