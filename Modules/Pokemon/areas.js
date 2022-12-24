@@ -53,6 +53,26 @@ const Areas = {
                     condition.mode = Conditions.Walk;
                     break;
             }
+            switch(encounterInfos.method.name) {
+                case "time-day":
+                    condition.mode = Conditions.Day;
+                    break;
+                case "time-night":
+                    condition.mode = Conditions.Night;
+                    break;
+                case "old-rod":
+                case "super-rod":
+                case "ultra-rod":
+                    condition.mode = Conditions.Fisb;
+                    break;
+                case "surf":
+                case "surfing":
+                    condition.mode = Conditions.Surf;
+                    break
+                default:
+                    condition.mode = Conditions.Walk;
+                    break;
+            }
         }
 
         condition.string = Areas.getMethodString(condition.mode);
