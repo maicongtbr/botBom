@@ -167,7 +167,7 @@ const getEncounter = async (msg, private, index) => {
     }
 
     phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("%mode%", pokemon.condition ? pokemon.condition.string : "andando");
-    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance, shiny: _isShiny};
+    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance, shiny: _isShiny, catchRate: speciesBody.capture_rate};
     return ret;
 }
 

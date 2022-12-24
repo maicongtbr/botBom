@@ -52,14 +52,16 @@ const tryCatch = async (msg) => {
         storage.ignore = true;
         _storage[__id] = storage;
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
+        var money = (100 - storage.pokemon.catchRate) * getRandomIntRange(5, 15);
+        await giveMoneyToPlayer(msg, money);
         var PokemonPlayerDB = db.getModel("PokemonPlayer");
         var player = await PokemonPlayerDB.findOne({
             id: msg.author
         });
         if(player && player.pokemon && player.pokemon.length >= 6) {
-            await msg.reply("Você acertou e capturou um " + storage.pokemon + "\nVocê já tem 6 Pokémon na Party, seu novo Pokémon foi para a Box!\nPara conferir a box digite !boxpokemon");
+            await msg.reply("Você acertou e capturou um " + storage.pokemon + "\nVocê já tem 6 Pokémon na Party, seu novo Pokémon foi para a Box!\nPara conferir a box digite !boxpokemon"+ ".\nVocê ganhou" + money + "B$ por essa captura.");
         } else {
-            await msg.reply("Você acertou e capturou um " + storage.pokemon);
+            await msg.reply("Você acertou e capturou um " + storage.pokemon + ".\nVocê ganhou" + money + "B$ por essa captura.");
 
         }
         var pokemonSpecies = await superagent.get('https://pokeapi.co/api/v2/pokemon-species/' + storage.pokemon.toLowerCase());
@@ -438,6 +440,7 @@ const getPokemon = async (msg, private, force) => {
             svStorage.level = pokemon.level;
             svStorage.shiny = pokemon.shiny;
             svStorage.gender = pokemon.gender;
+            svStorage.catchRate = pokemon.catchRate;
             svStorage.ignore = false;
             var chat = await msg.getChat();
             svStorage.server = chat.name;
@@ -493,7 +496,7 @@ const giveMoneyToPlayer = async (msg, amount) => {
 
     var coins = player.coins || 0;
 
-    awaitPokemonPlayerDB.updateOne({
+    await PokemonPlayerDB.updateOne({
        id: msg.author
     },
     {
