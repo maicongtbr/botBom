@@ -11,6 +11,10 @@ const Areas = {
                 return "Andando durante o dia"
             case Conditions.Night:
                 return "Andando durante a noite"
+            case Conditions.Surf:
+                return "Surfando"
+            case Conditions.Fish:
+                return "Pescando"
             default:
                 return;
         }   
@@ -43,6 +47,15 @@ const Areas = {
                     case "time-night":
                         condition.mode = Conditions.Night;
                         break;
+                    case "old-rod":
+                    case "super-rod":
+                    case "ultra-rod":
+                        condition.mode = Conditions.Fisb;
+                        break;
+                    case "surf":
+                    case "surfing":
+                        condition.mode = Conditions.Surf;
+                        break
                     default:
                         condition.mode = Conditions.Walk;
                         break;
