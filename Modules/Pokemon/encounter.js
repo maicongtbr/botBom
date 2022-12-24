@@ -145,7 +145,7 @@ const getEncounter = async (msg, private, index) => {
     if(_isShiny) {
         console.log("SHINY POKEMON ABAIXO!")
     }
-    console.log(pokemon.condition);
+
     phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("%mode%", pokemon.condition ? pokemon.condition.string : "andando");
     var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance, shiny: _isShiny};
     return ret;
