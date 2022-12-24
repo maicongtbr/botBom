@@ -91,7 +91,7 @@ const getEncounter = async (msg, private, index) => {
     for(bonus of eventPokemon) {
         const rng = getRandomIntRange(0, 100);
         if (bonus.date >= curDate && rng <= bonus.chance) {
-            log("Natal!")
+            console.log("Natal!")
             pokes = bonus;
             break;
         }
