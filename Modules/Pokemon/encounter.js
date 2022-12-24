@@ -65,7 +65,7 @@ const { Conditions } = require("./classes");
 const eventPokemon = [
     {
         date: new Date("2022-12-26 03:00:00"), 
-        chance: 40,
+        chance: 25,
         pokemon: [
             { name: "Delibird", chance: 100, condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/delibird" },
             { name: "Snover", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 50, url: "https://pokeapi.co/api/v2/pokemon/snover" },
@@ -91,7 +91,6 @@ const getEncounter = async (msg, private, index) => {
     for(bonus of eventPokemon) {
         const rng = getRandomIntRange(0, 100);
         if (bonus.date >= curDate && rng <= bonus.chance) {
-            console.log("Natal!")
             pokes = bonus;
             break;
         }
