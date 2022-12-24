@@ -137,9 +137,9 @@ const getEncounter = async (msg, private, index) => {
 
 
     var image = getCorrectImage(imagePath, hasGenderDiff && isFemale, _isShiny);
-    var level = getRandomIntRange(Math.floor(pokemon.minLevel/2), pokemon.maxLevel);
+    var level = getRandomIntRange(Math.floor(pokemon.minLevel), pokemon.maxLevel);
     var phrase = private ? encounterMessages.private : encounterMessages.group;
-    phrase = phrase[getRandomInt(phrase.length - 1)];
+    phrase = phrase[getRandomInt(phrase.length) - 1];
     var name = capitalize(speciesBody.name);
 
     if(_isShiny) {

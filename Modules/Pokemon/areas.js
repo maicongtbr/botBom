@@ -49,6 +49,8 @@ const Areas = {
                 }
             }
 
+            console.log(condition)
+
             var pokemonId = encounter.pokemon.url.replace("https://pokeapi.co/api/v2/pokemon/", "").replace("/", "")
 
             var pokemonCondition = Areas.getMethodString(condition.mode) && { condition: condition.mode, string: Areas.getMethodString(condition.mode) }

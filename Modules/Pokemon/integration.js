@@ -70,15 +70,19 @@ const tryCatch = async (msg) => {
         storage.tries += 1;
         storage.pokemonAttempt--;
         var randomTries = getRandomIntRange(6, 10);
-        console.log(storage.tries, randomTries, storage.pokemonAttempt);
         if(storage.tries >= randomTries || storage.pokemonAttempt <= 0) {
-            await myModule.bot.sendMessage(msg.from, `O Pokémon ${storage.pokemon} fugiu!`);
-            storage.ignore = true;
-            havePokemon[__id] = false;
+            flee(storage);
         }
         _storage[msg.from] = storage;
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
     }
+}
+
+const flee = async (storage, id) =>
+{
+    await myModule.bot.sendMessage(__id, `O Pokémon ${storage.pokemon} fugiu!`);
+    storage.ignore = true;
+    havePokemon[id] = false;
 }
 
 const addPokemonToPlayer = async (msg, pokemon, isStarter) => {
@@ -617,7 +621,14 @@ const onMessage = async (msg) => {
             return;
         }
         var id = msg.from ? msg.from : msg.chatId;
+        var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         if(havePokemon[id]) {
+            var _storage = storage[id];
+            if(_storage && _storage.pokemonAttempt <= 0) {
+                flee(_storage, id);
+                getStorageValue("pokemonModuleCurrentServerPokemon").setValue(storage);
+            }
+            
             return;
         }
         var chat = await msg.getChat();
@@ -627,9 +638,6 @@ const onMessage = async (msg) => {
         if(!pokeGroups.find(x => x == chat.name)) {
             return;
         }
-    
-        var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
-        var id = msg.from ? msg.from : msg.chatId;
 
         if(storage[id] && (storage[id].catch == true || storage[id].ignore)) {
             storage[id] = {};
