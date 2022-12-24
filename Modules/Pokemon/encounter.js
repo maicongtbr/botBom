@@ -4,8 +4,8 @@ var capitalize = require('capitalize');
 
 const shinyBonus = [
     {
-        date: new Date("2022-11-26 00:00:00"), // GMT
-        chance: 100
+        date: new Date("2022-11-26 03:00:00"), // UTC
+        chance: 1000
     }
 ]
 
@@ -62,6 +62,17 @@ var encounterMessages = {
 
 const { Conditions } = require("./classes");
 
+const eventPokemon = [
+    {
+        date: new Date("2022-11-26 03:00:00"), 
+        pokemon: [
+            { name: "Delibird", condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/delibird" },
+            { name: "Snover", condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 50, url: "https://pokeapi.co/api/v2/pokemon/snover" },
+            { name: "Starmie", condition: { string: "comemorando o natal" }, minLevel: 50, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/starmie" },
+        ]
+    }
+]
+
 
 const getEncounter = async (msg, private, index) => {
     if (index && index > 5) {
@@ -75,10 +86,16 @@ const getEncounter = async (msg, private, index) => {
 
     var id = getRandomInt(locales.length - 1);
     var pokes = locales[id];
+    for(bonus of eventPokemon) {
+        if (bonus.date >= new Date()) {
+            pokes = bonus;
+            break;
+        }
+    }
     if(!pokes || !pokes.pokemon || pokes.pokemon.length -1 <= 0) {
         return;
     }
-    var pokemon = pokes.pokemon[getRandomInt(pokes.pokemon.length - 1)];
+    var pokemon = pokes.pokemon[getRandomInt(pokes.pokemon.length) - 1];
     if(!pokemon || !pokemon.condition) {
         return;
     }
