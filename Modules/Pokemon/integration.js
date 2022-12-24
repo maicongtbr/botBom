@@ -402,7 +402,7 @@ const getPokemon = async (msg, private, force) => {
         if(force) {
             var storage = getStorage("pokemonModuleCurrentServerPokemon");
             await flee(storage[id], id);
-            await getPokemon(msg, private, force);
+            await msg.reply("Nenhum Pokémon apareceu...");
         }
         return;
     }
@@ -415,7 +415,7 @@ const getPokemon = async (msg, private, force) => {
         if(force) {
             var storage = getStorage("pokemonModuleCurrentServerPokemon");
             await flee(storage[id], id);
-            await getPokemon(msg, private, force);
+            await msg.reply("Nenhum Pokémon apareceu...");
         }
         havePokemon[id] = false
         return;
