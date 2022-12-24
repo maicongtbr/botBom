@@ -30,6 +30,36 @@ const Areas = {
         }
     },
 
+    getConditionMode: (encounterInfos) => {
+        var condition = { ...encounterInfos }
+        if(encounterInfos.condition_values && encounterInfos.condition_values[0]) {
+            switch(encounterInfos.condition_values[0].name) {
+                case "time-day":
+                    condition.mode = Conditions.Day;
+                    break;
+                case "time-night":
+                    condition.mode = Conditions.Night;
+                    break;
+                case "old-rod":
+                case "super-rod":
+                case "ultra-rod":
+                    condition.mode = Conditions.Fisb;
+                    break;
+                case "surf":
+                case "surfing":
+                    condition.mode = Conditions.Surf;
+                    break
+                default:
+                    condition.mode = Conditions.Walk;
+                    break;
+            }
+        }
+
+        condition.string = Areas.getMethodString(condition.mode);
+
+        return condition;
+    },
+
     getPokemonArea: async (area, name) => {
         var res = await superagent.get(area.url);
         var region = {
@@ -38,29 +68,8 @@ const Areas = {
         var body = res._body;
         await body.pokemon_encounters.forEach(encounter => {
             var encounterInfos = encounter.version_details[0].encounter_details[0];
-            var condition = encounterInfos;
-            if(encounterInfos.condition_values && encounterInfos.condition_values[0]) {
-                switch(encounterInfos.condition_values[0].name) {
-                    case "time-day":
-                        condition.mode = Conditions.Day;
-                        break;
-                    case "time-night":
-                        condition.mode = Conditions.Night;
-                        break;
-                    case "old-rod":
-                    case "super-rod":
-                    case "ultra-rod":
-                        condition.mode = Conditions.Fisb;
-                        break;
-                    case "surf":
-                    case "surfing":
-                        condition.mode = Conditions.Surf;
-                        break
-                    default:
-                        condition.mode = Conditions.Walk;
-                        break;
-                }
-            }
+            var condition = Areas.getConditionMode(encounterInfos);
+            
 
             var pokemonId = encounter.pokemon.url.replace("https://pokeapi.co/api/v2/pokemon/", "").replace("/", "")
             var pokemon = new Pokemon(
@@ -70,7 +79,7 @@ const Areas = {
                 condition.chance,
                 condition.min_level,
                 condition.max_level,
-                { condition: condition.mode, string: Areas.getMethodString(condition.mode) }
+                condition
             )
             region.pokemon.push(pokemon)
         });
