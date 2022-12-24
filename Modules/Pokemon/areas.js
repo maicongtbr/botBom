@@ -16,7 +16,7 @@ const Areas = {
             case Conditions.Fish:
                 return "pescando"
             default:
-                return;
+                return "andando";
         }   
     },
 
@@ -63,8 +63,6 @@ const Areas = {
             }
 
             var pokemonId = encounter.pokemon.url.replace("https://pokeapi.co/api/v2/pokemon/", "").replace("/", "")
-
-            var pokemonCondition = Areas.getMethodString(condition.mode) && { condition: condition.mode, string: Areas.getMethodString(condition.mode) }
             var pokemon = new Pokemon(
                 capitalize(Areas.getRealName(encounter.pokemon.name)),
                 encounter.pokemon.url,
@@ -72,7 +70,7 @@ const Areas = {
                 condition.chance,
                 condition.min_level,
                 condition.max_level,
-                pokemonCondition && pokemonCondition
+                { condition: condition.mode, string: Areas.getMethodString(condition.mode) }
             )
             region.pokemon.push(pokemon)
         });

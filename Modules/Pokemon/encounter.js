@@ -139,13 +139,13 @@ const getEncounter = async (msg, private, index) => {
     var image = getCorrectImage(imagePath, hasGenderDiff && isFemale, _isShiny);
     var level = getRandomIntRange(Math.floor(pokemon.minLevel), pokemon.maxLevel);
     var phrase = private ? encounterMessages.private : encounterMessages.group;
-    phrase = phrase[getRandomInt(phrase.length) - 1];
+    phrase = phrase[getRandomInt(phrase.length) - 1] || phrase[1];
     var name = capitalize(speciesBody.name);
 
     if(_isShiny) {
         console.log("SHINY POKEMON ABAIXO!")
     }
-
+    console.log(pokemon.condition);
     phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("%mode%", pokemon.condition ? pokemon.condition.string : "andando");
     var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance, shiny: _isShiny};
     return ret;
