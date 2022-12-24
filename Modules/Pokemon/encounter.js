@@ -70,6 +70,8 @@ const eventPokemon = [
             { name: "Delibird", chance: 100, condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/delibird" },
             { name: "Snover", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 50, url: "https://pokeapi.co/api/v2/pokemon/snover" },
             { name: "Starmie", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 50, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/starmie" },
+            { name: "Jinx", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 50, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/jinx" },
+            { name: "Lapras", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 50, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/lapras" },
         ]
     }
 ]
