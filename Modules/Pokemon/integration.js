@@ -52,7 +52,7 @@ const tryCatch = async (msg) => {
         storage.ignore = true;
         _storage[__id] = storage;
         getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
-        var money = (100 - storage.catchRate) * getRandomIntRange(5, 15);
+        var money = (100 - storage.catchRate) * getRandomIntRange(2, 8);
         money = money <= 0 ? 100 : parseInt(money);
 
         await giveMoneyToPlayer(msg, money);
