@@ -4,7 +4,7 @@ var capitalize = require('capitalize');
 
 const shinyBonus = [
     {
-        date: new Date("2022-11-26 03:00:00"), // UTC
+        date: new Date("2022-12-26 03:00:00"), // UTC
         chance: 1000
     }
 ]
@@ -64,7 +64,7 @@ const { Conditions } = require("./classes");
 
 const eventPokemon = [
     {
-        date: new Date("2022-11-26 03:00:00"), 
+        date: new Date("2022-12-26 03:00:00"), 
         chance: 40,
         pokemon: [
             { name: "Delibird", chance: 100, condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/delibird" },
@@ -90,7 +90,6 @@ const getEncounter = async (msg, private, index) => {
     var curDate = new Date();
     for(bonus of eventPokemon) {
         const rng = getRandomIntRange(0, 100);
-        console.log(bonus.date >= curDate, rng, bonus.chance)
         if (bonus.date >= curDate && rng <= bonus.chance) {
             log("Natal!")
             pokes = bonus;
