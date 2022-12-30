@@ -196,7 +196,7 @@ const showPokemon = async (msg) => {
                 Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
             })
             let img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
-            await msg.reply(img);
+            msg.reply(img);
         }
 
     })
