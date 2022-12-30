@@ -185,7 +185,7 @@ const showPokemon = async (msg) => {
                 pokemonList.push({title: name, description: `Level: ${e.level}\nVida: ${e.currentHp}/${e.maxHp}`})
             })
 
-            const list = new List(`B$: ${player.coins}\nPokémon na Party: ${pokemonList.rows.length}\nClique abaixo para conferir a party`,
+            const list = new List(`B$: ${player.coins}\nPokémon na Party: ${pokemonList[0].rows.length}\nClique abaixo para conferir a party`,
             `Conferir Party de ${contact.pushname}`, pokemonList, "Formato reduzido ara evitar spam em grupos, para imagem use o privado do bot!");
 
             msg.reply(list)
@@ -252,6 +252,7 @@ const showBox = async (msg) => {
     var chat = await msg.getChat();
     if(chat.isGroup)
     {
+        await msg.reply("Esse comando não pode ser usado em grupos!");
         await myModule.bot.sendMessage(msg.author, list);
     } else {
         await msg.reply(list);
