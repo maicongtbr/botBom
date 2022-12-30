@@ -173,15 +173,33 @@ const showPokemon = async (msg) => {
             return;
         }
 
+        var chat = await msg.getChat();
+        if (chat.isGroup) {
+            var contact = await msg.getContact();
+            const pokemonList = [{
+                title: `Party de ${contact.pushname}`,
+                rows: []
+            }];
+            player.pokemon.forEach(e=> {
+                const name = e.shiny ? `Shiny ${e.name}` : e.name;
+                pokemonList.push({title: name, description: `Level: ${e.level}\nVida: ${e.currentHp}/${e.maxHp}`})
+            })
 
-        var contact = await msg.getContact();
-        var playerInfos = { coins: player.coins, name: contact.pushname, image: await contact.getProfilePicUrl() }
-        var Pokemon = [];
-        player.pokemon.forEach(e=> {
-            Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
-        })
-        var img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
-        msg.reply(img);
+            const list = new List(`B$: ${player.coins}\nPokémon na Party: ${pokemonList.rows.length}\nClique abaixo para conferir a party`,
+            `Conferir Party de ${contact.pushname}`, pokemonList, "Formato reduzido ara evitar spam em grupos, para imagem use o privado do bot!");
+
+            msg.reply(list)
+        } else {
+            var contact = await msg.getContact();
+            var playerInfos = { coins: player.coins, name: contact.pushname, image: await contact.getProfilePicUrl() }
+            var Pokemon = [];
+            player.pokemon.forEach(e=> {
+                Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
+            })
+            var img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
+            await msg.reply(img);
+        }
+
     })
 }
 
@@ -231,7 +249,13 @@ const showBox = async (msg) => {
     const list = new List(`Pokémon reservas de ${contact.pushname}`, "Abrir",
     box);
 
-    return await msg.reply(list);
+    var chat = await msg.getChat();
+    if(chat.isGroup)
+    {
+        await myModule.bot.sendMessage(msg.author, list);
+    } else {
+        await msg.reply(list);
+    }
 }
 
 const starterList =  new List(
@@ -374,12 +398,6 @@ var commands = [
         await getPokemon(msg, null, true);
     }},
     { name: "!pokemarket", callback: async (msg) => {
-        var chat = await msg.getChat();
-        if(chat.isGroup) 
-        {
-            await msg.reply("Não é possível utilizar em grupos.");
-            return;
-        }
 
         marketState[msg.from] = 1;
         var buttons = new Buttons("Bem-vindo ao Mercado Pokémon",
@@ -387,7 +405,13 @@ var commands = [
             { buttonId:'1',body:'Comprar Items',type: 1 },
             { buttonId:'2',body:"Vender Items (em breve)",type: 1 },
         ])
-        msg.reply(buttons);
+        var chat = await msg.getChat();
+        if(chat.isGroup) 
+        {
+            await myModule.bot.sendMessage(msg.author, buttons);
+        } else {
+            await msg.reply(buttons);
+        }
     }},
     { name: "!pokebag", callback: async (msg) => getMyItems(msg)}
 ]
