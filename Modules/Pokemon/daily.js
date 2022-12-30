@@ -6,7 +6,7 @@ const dailyItemsByChance = [
     { item: global.itemMap["Ultra Ball"], amount: {min: 1, max: 1 }, chance: 5},
 ]
 
-export default getDailyItem = () => {
+module.exports = getDailyItem = () => {
     const itemAmount = getRandomIntRange(1, dailyItemsByChance.length);
     const items = [];
     for (let index = 0; index <= itemAmount; index++) {
