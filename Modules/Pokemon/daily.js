@@ -13,7 +13,7 @@ module.exports = getDailyItem = () => {
        for (let index = 0; index < dailyItemsByChance.length; index++) {
             const element = dailyItemsByChance[index];
             if(element.chance <= getRandomIntRange(0, 100)) {
-                items.push({ item: element.item, amount: getRandomIntRange(amount.min, amount.max)});
+                items.push({ item: element.item, amount: getRandomIntRange(element.amount.min, element.amount.max)});
                 break;
             }
        }
