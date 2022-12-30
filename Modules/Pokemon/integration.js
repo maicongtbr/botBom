@@ -186,7 +186,7 @@ const showPokemon = async (msg) => {
             })
 
             const list = new List(`B$: ${player.coins}\nPokémon na Party: ${pokemonList[0].rows.length}\nClique abaixo para conferir a party`,
-            `Conferir Party de ${contact.pushname}`, pokemonList, "Formato reduzido ara evitar spam em grupos, para imagem use o privado do bot!");
+            `Conferir Party de ${contact.pushname}`, pokemonList, `Party de ${e.pushname}`,"Formato reduzido ara evitar spam em grupos, para imagem use o privado do bot!");
 
             msg.reply(list)
         } else {
