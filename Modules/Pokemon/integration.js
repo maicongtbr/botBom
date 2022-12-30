@@ -174,8 +174,8 @@ const showPokemon = async (msg) => {
         }
 
         var chat = await msg.getChat();
+        var contact = await msg.getContact();
         if (chat.isGroup) {
-            var contact = await msg.getContact();
             const pokemonList = [{
                 title: `Party de ${contact.pushname}`,
                 rows: []
@@ -188,15 +188,14 @@ const showPokemon = async (msg) => {
             const list = new List(`B$: ${player.coins}\nPokémon na Party: ${pokemonList[0].rows.length}\nClique abaixo para conferir a party`,
             `Conferir Party de ${contact.pushname}`, pokemonList, `Party de ${contact.pushname}`,"Formato reduzido ara evitar spam em grupos, para imagem use o privado do bot!");
 
-            msg.reply(list)
+            await msg.reply(list)
         } else {
-            var contact = await msg.getContact();
-            var playerInfos = { coins: player.coins, name: contact.pushname, image: await contact.getProfilePicUrl() }
-            var Pokemon = [];
+            let playerInfos = { coins: player.coins, name: contact.pushname, image: await contact.getProfilePicUrl() }
+            let Pokemon = [];
             player.pokemon.forEach(e=> {
                 Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
             })
-            var img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
+            let img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
             await msg.reply(img);
         }
 
