@@ -188,17 +188,17 @@ const showPokemon = async (msg) => {
             const list = new List(`B$: ${player.coins}\nPokémon na Party: ${pokemonList[0].rows.length}\nClique abaixo para conferir a party`,
             `Conferir Party de ${contact.pushname}`, pokemonList, `Party de ${contact.pushname}`,"Formato reduzido ara evitar spam em grupos, para imagem use o privado do bot!");
 
-            await msg.reply(list)
-        } else {
-            let playerInfos = { coins: player.coins, name: contact.pushname, image: await contact.getProfilePicUrl() }
-            let Pokemon = [];
-            player.pokemon.forEach(e=> {
-                Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
-            })
-            let img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
-            msg.reply(img);
+            await msg.reply(list);
+            return;
         }
-
+        
+        let playerInfos = { coins: player.coins, name: contact.pushname, image: await contact.getProfilePicUrl() }
+        let Pokemon = [];
+        player.pokemon.forEach(e=> {
+            Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
+        })
+        let img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
+        return await msg.reply(img);
     })
 }
 
