@@ -1,4 +1,4 @@
-import { getRandomIntRange } from "../../libs"
+const { getRandomIntRange } =  require("../../libs");
 
 const dailyItemsByChance = [
     { item: global.itemMap["Poké Ball"], amount: {min: 2, max: 15 }, chance: 100},
