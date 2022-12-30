@@ -13,7 +13,7 @@ const webp = require('webp-converter');
 const fs = require('fs');
 const download = require('image-downloader');
 const PokeParty = require("./pokeParty.js");
-const getDailyItem = require("./daily");
+var getDailyItem;
 var log;
 
 
@@ -756,6 +756,8 @@ const initPokemonModule = (bot) => {
             }
         }
     }, []);
+
+    getDailyItem = require("./daily");
 }
 
 module.exports = { initPokemonModule }
