@@ -166,7 +166,7 @@ const addPokemonToPlayer = async (msg, pokemon, isStarter) => {
 const showPokemon = async (msg) => {
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     PokemonPlayerDB.findOne({
-        id: msg.author
+        id: msg.author || msg.from
     }).then(async player => {
         if(!player) {
             msg.reply("Você não tem Pokémon na Party");
