@@ -195,10 +195,11 @@ const showPokemon = async (msg) => {
         let playerInfos = { coins: player.coins, name: contact.pushname, image: await contact.getProfilePicUrl() }
         let Pokemon = [];
         for (let index = 0; index < player.pokemon.length; index++) {
-            const e = array[index];
+            const e = player.pokemon[index];
             Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
-            
         }
+
+        console.log(playerInfos, Pokemon);
 
         let img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
         return await msg.reply(img);
