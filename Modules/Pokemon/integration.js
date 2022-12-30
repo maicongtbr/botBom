@@ -182,7 +182,7 @@ const showPokemon = async (msg) => {
             }];
             player.pokemon.forEach(e=> {
                 const name = e.shiny ? `Shiny ${e.name}` : e.name;
-                pokemonList.rows.push({title: name, description: `Level: ${e.level}\nVida: ${e.currentHp}/${e.maxHp}`})
+                pokemonList[0].rows.push({title: name, description: `Level: ${e.level}\nVida: ${e.currentHp}/${e.maxHp}`})
             })
 
             const list = new List(`B$: ${player.coins}\nPokémon na Party: ${pokemonList[0].rows.length}\nClique abaixo para conferir a party`,
