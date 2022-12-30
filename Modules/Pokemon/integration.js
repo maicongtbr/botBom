@@ -13,6 +13,7 @@ const webp = require('webp-converter');
 const fs = require('fs');
 const download = require('image-downloader');
 const PokeParty = require("./pokeParty.js");
+const getDailyItem = require("./daily");
 var log;
 
 
@@ -199,8 +200,6 @@ const showPokemon = async (msg) => {
             Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
         }
 
-        console.log(playerInfos, Pokemon);
-
         let img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
         return await msg.reply(img);
     })
@@ -384,6 +383,28 @@ const changeSpawnRate = async (msg) => {
 
 const marketState = [];
 
+const dailies = [];
+const dayTime = 1000 * 60 * 60 * 24;
+const getDaily = async (msg) => {
+    var chat = await msg.getChat();
+    if(chat.isGroup) return await msg.reply("Esse comando nào pode ser usado em grupos.");
+
+    const id = msg.author || msg.from;
+    const date = new Date();
+    if(dailies[id] && dailies[id].date >= date) return;
+
+    dailies[id] = { date: new Date(date.getTime() + dayTime) };
+    const items = getDailyItem();
+    const rows = [];
+    items.forEach((e) => {
+        addItem(e);
+        rows.push({title: e.name, description: e.amount});
+    });
+
+    var list = new List("Itens diários recebidos!", "Ver items", [{title:"Items", rows }])
+    await msg.reply(list);
+}
+
 var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
     { name:'!pokemon', callback: (msg) => showPokemon(msg) },
@@ -392,6 +413,7 @@ var commands = [
     { name: "!pokedex", callback: (msg) => getPokedex(msg) },
     { name: "!pokestop", callback: (msg) => stopModule(msg)},
     { name: "!pokespawnrate", callback: (msg) => changeSpawnRate(msg)},
+    { name: "!pokedaily", callback: (msg) => getDaily(msg)},
     { name: "!pokesummon", callback: async (msg) => {
         if (! await userIsAdmin(await msg.getChat(), msg.author)) {
             msg.reply("Somente Admins.");
