@@ -19,7 +19,7 @@ const getDailyItem = () => {
             const element = dailyItemsByChance[j];
             const rng = getRandomIntRange(1, 100);
             if(element.chance <= rng || element.chance >= 100) {
-                var found = items.find(x => x.item.name == element.item.name);
+                var found = items.find(x => x.name == element.name);
                 if(found) {
                     found.amount += getRandomIntRange(element.amount.min, element.amount.max);
                 } else {
