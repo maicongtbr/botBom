@@ -17,7 +17,6 @@ const updatePokeballCache = async () => {
     try {
         for (catId in itemsMarket) {
             let category = itemsMarket[catId];
-            console.log(category)
             var res = await superagent.get(`https://pokeapi.co/api/v2/item-category/${category.id}/`);
             let body = res._body;
             for (item of body.items) {
@@ -32,7 +31,10 @@ const updatePokeballCache = async () => {
                     type: category.name
                 }
                 if(retItem.price > 0) {
-                    if(category.id == 34) {
+                    if(category.id == 34 || category.id == 33) {
+                        if (retItem.internalName == "premier-ball") {
+                            continue;
+                        }
                         global.Items.pokeballs.push(retItem);
                     }
 

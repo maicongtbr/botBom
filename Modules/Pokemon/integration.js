@@ -404,9 +404,11 @@ const getDaily = async (msg) => {
     const ls = [
         {
             title: "Items Diários",
-            rows: rows
+            rows
         }
     ];
+
+    console.log(ls)
 
     var list = new List("Itens diários recebidos!", "Ver items", ls)
     await msg.reply(list);
