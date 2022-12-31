@@ -395,10 +395,11 @@ const getDaily = async (msg) => {
 
     const items = getDailyItem();
     var rows = [];
-    items.forEach((e, id) => {
-        addItem(e).catch(console.error);
+    for (let index = 0; index < items.length; index++) {
+        const e = array[index];
+        await addItem(e);
         rows.push({title: e.name, description: `Quantidade: ${e.amount}`, id:`itemdaily${id}${id-1}`});
-    });
+    }
 
     const ls = [
         {
