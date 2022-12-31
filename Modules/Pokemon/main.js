@@ -4,11 +4,12 @@ const { updateCache } = require("./locations");
 const superagent = require("superagent");
 const { Storage } = require("../../libs");
 const { updateMarket } = require("./market");
+const { updateDailyItems } = require("./daily");
 const PokeParty = require("./pokeParty.js")
 
 
 
-module.exports = (log) => {
+module.exports = async (log) => {
     superagent.get('https://pokeapi.co/api/v2/growth-rate/').then((res) => {
         var levels = [];
         res._body.results.forEach(e => {
@@ -19,7 +20,8 @@ module.exports = (log) => {
         new Storage("pokemonModuleLevels", () => {}, levels);
     })
 
-    updateMarket();
-    PokeParty.init();
-    updateCache(log);
+    await updateMarket();
+    updateDailyItems();
+    await PokeParty.init();
+    await updateCache(log);
 }

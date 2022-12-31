@@ -13,7 +13,7 @@ const webp = require('webp-converter');
 const fs = require('fs');
 const download = require('image-downloader');
 const PokeParty = require("./pokeParty.js");
-var getDailyItem;
+const { getDailyItem } = require("./daily");
 var log;
 
 
@@ -744,11 +744,11 @@ const onLevelUp = (msg) => {
 
 }
 
-const initPokemonModule = (bot) => {
+const initPokemonModule = async (bot) => {
     var callbacks = { onMessage, onLevelUp };
     myModule = new Module("PokéBom", bot, callbacks, commands);
     log = (...args) => myModule.log(args);
-    require("./main")(log); // start
+    await require("./main")(log); // start
 
     new Storage("pokemonModuleEncounterRate", (value) => {
         encounterPercentage = value;
@@ -763,8 +763,6 @@ const initPokemonModule = (bot) => {
             }
         }
     }, []);
-
-    getDailyItem = require("./daily");
 }
 
 module.exports = { initPokemonModule }

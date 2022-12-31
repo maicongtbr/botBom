@@ -1,12 +1,16 @@
 const { getRandomIntRange } =  require("../../libs");
 
-const dailyItemsByChance = [
-    { item: global.itemMap["Poké Ball"], amount: {min: 2, max: 15 }, chance: 100},
-    { item: global.itemMap["Great Ball"], amount: {min: 2, max: 2 }, chance: 40},
-    { item: global.itemMap["Ultra Ball"], amount: {min: 1, max: 1 }, chance: 5},
-]
+var dailyItemsByChance = [   ]
 
-module.exports = getDailyItem = () => {
+const updateDailyItems = () => {
+    dailyItemsByChance = [
+        { item: global.itemMap["Poké Ball"], amount: {min: 2, max: 15 }, chance: 100},
+        { item: global.itemMap["Great Ball"], amount: {min: 2, max: 2 }, chance: 40},
+        { item: global.itemMap["Ultra Ball"], amount: {min: 1, max: 1 }, chance: 5}
+    ]
+}
+
+const getDailyItem = () => {
     const itemAmount = getRandomIntRange(1, dailyItemsByChance.length);
     const items = [];
     for (let index = 0; index <= itemAmount; index++) {
@@ -22,3 +26,5 @@ module.exports = getDailyItem = () => {
 
     return items;
 }
+
+module.exports = { getDailyItem, updateDailyItems }

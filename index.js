@@ -69,9 +69,9 @@ bot.on('disconnected', () => {
     console.log('BOT DESCONECTADO')
 })
 
-bot.on('ready', () => {
+bot.on('ready', async () => {
     console.log("BOT ONLINE")
-    PokemonModule.initPokemonModule(bot);
+    await PokemonModule.initPokemonModule(bot);
     EpicFreeGameModule.init(bot);
 })
 
