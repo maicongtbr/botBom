@@ -394,12 +394,10 @@ const getDaily = async (msg) => {
     if(dailies[id] && dailies[id].date >= date) return await msg.reply("Você ja recebeu seus items hoje");
 
     const items = getDailyItem();
-    console.log(items.length)
     var rows = [];
     items.forEach((e) => {
         addItem(e);
         rows.push({title: e.item.name, description: e.amount});
-        console.log(e)
     });
 
     const ls = [
@@ -409,9 +407,9 @@ const getDaily = async (msg) => {
         }
     ];
 
-    console.log(ls.rows)
+    console.log(ls[0].rows)
 
-    var list = new List("Itens diários recebidos!", "Ver items", ls)
+    const list = new List("Itens diários recebidos!", "Ver items", ls)
     dailies[id] = { date: new Date(date.getTime() + dayTime) };
     await msg.reply(list);
 }

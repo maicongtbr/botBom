@@ -13,7 +13,6 @@ const updateDailyItems = () => {
 const getDailyItem = () => {
     const itemAmount = getRandomIntRange(1, dailyItemsByChance.length);
     var items = [];
-    console.log(dailyItemsByChance);
     for (let index = 0; index <= itemAmount; index++) {
        for (let j = 0; j < dailyItemsByChance.length; j++) {
             const element = dailyItemsByChance[j];
