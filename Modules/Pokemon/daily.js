@@ -1,4 +1,4 @@
-const { getRandomIntRange } =  require("../../libs");
+const { getRandomIntRange, getRandomInt } =  require("../../libs");
 
 var dailyItemsByChance = [   ]
 
