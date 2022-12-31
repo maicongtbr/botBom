@@ -404,7 +404,7 @@ const getDaily = async (msg) => {
     const ls = [
         {
             title: "Items Diários",
-            rows
+            rows: rows
         }
     ];
 
