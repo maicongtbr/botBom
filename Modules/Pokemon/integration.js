@@ -396,7 +396,7 @@ const getDaily = async (msg) => {
     const items = getDailyItem();
     var rows = [];
     for (let index = 0; index < items.length; index++) {
-        const e = array[index];
+        const e = items[index];
         await addItem(e);
         rows.push({title: e.name, description: `Quantidade: ${e.amount}`, id:`itemdaily${id}${id-1}`});
     }
