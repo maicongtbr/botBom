@@ -17,7 +17,7 @@ const getDailyItem = () => {
     for (let index = 0; index <= itemAmount; index++) {
        for (let j = 0; j < dailyItemsByChance.length; j++) {
             const element = dailyItemsByChance[j];
-            const rng = getRandomIntRange(1, 100);
+            let rng = getRandomIntRange(1, 100);
             if(element.chance <= rng || element.chance >= 100) {
                 var found = items.find(x => x.internalName == element.item.internalName);
                 if(found) {

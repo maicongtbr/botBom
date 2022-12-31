@@ -720,7 +720,7 @@ const onMessage = async (msg) => {
             return;
         }
 
-        if(storage[id] && (storage[id].catch == true || storage[id].ignore)) {
+        if(storage && storage[id] && (storage[id].catch == true || storage[id].ignore)) {
             storage[id] = {};
             getStorage("pokemonModuleCurrentServerPokemon").setValue(storage);
             return;
