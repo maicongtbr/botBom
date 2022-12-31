@@ -4,9 +4,10 @@ var dailyItemsByChance = [   ]
 
 const updateDailyItems = () => {
     dailyItemsByChance = [
-        { item: global.itemMap["Poké Ball"], amount: {min: 2, max: 15 }, chance: 100},
+        { item: global.itemMap["Ultra Ball"], amount: {min: 1, max: 1 }, chance: 5},
         { item: global.itemMap["Great Ball"], amount: {min: 2, max: 2 }, chance: 40},
-        { item: global.itemMap["Ultra Ball"], amount: {min: 1, max: 1 }, chance: 5}
+        { item: global.itemMap["Poké Ball"], amount: {min: 2, max: 15 }, chance: 1000},
+
     ]
 }
 
@@ -18,8 +19,13 @@ const getDailyItem = () => {
             const element = dailyItemsByChance[j];
             const rng = getRandomIntRange(1, 100);
             console.log(rng)
-            if(element.chance <= rng) {
-                items.push({ item: element.item, amount: getRandomIntRange(element.amount.min, element.amount.max)});
+            if(element.chance <= rng || element.chance >= 100) {
+                var found = items.find(x => x.item.name == element.item.name);
+                if(found) {
+                    found.amount += getRandomIntRange(element.amount.min, element.amount.max);
+                } else {
+                    items.push({ item: element.item, amount: getRandomIntRange(element.amount.min, element.amount.max)});
+                }
                 break;
             }
        }
