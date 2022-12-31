@@ -23,7 +23,7 @@ const getDailyItem = () => {
                 if(found) {
                     found.amount += getRandomIntRange(element.amount.min, element.amount.max);
                 } else {
-                    items.push({ item: element.item, amount: getRandomIntRange(element.amount.min, element.amount.max)});
+                    items.push({ ...element.item, amount: getRandomIntRange(element.amount.min, element.amount.max)});
                 }
                 break;
             }
