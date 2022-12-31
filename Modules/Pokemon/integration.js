@@ -395,9 +395,9 @@ const getDaily = async (msg) => {
 
     const items = getDailyItem();
     var rows = [];
-    items.forEach((e) => {
+    items.forEach((e, id) => {
         addItem(e);
-        rows.push({title: e.item.name, description: e.amount});
+        rows.push({title: e.item.name, description: e.amount, id: `sim${id}${id-2}`});
     });
 
     const ls = [
