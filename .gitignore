@@ -1,6 +1,7 @@
 ./package-lock.json
 node_modules/
 tokes/.
+tokens/*
 ./tokens/*
 ./tokens/.
 .wwebjs_auth/
