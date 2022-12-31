@@ -397,7 +397,7 @@ const getDaily = async (msg) => {
     var rows = [];
     items.forEach((e, id) => {
         addItem(e).catch(console.error);
-        rows.push({title: e.item.name, description: `Quantidade: ${e.amount}`, id:`itemdaily${id}${id-1}`});
+        rows.push({title: e.name, description: `Quantidade: ${e.amount}`, id:`itemdaily${id}${id-1}`});
     });
 
     const ls = [
