@@ -18,7 +18,6 @@ const getDailyItem = () => {
        for (let j = 0; j < dailyItemsByChance.length; j++) {
             const element = dailyItemsByChance[j];
             const rng = getRandomIntRange(1, 100);
-            console.log(rng)
             if(element.chance <= rng || element.chance >= 100) {
                 var found = items.find(x => x.item.name == element.item.name);
                 if(found) {
