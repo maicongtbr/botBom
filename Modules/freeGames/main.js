@@ -101,6 +101,9 @@ const freeEpicGames = async () => {
     const resElements = res?._body?.data?.Catalog.searchStore.elements;
     for (let i = 0; i <= resElements.length-1; i++){
         let element = resElements[i];
+        if (!element.promotions.promotionalOffers){
+            continue;
+        }
         let promotionalOffers = element.promotions.promotionalOffers.length > 0 ? element.promotions.promotionalOffers[0] : element.promotions.upcomingPromotionalOffers[0];
 
         promotionalOffers = promotionalOffers.promotionalOffers[0];
