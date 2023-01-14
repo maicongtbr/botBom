@@ -6,13 +6,17 @@ const Areas = {
     getMethodString: (condition) => {
         switch(condition) {
             case Conditions.Walking:
-                return "Andando"
+                return "andando"
             case Conditions.Day:
-                return "Andando durante o dia"
+                return "andando durante o dia"
             case Conditions.Night:
-                return "Andando durante a noite"
+                return "andando durante a noite"
+            case Conditions.Surf:
+                return "surfando"
+            case Conditions.Fish:
+                return "pescando"
             default:
-                return;
+                return "andando";
         }   
     },
 
@@ -26,6 +30,38 @@ const Areas = {
         }
     },
 
+    getConditionMode: (encounterInfos) => {
+        var condition = { ...encounterInfos }
+            var method = encounterInfos.condition_values[0] ? encounterInfos.condition_values[0].name : encounterInfos.method.name;
+            if(method) {
+                switch(method) {
+                    case "time-day":
+                    case "time-morning":
+                        condition.mode = Conditions.Day;
+                        break;
+                    case "time-night":
+                        condition.mode = Conditions.Night;
+                        break;
+                    case "old-rod":
+                    case "super-rod":
+                    case "ultra-rod":
+                        condition.mode = Conditions.Fisb;
+                        break;
+                    case "surf":
+                    case "surfing":
+                        condition.mode = Conditions.Surf;
+                        break
+                    default:
+                        condition.mode = Conditions.Walk;
+                        break;
+                }
+            }
+
+        condition.string = Areas.getMethodString(condition.mode);
+
+        return condition;
+    },
+
     getPokemonArea: async (area, name) => {
         var res = await superagent.get(area.url);
         var region = {
@@ -34,24 +70,10 @@ const Areas = {
         var body = res._body;
         await body.pokemon_encounters.forEach(encounter => {
             var encounterInfos = encounter.version_details[0].encounter_details[0];
-            var condition = encounterInfos;
-            if(encounterInfos.condition_values && encounterInfos.condition_values[0]) {
-                switch(encounterInfos.condition_values[0].name) {
-                    case "time-day":
-                        condition.mode = Conditions.Day;
-                        break;
-                    case "time-night":
-                        condition.mode = Conditions.Night;
-                        break;
-                    default:
-                        condition.mode = Conditions.Walk;
-                        break;
-                }
-            }
+            var condition = Areas.getConditionMode(encounterInfos);
+            
 
             var pokemonId = encounter.pokemon.url.replace("https://pokeapi.co/api/v2/pokemon/", "").replace("/", "")
-
-            var pokemonCondition = Areas.getMethodString(condition.mode) && { condition: condition.mode, string: Areas.getMethodString(condition.mode) }
             var pokemon = new Pokemon(
                 capitalize(Areas.getRealName(encounter.pokemon.name)),
                 encounter.pokemon.url,
@@ -59,7 +81,7 @@ const Areas = {
                 condition.chance,
                 condition.min_level,
                 condition.max_level,
-                pokemonCondition && pokemonCondition
+                condition
             )
             region.pokemon.push(pokemon)
         });

@@ -114,6 +114,8 @@ const Conditions = {
     Walk: 0,
     Day: 1,
     Night: 2,
+    Surf: 3,
+    Fish: 4
 }
 
 module.exports = { Pokemon, Conditions, createPokemon };

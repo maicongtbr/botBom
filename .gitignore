@@ -1,4 +1,9 @@
 ./package-lock.json
 node_modules/
+tokes/.
+tokens/*
+./tokens/*
+./tokens/.
+./*.icloud
 .wwebjs_auth/
 .vscode/settings.json

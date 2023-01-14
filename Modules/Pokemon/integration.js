@@ -12,18 +12,24 @@ var myModule = {};
 const webp = require('webp-converter');
 const fs = require('fs');
 const download = require('image-downloader');
-const { getMarket } = require("./market");
-const { title } = require("process");
 const PokeParty = require("./pokeParty.js");
+const { getDailyItem } = require("./daily");
 var log;
 
 
 
 const tryCatch = async (msg) => {
+    var __id = msg.from ? msg.from : msg.chatId;
+    if(flees[__id]) return;
+    var _storage = getStorageValue("pokemonModuleCurrentServerPokemon");
+    var storage = _storage[msg.from];
+    if(!storage || storage.catch || !storage.pokemon) return;
+
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     var player = await PokemonPlayerDB.findOne({
         id: msg.author
     });
+
 
     if(player && !player.playing) {
         await msg.reply("Você não está jogando, comece a jogar com !inicial");
@@ -41,26 +47,26 @@ const tryCatch = async (msg) => {
         return;
     }
 
-    var _storage = getStorageValue("pokemonModuleCurrentServerPokemon");
-    var storage = _storage[msg.from];
-    if(!storage || storage.catch || !storage.pokemon) return;
-    var __id = msg.from ? msg.from : msg.chatId;
-
     if(pokeName.toUpperCase() == storage.pokemon.toUpperCase()) {
+        storage.catch = true;
+        havePokemon[__id] = false;
+        storage.ignore = true;
+        _storage[__id] = storage;
+        getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
+        var money = (100 - storage.catchRate) * getRandomIntRange(2, 8);
+        money = money <= 0 ? 100 : parseInt(money);
+
+        await giveMoneyToPlayer(msg, money);
         var PokemonPlayerDB = db.getModel("PokemonPlayer");
         var player = await PokemonPlayerDB.findOne({
             id: msg.author
         });
         if(player && player.pokemon && player.pokemon.length >= 6) {
-            await msg.reply("Você acertou e capturou um " + storage.pokemon + "\nVocê já tem 6 Pokémon na Party, seu novo Pokémon foi para a Box!\nPara conferir a box digite !boxpokemon");
+            await msg.reply("Você acertou e capturou um " + storage.pokemon + "\nVocê já tem 6 Pokémon na Party, seu novo Pokémon foi para a Box!\nPara conferir a box digite !boxpokemon"+ ".\nVocê ganhou B$" + money + " por essa captura.");
         } else {
-            await msg.reply("Você acertou e capturou um " + storage.pokemon);
+            await msg.reply("Você acertou e capturou um " + storage.pokemon + ".\nVocê ganhou B$" + money + " por essa captura.");
 
         }
-        storage.catch = true;
-        havePokemon[__id] = false;
-        storage.ignore = true;
-        getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
         var pokemonSpecies = await superagent.get('https://pokeapi.co/api/v2/pokemon-species/' + storage.pokemon.toLowerCase());
         var growthRate = pokemonSpecies._body.growth_rate.name;
         var levels = getStorageValue('pokemonModuleLevels');
@@ -70,14 +76,24 @@ const tryCatch = async (msg) => {
     } else {
         await msg.reply("Você errou!");
         storage.tries += 1;
+        storage.pokemonAttempt--;
         var randomTries = getRandomIntRange(6, 10);
-        if(storage.tries >= randomTries) {
-            await myModule.bot.sendMessage(msg.from, "O Pokémon fugiu!");
-            havePokemon[__id] = false;
-            storage.ignore = true;
-            getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
+        if(storage.tries >= randomTries || storage.pokemonAttempt <= 0) {
+            await flee(storage, __id);
         }
+        _storage[msg.from] = storage;
+        getStorage("pokemonModuleCurrentServerPokemon").setValue(_storage);
     }
+}
+const flees = []
+const flee = async (storage, id) =>
+{
+    if(flees[id]) return;
+    flees[id] = true;
+    havePokemon[id] = false;
+    await myModule.bot.sendMessage(id, `O Pokémon ${storage.pokemon} fugiu!`);
+    storage.ignore = true;
+    flees[id] = false;
 }
 
 const addPokemonToPlayer = async (msg, pokemon, isStarter) => {
@@ -151,22 +167,41 @@ const addPokemonToPlayer = async (msg, pokemon, isStarter) => {
 const showPokemon = async (msg) => {
     var PokemonPlayerDB = db.getModel("PokemonPlayer");
     PokemonPlayerDB.findOne({
-        id: msg.author
+        id: msg.author || msg.from
     }).then(async player => {
         if(!player) {
             msg.reply("Você não tem Pokémon na Party");
             return;
         }
 
-
+        var chat = await msg.getChat();
         var contact = await msg.getContact();
-        var playerInfos = { coins: player.coins, name: contact.pushname, image: await contact.getProfilePicUrl() }
-        var Pokemon = [];
-        player.pokemon.forEach(e=> {
+        if (chat.isGroup) {
+            const pokemonList = [{
+                title: `Party de ${contact.pushname}`,
+                rows: []
+            }];
+            player.pokemon.forEach(e=> {
+                const name = e.shiny ? `Shiny ${e.name}` : e.name;
+                pokemonList[0].rows.push({title: name, description: `Level: ${e.level}\nVida: ${e.currentHp}/${e.maxHp}`})
+            })
+
+            const list = new List(`B$: ${player.coins}\nPokémon na Party: ${pokemonList[0].rows.length}\nClique abaixo para conferir a party`,
+            `Conferir Party de ${contact.pushname}`, pokemonList, `Party de ${contact.pushname}`,"Formato reduzido ara evitar spam em grupos, para imagem use o privado do bot!");
+
+            await msg.reply(list);
+            return;
+        }
+        
+        let playerInfos = { coins: player.coins, name: contact.pushname, image: await contact.getProfilePicUrl() }
+        let Pokemon = [];
+        for (let index = 0; index < player.pokemon.length; index++) {
+            const e = player.pokemon[index];
             Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
-        })
-        var img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
-        msg.reply(img);
+        }
+
+        let img = await PokeParty.getPokemonPartyImage(playerInfos, Pokemon);
+        return await msg.reply(img);
     })
 }
 
@@ -216,7 +251,14 @@ const showBox = async (msg) => {
     const list = new List(`Pokémon reservas de ${contact.pushname}`, "Abrir",
     box);
 
-    return await msg.reply(list);
+    var chat = await msg.getChat();
+    if(chat.isGroup)
+    {
+        await msg.reply("Esse comando não pode ser usado em grupos!");
+        await myModule.bot.sendMessage(msg.author, list);
+    } else {
+        await msg.reply(list);
+    }
 }
 
 const starterList =  new List(
@@ -341,6 +383,36 @@ const changeSpawnRate = async (msg) => {
 
 const marketState = [];
 
+const dailies = [];
+const dayTime = 1000 * 60 * 60 * 24;
+const getDaily = async (msg) => {
+    var chat = await msg.getChat();
+    if(chat.isGroup) return await msg.reply("Esse comando nào pode ser usado em grupos.");
+
+    const id = msg.author || msg.from;
+    const date = new Date();
+    if(dailies[id] && dailies[id].date >= date) return await msg.reply("Você ja recebeu seus items hoje");
+
+    const items = getDailyItem();
+    var rows = [];
+    for (let index = 0; index < items.length; index++) {
+        const e = items[index];
+        await addItem(msg, e);
+        rows.push({title: e.name, description: `Quantidade: ${e.amount}`, id:`itemdaily${id}${id-1}`});
+    }
+
+    const ls = [
+        {
+            title: "Items Diários",
+            rows: rows
+        }
+    ];
+
+    const list = new List("Itens diários recebidos!", "Ver items", ls)
+    dailies[id] = { date: new Date(date.getTime() + dayTime) };
+    await msg.reply(list);
+}
+
 var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
     { name:'!pokemon', callback: (msg) => showPokemon(msg) },
@@ -349,6 +421,7 @@ var commands = [
     { name: "!pokedex", callback: (msg) => getPokedex(msg) },
     { name: "!pokestop", callback: (msg) => stopModule(msg)},
     { name: "!pokespawnrate", callback: (msg) => changeSpawnRate(msg)},
+    { name: "!pokedaily", callback: (msg) => getDaily(msg)},
     { name: "!pokesummon", callback: async (msg) => {
         if (! await userIsAdmin(await msg.getChat(), msg.author)) {
             msg.reply("Somente Admins.");
@@ -356,15 +429,9 @@ var commands = [
         }
         var id = msg.from ? msg.from : msg.chatId;
         havePokemon[id] = false;
-        await getPokemon(msg);
+        await getPokemon(msg, null, true);
     }},
     { name: "!pokemarket", callback: async (msg) => {
-        var chat = await msg.getChat();
-        if(chat.isGroup) 
-        {
-            await msg.reply("Não é possível utilizar em grupos.");
-            return;
-        }
 
         marketState[msg.from] = 1;
         var buttons = new Buttons("Bem-vindo ao Mercado Pokémon",
@@ -372,7 +439,13 @@ var commands = [
             { buttonId:'1',body:'Comprar Items',type: 1 },
             { buttonId:'2',body:"Vender Items (em breve)",type: 1 },
         ])
-        msg.reply(buttons);
+        var chat = await msg.getChat();
+        if(chat.isGroup) 
+        {
+            await myModule.bot.sendMessage(msg.author, buttons);
+        } else {
+            await msg.reply(buttons);
+        }
     }},
     { name: "!pokebag", callback: async (msg) => getMyItems(msg)}
 ]
@@ -385,10 +458,13 @@ commands.forEach((value) => {
 
 var havePokemon = [];
 
-const getPokemon = async (msg, private) => {
+const getPokemon = async (msg, private, force) => {
     var id = msg.from ? msg.from : msg.chatId;
     if(havePokemon[id]) {
-        havePokemon[id] = false;
+        if(force) {
+            havePokemon[id] = false;
+            await msg.reply("Nenhum Pokémon apareceu...");
+        }
         return;
     }
     havePokemon[id] = true;
@@ -397,7 +473,10 @@ const getPokemon = async (msg, private) => {
         // id = msg.author;
     }
     if(!pokemon) {
-        havePokemon[id] = false;
+        if(force) {
+            await msg.reply("Nenhum Pokémon apareceu...");
+        }
+        havePokemon[id] = false
         return;
     }
 
@@ -421,10 +500,12 @@ const getPokemon = async (msg, private) => {
             svStorage.level = pokemon.level;
             svStorage.shiny = pokemon.shiny;
             svStorage.gender = pokemon.gender;
+            svStorage.catchRate = pokemon.catchRate;
             svStorage.ignore = false;
             var chat = await msg.getChat();
             svStorage.server = chat.name;
             svStorage.tries = 0;
+            svStorage.pokemonAttempt = getRandomIntRange(10, 15); // msgs para fugir
     
             if(storage.value) {
                 storage.value[msg.from] = svStorage;
@@ -442,7 +523,7 @@ const getPokemon = async (msg, private) => {
             await bot.sendMessage(id, pokemonGif, {
                 sendMediaAsSticker:true
             });
-            await bot.sendMessage(id, "O *primeiro* a acerter o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!");
+            await bot.sendMessage(id, "O *primeiro* a acertar o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!");
             fs.unlink(imgName, (err) => {
                 if (!err) return;
                 log(err)
@@ -475,7 +556,7 @@ const giveMoneyToPlayer = async (msg, amount) => {
 
     var coins = player.coins || 0;
 
-    awaitPokemonPlayerDB.updateOne({
+    await PokemonPlayerDB.updateOne({
        id: msg.author
     },
     {
@@ -616,8 +697,19 @@ const onMessage = async (msg) => {
             return;
         }
         var id = msg.from ? msg.from : msg.chatId;
+        var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
         if(havePokemon[id]) {
-            havePokemon[id] = false;
+            if(flees[id]) return;
+
+            var _storage = storage[id];
+            if(!_storage) {
+                return;
+            }
+            _storage.pokemonAttempt--;
+            if(_storage && _storage.pokemonAttempt <= 0) {
+                await flee(_storage, id);
+            }
+            getStorage("pokemonModuleCurrentServerPokemon").setValue(storage);
             return;
         }
         var chat = await msg.getChat();
@@ -627,11 +719,8 @@ const onMessage = async (msg) => {
         if(!pokeGroups.find(x => x == chat.name)) {
             return;
         }
-    
-        var storage = getStorageValue("pokemonModuleCurrentServerPokemon");
-        var id = msg.from ? msg.from : msg.chatId;
 
-        if(storage[id] && (storage[id].catch == true || storage[id].ignore)) {
+        if(storage && storage[id] && (storage[id].catch == true || storage[id].ignore)) {
             storage[id] = {};
             getStorage("pokemonModuleCurrentServerPokemon").setValue(storage);
             return;
@@ -656,11 +745,11 @@ const onLevelUp = (msg) => {
 
 }
 
-const initPokemonModule = (bot) => {
+const initPokemonModule = async (bot) => {
     var callbacks = { onMessage, onLevelUp };
     myModule = new Module("PokéBom", bot, callbacks, commands);
     log = (...args) => myModule.log(args);
-    require("./main")(log); // start
+    await require("./main")(log); // start
 
     new Storage("pokemonModuleEncounterRate", (value) => {
         encounterPercentage = value;

@@ -4,8 +4,8 @@ var capitalize = require('capitalize');
 
 const shinyBonus = [
     {
-        date: new Date("2022-11-29 21:10:00"), // GMT
-        chance: 3
+        date: new Date("2022-12-26 03:00:00"), // UTC
+        chance: 1000
     }
 ]
 
@@ -62,6 +62,20 @@ var encounterMessages = {
 
 const { Conditions } = require("./classes");
 
+const eventPokemon = [
+    {
+        date: new Date("2022-12-26 03:00:00"), 
+        chance: 25,
+        pokemon: [
+            { name: "Delibird", chance: 100, condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/delibird" },
+            { name: "Snover", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 1, maxLevel: 50, url: "https://pokeapi.co/api/v2/pokemon/snover" },
+            { name: "Starmie", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 50, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/starmie" },
+            { name: "Jinx", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 50, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/jinx" },
+            { name: "Lapras", chance: 100,condition: { string: "comemorando o natal" }, minLevel: 50, maxLevel: 70, url: "https://pokeapi.co/api/v2/pokemon/lapras" },
+        ]
+    }
+]
+
 
 const getEncounter = async (msg, private, index) => {
     if (index && index > 5) {
@@ -73,12 +87,20 @@ const getEncounter = async (msg, private, index) => {
         return;
     }
 
-    var id = getRandomInt(locales.length - 1);
-    var pokes = locales[id];
+    var id = getRandomInt(locales.length);
+    var pokes = locales[id - 1];
+    var curDate = new Date();
+    for(bonus of eventPokemon) {
+        const rng = getRandomIntRange(0, 100);
+        if (bonus.date >= curDate && rng <= bonus.chance) {
+            pokes = bonus;
+            break;
+        }
+    }
     if(!pokes || !pokes.pokemon || pokes.pokemon.length -1 <= 0) {
         return;
     }
-    var pokemon = pokes.pokemon[getRandomInt(pokes.pokemon.length - 1)];
+    var pokemon = pokes.pokemon[getRandomInt(pokes.pokemon.length) - 1];
     if(!pokemon || !pokemon.condition) {
         return;
     }
@@ -137,17 +159,17 @@ const getEncounter = async (msg, private, index) => {
 
 
     var image = getCorrectImage(imagePath, hasGenderDiff && isFemale, _isShiny);
-    var level = getRandomIntRange(Math.floor(pokemon.minLevel/2), pokemon.maxLevel);
+    var level = getRandomIntRange(Math.floor(pokemon.minLevel), pokemon.maxLevel);
     var phrase = private ? encounterMessages.private : encounterMessages.group;
-    phrase = phrase[getRandomInt(phrase.length - 1)];
+    phrase = phrase[getRandomInt(phrase.length) - 1] || phrase[1];
     var name = capitalize(speciesBody.name);
 
     if(_isShiny) {
         console.log("SHINY POKEMON ABAIXO!")
     }
 
-    phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("mode", pokemon.condition.string);
-    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance, shiny: _isShiny};
+    phrase = phrase.replace("%pokemon%", slicePokeName(name)).replace("%mode%", pokemon.condition ? pokemon.condition.string : "andando");
+    var ret = { image, gender: isFemale ? "Fêmea" : "Macho", name, level, phrase, chance: pokemon.chance, shiny: _isShiny, catchRate: speciesBody.capture_rate};
     return ret;
 }
 

@@ -1,16 +1,23 @@
-const superagent = require("superagent")
+const superagent = require("superagent");
 
-const normalPokeballs = {
-    title: "Pokébolas",
-    rows: []
+global.MarketItems = [];
+global.Items = {
+    pokeballs: []
 }
 
-// 33 34
-var PokeballsItemCategories = [ 34 ]
+global.itemMap = [];
+
+var itemsMarket = [
+    { list: {title: "Pokébolas", rows: []},  id: 34, name: "Pokébolas" },
+    { list: {title: "Pokébolas Especiais", rows: []},  id: 33, name: "Pokébolas Especiais" },
+    { list: {title: "Evolutivos", rows: []},  id: 10, name: "Evolutivos" }
+]
+
 const updatePokeballCache = async () => {
     try {
-        for (category of PokeballsItemCategories) {
-            var res = await superagent.get(`https://pokeapi.co/api/v2/item-category/${category}/`);
+        for (catId in itemsMarket) {
+            let category = itemsMarket[catId];
+            var res = await superagent.get(`https://pokeapi.co/api/v2/item-category/${category.id}/`);
             let body = res._body;
             for (item of body.items) {
                 var item = await superagent.get(item.url);
@@ -18,14 +25,20 @@ const updatePokeballCache = async () => {
 
                 var name = body.names.find(x => x.language.name == "en");
                 let retItem = {
-                    price: body.cost,
+                    price: parseInt(body.cost),
                     name: name.name,
                     internalName: body.name,
-                    type: "Pokébola"
+                    type: category.name
                 }
-                if(retItem.price > 0 && retItem.internalName != "sport-ball") {
-                    global.Items.pokeballs.push(retItem);
-                    normalPokeballs.rows.push({
+                if(retItem.price > 0) {
+                    if(category.id == 34 || category.id == 33) {
+                        if (retItem.internalName == "premier-ball") {
+                            continue;
+                        }
+                        global.Items.pokeballs.push(retItem);
+                    }
+
+                    category.list.rows.push({
                         id: retItem.internalName,
                         title: retItem.name,
                         description: `Preço: ${retItem.price} BomCoins`,
@@ -34,18 +47,19 @@ const updatePokeballCache = async () => {
 
                     global.itemMap[name.name] = retItem;
                 }
-
             }
+            category.list.rows.sort((a,b) => {
+                return a.price > b.price ? 1 : -1;
+            });
+    
+            global.MarketItems.push(category.list);
         }
 
-        normalPokeballs.rows.sort((a,b) => {
-            return a.price > b.price ? 1 : -1;
-        });
 
-        global.MarketItems.push(normalPokeballs);
     } catch (e) {
         console.warn(e);
     }
 }
+
 
 module.exports = updatePokeballCache;
