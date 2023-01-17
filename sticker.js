@@ -28,8 +28,10 @@ const sendSticker = async (msg, fileName, bot) => {
 }
 
 const makeSticker = async (msg) => {
+    console.log(msg.type);
     if (msg.hasQuotedMsg){
         let quotedMsg = await msg.getQuotedMessage();
+        console.log(quotedMsg.type);
         if (quotedMsg != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
     }
     else {
