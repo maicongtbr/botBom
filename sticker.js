@@ -28,7 +28,6 @@ const sendSticker = async (msg, fileName, bot) => {
 }
 
 const makeSticker = async (msg) => {
-    if (msg.type === 'chat') return msg.reply('O comando de Sticker não está funcionando mencionando mensagens. Tente enviando diretamente a imagem.');
     if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
 
     var media = await downloadMessageMedia(msg);
