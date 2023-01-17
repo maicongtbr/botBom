@@ -31,12 +31,11 @@ const makeSticker = async (msg) => {
     console.log(msg.type);
     if (msg.hasQuotedMsg){
         let quotedMsg = await msg.getQuotedMessage();
-        console.log(quotedMsg.duration);
-        if (quotedMsg.type != 'image' || quotedMsg.type != 'video') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
+        if (quotedMsg.type != 'image' || quotedMsg.type != 'video') return msg.reply('O comando de Sticker só funciona com arquivos de imagem ou Gif.');
+        if (!quotedMsg.isGif) return msg.reply('O comando de Sticker só funciona com arquivos de imagem ou Gif.');
     }
     else {
-        if (msg.type != 'image' || msg.type != 'video') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
-        console.log(msg.duration);
+        if (msg.type != 'image' || msg.type != 'video') return msg.reply('O comando de Sticker só funciona com arquivos de imagem ou Gif.');
     }
 
     var media = await downloadMessageMedia(msg);
