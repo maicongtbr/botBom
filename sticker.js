@@ -36,6 +36,7 @@ const makeSticker = async (msg) => {
     }
     else {
         if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
+        console.log(msg.type);
     }
 
     var media = await downloadMessageMedia(msg);
