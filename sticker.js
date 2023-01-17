@@ -5,7 +5,6 @@ const downloadMessageMedia = async (msg) => {
     var messageToDowloadMedia = msg;
     if (msg.hasQuotedMsg){
         let quotedMsg = await msg.getQuotedMessage();
-        return; //só enquanto o bot ta crashando com quotedMsg
         if (quotedMsg.hasMedia){
             messageToDowloadMedia = quotedMsg;
         }
