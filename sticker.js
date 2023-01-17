@@ -32,7 +32,7 @@ const makeSticker = async (msg) => {
     if (msg.hasQuotedMsg){
         let quotedMsg = await msg.getQuotedMessage();
         console.log(quotedMsg.type);
-        if (quotedMsg != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
+        if (quotedMsg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
     }
     else {
         if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
