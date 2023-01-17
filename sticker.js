@@ -35,7 +35,7 @@ const makeSticker = async (msg) => {
         if (quotedMsg.type != 'image' || quotedMsg.type != 'video') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
     }
     else {
-        if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
+        if (msg.type != 'image' || msg.type != 'video') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
         console.log(msg.duration);
     }
 
