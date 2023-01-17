@@ -28,7 +28,13 @@ const sendSticker = async (msg, fileName, bot) => {
 }
 
 const makeSticker = async (msg) => {
-    if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
+    if (msg.hasQuotedMsg){
+        let quotedMsg = await msg.getQuotedMessage();
+        if (quotedMsg != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
+    }
+    else {
+        if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
+    }
 
     var media = await downloadMessageMedia(msg);
     msg.reply(media, undefined, {
