@@ -17,7 +17,7 @@ const sendRandomSticker = (msg, fileName, num, bot) => {
     media = MessageMedia.fromFilePath(`./${fileName[getRandomInt(num)]}`);
     bot.sendMessage(msg.from, media, {
         sendMediaAsSticker:true
-        })
+    })
 }
 
 const sendSticker = async (msg, fileName, bot) => {
