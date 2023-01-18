@@ -1,6 +1,10 @@
 const superagent = require("superagent");
 const { MessageMedia } = require("whatsapp-web.js");
 var capitalize = require('capitalize');
+const download = require('image-downloader');
+const webp = require('webp-converter');
+const fs = require('fs');
+const { getRandomInt } = require("../../libs");
 
 const getPokedex = async (msg) => {
     var splited = msg.body.split(" ");
@@ -8,39 +12,61 @@ const getPokedex = async (msg) => {
     if (!pokeName) {
         return;
     }
-
-    pokeName = pokeName.toLowerCase();
-
     try {
-        var pokeInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon/${pokeName}/`);
+
+        pokeName = pokeName.toLowerCase();
+        var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName}/`);
+        var speciesBody = speciesInfo._body;
+        var pokeInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon/${speciesBody.id}/`);
+        if(!pokeInfo) {
+            return;
+        }
         pokeInfo = pokeInfo._body;
-    
-        var sprite = await MessageMedia.fromUrl(pokeInfo.sprites.front_default, {
-            unsafeMime: true
-        });
-    
-        var types = [];
-        pokeInfo.types.forEach( async t => {
-            types.push(capitalize(t.type.name));
-        })
-    
-    
-        var speciesInfo = await superagent.get(`https://pokeapi.co/api/v2/pokemon-species/${pokeName.toLowerCase()}/`);
-        var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
-    
-        var chain = getChain(evolutionsInfo._body.chain);
-        var evolutionsMessages = await getChainString(chain);
-    
-    
-    
-        var message = `*${capitalize(pokeInfo.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.height/10}kg\nTipos: ${types.join(", ")}`;
-        if(evolutionsMessages.length > 0) {
-            message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
+
+        var imagePath = pokeInfo.sprites.other["official-artwork"].front_default;
+
+        if(!imagePath) {
+            console.log(pokeInfo.sprites);
+            throw "Pokémon ainda não registrado!";
         }
     
-        msg.reply(sprite, msg.from, {caption: message});
+        var rng = getRandomInt(999999);
+        var imgName = `/home/life4gamming2/bot-aop/temp/dex${rng}.gif`;
+
+        download.image({
+            url: imagePath,
+            dest: imgName,
+            extractFilename: false,
+        }).then(async ({filename}) => {
+            var sprite = MessageMedia.fromFilePath(imgName);
+            if(!sprite) {
+                return;
+            }
+            var types = [];
+            pokeInfo.types.forEach( async t => {
+                types.push(capitalize(t.type.name));
+            })
+        
+        
+            var message = `*${capitalize(pokeInfo.species.name)}*\nNúmero na Pokedex: ${pokeInfo.id}\nTamanho: ${pokeInfo.height/10}m\nPeso: ${pokeInfo.weight/10}kg\nTipos: ${types.join(", ")}`;
+            if(speciesInfo._body.evolution_chain && speciesInfo._body.evolution_chain.url) {
+                var evolutionsInfo = await superagent.get(speciesInfo._body.evolution_chain.url);
+            
+                var chain = getChain(evolutionsInfo._body.chain);
+                var evolutionsMessages = await getChainString(chain);
+                if(evolutionsMessages.length > 0) {
+                    message += `\nEvoluções: \t\n${evolutionsMessages.join("\n")}`
+                }
+            }
+            
+            msg.reply(sprite, msg.from, {caption: message});
+            fs.unlink(imgName, (err) => {
+                if (!err) return;
+                console.log(err)
+            });
+            
+        })
     } catch (error) {
-        console.warn(error);
         msg.reply('Esse Pokémon não existe ou não está disponível.');
     }
 }
@@ -63,7 +89,6 @@ const getChainString = async (chain) => {
 
 const getEvoString = async (baseName, evolution) => {
     var methods = [];
-    console.log(evolution)
     if(evolution.min_level) {
         methods.push(`Nível: ${evolution.min_level}`);
     }
@@ -73,9 +98,10 @@ const getEvoString = async (baseName, evolution) => {
     if(evolution.min_affection) {
         methods.push(`Amizade: ${evolution.min_affection}`);
     }
-    if(evolution.trigger.name=="trade") {
+    if(evolution.trigger && evolution.trigger.name=="trade") {
         methods.push("Durante uma Troca");
     }
+
     if(evolution.time_of_day) {
         switch(evolution.time_of_day) {
             case "night":
@@ -99,7 +125,7 @@ const getEvoString = async (baseName, evolution) => {
         var name = item._body.names.find(x => x.language.name == "en");
         methods.push(`Item: ${name.name}`)
     }
-    var str = `${baseName} evolui para ${evolution.name}, condições: ${methods.join(" e ")}`;
+    var str = `${baseName} evolui para ${evolution.name}, ${methods.length> 0 ? "condições: "+methods.join(" e ")+"" : ""}`;
 
     return str
 }
@@ -121,6 +147,6 @@ const getChain = (chain, notBase) => {
     return ret;
 }
 
-// getPokedex({body:"!pokedex gengar"})
+// getPokedex({body:"!pokedex manaphy"})
 
 module.exports = { getPokedex }

@@ -1,180 +1,68 @@
-const { MessageMedia, Client, List, Buttons } = require('whatsapp-web.js');
+const { MessageMedia, List } = require('whatsapp-web.js');
 const { getGames } = require ('epic-free-games');
-const fs = require ('fs');
-const superagent = require('superagent');
-const db = require('./database');
 const google = require('googlethis');
-const tts = require('./tts');
-
+const { tts } = require('./tts');
+const { getTabela } = require('./tabela brasileirao');
+const { getRandomInt, getRandomIntRange, userIsAdmin, getGroup } = require('./libs');
+const { sendRandomSticker, sendSticker, makeSticker } = require('./sticker');
+const { getRanking, getLevel } = require('./level system');
 
 const callbackMap = new Map();
 const commandsMap = new Map();
 
-
-const getNextLevelExp = (level) => {
-    if(level < 50) {
-        return Math.floor((Math.pow(level, 2) * ( 100 - level )) / 50);
-    } else if(level <= 68) {
-        return Math.floor((Math.pow(level, 2) * ( 150 - level )) / 100);
-    } else if(level <= 98) {
-        return Math.floor((Math.pow(level, 2) * ( (1911 - (10 * level)) / 3)) / 500);
-    } else if(level <= 100) {
-        return Math.floor((Math.pow(level, 2) * ( 160 - level )) / 100);
-    } else {
-        return 10000;
-    }
-}
-
-const getTabela = async (msg, bot) => {
-    var rodada = await superagent.get('https://api.api-futebol.com.br/v1/campeonatos/10/rodadas').set('Authorization', 'Bearer live_5da0f7f9ac2040f89d6bd1d862a39d');
-    for (element of rodada._body){
-        if(element.status === 'agendada'){
-            var rodadaAtual = element.rodada;
-            break;
-        }
-    }
-
-    var tabela = await superagent.get('https://api.api-futebol.com.br/v1/campeonatos/10/tabela').set('Authorization', 'Bearer live_5da0f7f9ac2040f89d6bd1d862a39d');
-    var teamStats = `⚽️Campeonato Brasileiro Série A⚽️\n\n🔘Rodada ${rodadaAtual}/${rodada._body.length}\n\n🔵${tabela._body[0].posicao}° - ${tabela._body[0].time.nome_popular} ▶️Pts: ${tabela._body[0].pontos}\n`;
-    for (let i = 1; i <= 19; i++) {
-        var team = tabela._body[i].time.nome_popular;
-        if(i <= 3){//libertadores
-            teamStats = teamStats + `🔵${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
-        }
-        else if(i > 3 && i <= 5){//pré-libertado
-            teamStats = teamStats + `🟠${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
-        }
-        else if(i > 5 && i <= 11){//sulamericana
-            teamStats = teamStats + `🟢${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
-        }
-        else if(i >= 16 && i <19){//zona de rebaixamento
-            teamStats = teamStats + `🔴${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
-        }
-        else if(i >= 19){//pra não quebrar linha no ultimo colocado
-            teamStats = teamStats + `🔴${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}`;
-        }
-        else{//meio de tabela
-            teamStats = teamStats + `⚪️${tabela._body[i].posicao}° - ${team} ▶️Pts: ${tabela._body[i].pontos}\n`;
-        }
-    }
-
-    bot.sendMessage(msg.from, teamStats);
-}
-
-
-const randomNumber = (max) => {
-    return Math.floor(Math.random() * (max - 1 + 1));
-}
-
-const sendRandomSticker = (msg, fileName, num, bot) => {
-    media = MessageMedia.fromFilePath(`./${fileName[randomNumber(num)]}`);
-    bot.sendMessage(msg.from, media, {
-        sendMediaAsSticker:true
-        })
-}
-
-const sendSticker = async (msg, fileName, bot) => {
-    media = MessageMedia.fromFilePath(`./${fileName}`);
-    return bot.sendMessage(msg.from, media, {
-        sendMediaAsSticker:true
-    })
-}
-
-const downloadMessageMedia = async (msg) => {
-    var messageToDowloadMedia = msg;
-    if (msg.hasQuotedMsg){
-        let quotedMsg = await msg.getQuotedMessage();
-        return; //só enquanto o bot ta crashando com quotedMsg
-        if (quotedMsg.hasMedia){
-            messageToDowloadMedia = quotedMsg;
-        }
-    }
-    var ret = await messageToDowloadMedia.downloadMedia();
-    return ret;
-}
-
-const makeSticker = async (msg) => {
-    if (msg.type === 'chat') return msg.reply('O comando de Sticker não está funcionando mencionando mensagens. Tente enviando diretamente a imagem.');
-    if (msg.type != 'image') return msg.reply('O comando de Sticker só funciona com arquivos de imagem.');
-
-    var media = await downloadMessageMedia(msg);
-    msg.reply(media, undefined, {
-        sendMediaAsSticker:true,
-        stickerName: 'Feito com o Bot Bom da AOP',
-        sticketAuthor: 'Bot Bom'
-    })
-}
-
-const getGroup = async (msg) => {
-    var chat = await msg.getChat();
-    if (chat.isGroup) return chat;
-
-    return undefined;
-}
-
-const userIsAdmin = async (chat, authorId) => {
-    for(let participant of chat.participants) {
-        if(participant.id._serialized === authorId && participant.isAdmin) {
-            return true;
-        }
-    }
-    return false;
-}
-
-const banMember = (msg, bot) => {
+const banMember = (msg, bot) => { 
     var hasMentions = msg.getMentions();
     if (!msg.hasQuotedMsg && !hasMentions){
         return msg.reply('Para banir, você deve mencionar um usuário ou responder a mensagem do usuário a ser banido.');
     }
 
-    const group = getGroup(msg).then((group) => {
+    getGroup(msg).then((group) => {
         if (!group){
             return msg.reply('Você precisa estar em um grupo para isso');
         }
 
-        const isAdmin = userIsAdmin(group, msg.author).then((isAdmin) => {
+        userIsAdmin(group, msg.author).then((isAdmin) => {
             if (!isAdmin) {
                 return msg.reply('Você não é Admin.');
             }
 
-            const botIsAdmin = userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+            userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
                 if (!botIsAdmin){
                     return msg.reply('O Bot não é Admin.');
                 }
 
-                sendSticker(msg, './img/delete this5.webp', bot).then(() => { //id do bot = 5521991241118@c.us
-                    msg.getQuotedMessage().then((quotedMsg) => {
-                        if (quotedMsg && quotedMsg.author === '5521991241118@c.us') {
-                            console.log('mencionou a msg do bot');
-                            msg.reply('*JAMAIS TENTE ISSO!*');
-                            group.removeParticipants([msg.author]);
-                            return;
-                        }
+                sendSticker(msg, './img/delete this5.webp', bot).then(() => { 
+                    if (msg.hasQuotedMsg){
+                        msg.getQuotedMessage().then((quotedMsg) => {
+                            if (quotedMsg && quotedMsg.author === '5521991241118@c.us') {
+                                console.log('mencionou a msg do bot');
+                                msg.reply('*JAMAIS TENTE ISSO!*');
+                                group.removeParticipants([msg.author]);
+                                return;
+                            }
+                            let usersToBan = [quotedMsg.author];
+                            return group.removeParticipants(usersToBan);
+                        })
+                    }
+                    if (hasMentions){
                         msg.getMentions().then((mentionedUsers) => {
-                            mentionedUsers.forEach((element) => {
-                                if (element.id._serialized === '5521991241118@c.us') {
+                            for (let i = 0; i <= mentionedUsers.length; i++){
+                                if (mentionedUsers[i].id._serialized === '5521991241118@c.us') {
                                     console.log('mencionou o bot');
                                     msg.reply('*JAMAIS TENTE ISSO*');
                                     group.removeParticipants([msg.author]);
                                     return;
                                 }
-                            })
-
-                            if (msg.hasQuotedMsg){
-                                    console.log(quotedMsg);
-                                    let usersToBan = [quotedMsg.author];
-                                    console.log(usersToBan);
-                                    group.removeParticipants(usersToBan);
-                                    return;
                             }
-                            
-                                var usersToBan = [];
-                                mentionedUsers.forEach((element) => {
+                            let usersToBan = [];
+                            mentionedUsers.forEach((element) => {
                                 usersToBan.push(element.id._serialized);
-                                })
-                                group.removeParticipants(usersToBan);
+                            })
+                            return group.removeParticipants(usersToBan);
                         })
-                    })
+                        return;
+                    }
+                    msg.reply('Você precisa marcar ou mencionar um membro para ser banido.');
                 })
             })
         })
@@ -275,20 +163,6 @@ const forwardingScore = (msg) => {
     })
 }
 
-const freeGames = (bot, msg) => {
-    getGames('BR', false).then(res => {
-        var currentGamesInfo = [];
-        var nextGamesInfo = [];
-        res.currentGames.forEach(game => {
-            currentGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}\n`)
-        })
-        res.nextGames.forEach(game => {
-            nextGamesInfo.push(`🕹*${game.title}* \n🧾Descrição: ${game.description}`)
-        })
-        bot.sendMessage(msg.from, `🎮*Jogos grátis na Epic hoje:* \n\n${currentGamesInfo.join('\n\n')}\n\n 🎮*Próximos jogos grátis na Epic:* \n\n${nextGamesInfo.join('\n\n')}`);
-    })
-}
-
 const imgSearch = async (msg, bot) => {
     const palavraChave = msg.body.slice(4);
 
@@ -299,7 +173,7 @@ const imgSearch = async (msg, bot) => {
 
     try {
         const image = await google.image(palavraChave.replace(/[\u0300-\u036f]/g, ""), { safe: true });
-        const foundImage = image[randomNumber(10)];
+        const foundImage = image[getRandomInt(10)];
         const img = await MessageMedia.fromUrl(foundImage.url, {
             unsafeMime: true
         });
@@ -314,125 +188,7 @@ const imgSearch = async (msg, bot) => {
     }
 }
 
-const getLevel = async (msg, bot) => {
-    const Exp = db.getModel('Experiencia');
-    const group = await getGroup(msg);
-    const mentionedUsers = await msg.getMentions();
-    if (group) {
-        var isAdmin = await userIsAdmin(group, msg.author);
-    }
-
-    if (!group) {
-        Exp.find({
-            id: msg.id.remote
-        }).then(async user => {
-            if(!user) {
-                msg.reply('*Você ainda não tem exp.*');
-                return;
-            }
-
-            var userLevelArr = [];
-
-            for (element of user) {
-                let exp = element.exp;
-                let level = element.level;
-                let group = element.groupName;
-                let expToNextLevel = getNextLevelExp(level + 1) - exp;
-
-                let userLevel = `💎Nível no grupo *${group}*\n✨Exp: ${exp}\n🎇Level: ${level}\n🎆Exp para o próximo level: ${expToNextLevel}`
-
-                userLevelArr.push(userLevel);
-            }
-            let _userLevel = `💎*Esse é seu nível em cada grupo:*\n\n${userLevelArr.join('\n\n')}`;
-            bot.sendMessage(msg.from, _userLevel); 
-        })
-        return;
-    }
-
-    if (mentionedUsers && mentionedUsers.length > 0) {
-        if (isAdmin) {
-            console.log(mentionedUsers);
-            Exp.findOne({
-                id: mentionedUsers[0].id._serialized,
-                group: group.id._serialized
-            }).then(async user => {
-                let userName = user.userName;
-                let exp = user.exp;
-                let level = user.level;
-                let group = user.groupName;
-                let expToNextLevel = getNextLevelExp(level + 1) - exp;
-
-                bot.sendMessage(msg.from, `Nível de *${userName}* no grupo *${group}*\n\n✨Exp: ${exp}\n🎇Level: ${level}\n🎆Exp para o próximo level: ${expToNextLevel}`);
-            })
-            return;
-        }
-    }
-
-    Exp.findOne({
-        id: msg.author,
-        group: group.id._serialized
-    }).then(async user => {
-        if(!user) {
-            msg.reply('*Você ainda não tem exp.*');
-            return;
-        }
-        let userName = user.userName;
-        let exp = user.exp;
-        let level = user.level;
-        let group = user.groupName;
-        let expToNextLevel = getNextLevelExp(level + 1) - exp;
-
-        bot.sendMessage(msg.from, `Nível de *${userName}* no grupo *${group}*\n\n✨Exp: ${exp}\n🎇Level: ${level}\n🎆Exp para o próximo level: ${expToNextLevel}`);
-    })
-}
-
-const getRanking = async (msg, bot) => {
-    const Exp = db.getModel('Experiencia');
-    const group = await getGroup(msg);
-    
-    Exp.find({
-        group: group.id._serialized
-    }).then(async users => {
-        users.sort((a, b) => {
-            if (a.level == b.level){
-                return (a.exp > b.exp) ? -1 : 1;
-            }
-            return (a.level > b.level) ? -1 : 1;
-        })
-        
-        let ranking = [];
-
-        var max = 10;
-        if(users.length < 10) {
-            max = users.length;
-        }
-
-        for (var i = 0; i < max; i++) {
-            let element = users[i];
-            let place = users.indexOf(element) + 1;
-            let placeMessage = "";
-            switch(place) {
-                case 1:
-                    placeMessage = "🥇";
-                    break;
-                case 2:
-                    placeMessage = "🥈";
-                    break;
-                case 3:
-                    placeMessage = "🥉";
-                    break;
-                default:
-                    break;
-            }
-            let message = `${placeMessage} *${place}° Lugar*: ${element.userName}, *Level*: ${element.level}, *Exp*: ${element.exp}.`;
-            ranking.push(message);
-        }
-
-        let _message = `🏆 Top 10 no grupo *${group.name}*\n\n${ranking.join("\n")}`;
-        bot.sendMessage(msg.from, _message);
-    });
-}
-
+// -- Ainda em teste
 const roletaRussa = async (msg, bot) => {
     // iniciar o jogo
     bot.sendMessage(msg.from, 'A ROLETA RUSSA COMEÇOU \nEnvie !atirar para testar sua sorte.');
@@ -442,7 +198,7 @@ const roletaRussa = async (msg, bot) => {
             return;
         }
         else if (message === '!atirar') {
-            if (randomNumber(5) === 1) {
+            if (getRandomInt(5) === 1) {
                 // group.removeParticipants(message.author);
                 bot.sendMessage(message.from, 'Alguma mensagem dizendo que vc morreu + um gif'); //encerrar o jogo aqui
                 return;
@@ -453,31 +209,70 @@ const roletaRussa = async (msg, bot) => {
         }
     });
 }
+// --
 
 const commandList = (msg, bot) => {
-    const userCommandsList = [
-        '🔹*!s* ➡ Cria uma figurinha a partir da imagem enviada ou mencionada.',
-        '*!img* [palavra para pesquisar] ➡ Pesquisa uma imagem e retorna ela.',
-        '*!encaminhado* ➡ Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada.',
-        '*!gratis* ➡ Retorna os jogos grátis na Epic Games da semana atual e da próxima.',
-        '*!tabela* ➡ Retorna a tabela atualizada do Brasileirão Serie A',
-        '*!level* ➡ Retorna seu level no grupo atual (Se enviado no PV do bot, retorna seu level em todos os grupos que o bot participa).',
-        '*!ranking* ➡ Retorna o Top 10 do grupo.'
-    ]
-    const adminCommandsList = [
-        '🔹*!ban* [membro] ➡ Bane o membro marcado ou da mensagem mencionada.',
-        '*!up* [membro] ➡ Promove o membro marcado ou da mensagem mencionada.',
-        '*!down* [membro] ➡ Rebaixa o membro marcado ou da mensagem mencionada.',
-        '*!level* [membro] ➡ Retorna o level do membro marcado.'
-    ]
+    const _commandList = new List(
+        "Esta é a lista de comandos do Bot Bom.",
+        "Lista de comandos",
+        [
+            {
+                title: "Comandos gerais",
+                rows: [
+                    { id: "sticker", title: "!s", description: "Cria uma figurinha a partir da imagem enviada ou mencionada." },
+                    { id: "img", title: "!img [palavra para pesquisar]", description: "Pesquisa uma imagem e retorna ela."},
+                    { id: "encaminhado", title: "!encaminhado", description: "Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada."},
+                    { id: "gratis", title: "!gratis", description: "Retorna os jogos grátis na Epic Games da semana atual e da próxima."},
+                    { id: "tabela", title: "!tabela", description: "Retorna a tabela atualizada do Brasileirão Serie A."},
+                    { id: "level", title: "!level", description: "Retorna seu level no grupo atual (Se enviado no PV do bot, retorna seu level em todos os grupos que o bot participa)."},
+                    { id: "ranking", title: "!ranking", description: "Retorna o Top 10 do grupo."}
+            ],
+            },
+            {
+                title: "Comandos de Administrador",
+                rows: [
+                    { id: "ban", title: "!ban [membro]", description: "Bane o membro marcado ou da mensagem mencionada."},
+                    { id: "up", title: "!up [membro]", description: "Remove o membro marcado ou da mensagem mencionada."},
+                    { id: "down", title: "!down [membro]", description: "Rebaixa o membro marcado ou da mensagem mencionada."},
+                    { id: "level", title: "!level [membro]", description: "Retorna o level do membro marcado."},
+                ]
+            },
+            {
+                title: "Comandos do PokéBom",
+                rows: [
+                    { id: "capturar", title: "!capturar [nome do Pokémon]", description: "Tenta capturar um pokemón."},
+                    { id: "pokemon", title: "!pokebom", description: "Retorna sua party de Pokémon."},
+                    { id: "boxpokemon", title: "!boxpokemon", description: "Retorna sua box de Pokémon."},
+                    { id: "inicial", title: "!inicial", description: "Para escolher seu Pokémon inicial."},
+                    { id: "pokedex", title: "!pokedex [nome do Pokémon]", description: "Retorna as informações da Pokédex do Pokémon citado."},
+                    { id: "pokestop", title: "!pokestop", description: "Ativar ou desativar o módulo do PokéBom."},
+                    { id: "pokespawnrate", title: "!pokespawnrate [%]", description: "Alterar a chance de aparição de Pokémon."},
+                    { id: "pokesummon", title: "!pokesummon", description: "Forçar a aparição de Pokémon."},
+                    // { id: "compraritens", title: "!compraritens", description: "Abrir a loja para compra de ítens."},
+                ]
+            }
+        ],
+        "Comandos"
+      );
 
-    bot.sendMessage(msg.from, `📄*Lista de comandos:* \n${userCommandsList.join('\n🔹')}\n\n📄*Lista de comandos para Admin:* \n${adminCommandsList.join('\n🔹')}` );
+    bot.sendMessage(msg.from, _commandList );
 }
 
+// -- Ainda em teste
 const textToSpeach = (msg, bot) => {
     console.log('coe');
     tts(msg.body.slice(4), msg, bot);
 }
+// --
+
+const update = async (msg) => {
+    const { exec } = require("child_process");
+    if(!userIsAdmin(await msg.getChat(), msg.authorId)) return;
+    exec("git pull", (err) => {
+        if(err) console.warn(err);
+    })
+}
+
 
 const commands = [
     { name: '!ban', callback: (msg, bot) => banMember(msg, bot)},
@@ -485,14 +280,14 @@ const commands = [
     { name: '!down', callback: (msg, bot) => demoteMember(msg, bot)},
     { name: '!s', callback: (msg) => makeSticker(msg)},
     { name: '!encaminhado', callback: (msg) => forwardingScore(msg)},
-    { name: '!gratis', callback: (msg, bot) => freeGames(bot, msg)},
     { name: '!tts', callback: (msg, bot) => textToSpeach(msg, bot)},
     { name: '!tabela', callback: (msg, bot) => getTabela(msg, bot)},
-    // { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
+    { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
     { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)},
     { name: '!comandos', callback: (msg, bot) => commandList(msg, bot)},
-    { name: '!roleta', callback: (msg, bot) => roletaRussa(msg, bot)}
+    { name: '!roleta', callback: (msg, bot) => roletaRussa(msg, bot)},
+    { name: "!update", callback: (msg) => update(msg) }
 ]
 
 const trigger = [
@@ -675,4 +470,4 @@ trigger.forEach((value) => {
     }
 })   
 
-module.exports = { callbackMap, commandsMap, getGroup, getNextLevelExp };
+module.exports = { callbackMap, commandsMap, getGroup };

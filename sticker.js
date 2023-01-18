@@ -1,0 +1,49 @@
+const { MessageMedia } = require('whatsapp-web.js');
+const { getRandomInt } = require('./libs');
+
+const downloadMessageMedia = async (msg) => {
+    var messageToDowloadMedia = msg;
+    if (msg.hasQuotedMsg){
+        let quotedMsg = await msg.getQuotedMessage();
+        if (quotedMsg.hasMedia){
+            messageToDowloadMedia = quotedMsg;
+        }
+    }
+    var ret = await messageToDowloadMedia.downloadMedia();
+    return ret;
+}
+
+const sendRandomSticker = (msg, fileName, num, bot) => {
+    media = MessageMedia.fromFilePath(`./${fileName[getRandomInt(num)]}`);
+    bot.sendMessage(msg.from, media, {
+        sendMediaAsSticker:true
+    })
+}
+
+const sendSticker = async (msg, fileName, bot) => {
+    media = MessageMedia.fromFilePath(`./${fileName}`);
+    return bot.sendMessage(msg.from, media, {
+        sendMediaAsSticker:true
+    })
+}
+
+const makeSticker = async (msg) => {
+    console.log(msg.type);
+    if (msg.hasQuotedMsg){
+        let quotedMsg = await msg.getQuotedMessage();
+        if (quotedMsg.type != 'image' && quotedMsg.type != 'video') return msg.reply('O comando de Sticker só funciona com arquivos de imagem ou Gif.');
+        if (!quotedMsg.isGif) return msg.reply('O comando de Sticker só funciona com arquivos de imagem ou Gif.');
+    }
+    else {
+        if (msg.type != 'image' && msg.type != 'video') return msg.reply('O comando de Sticker só funciona com arquivos de imagem ou Gif.');
+    }
+
+    var media = await downloadMessageMedia(msg);
+    msg.reply(media, undefined, {
+        sendMediaAsSticker:true,
+        stickerName: 'Feito com o Bot Bom da AOP',
+        sticketAuthor: 'Bot Bom'
+    })
+}
+
+module.exports = { sendRandomSticker, sendSticker, makeSticker };

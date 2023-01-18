@@ -1,10 +1,14 @@
 const { Client, MessageMedia, LocalAuth, AuthStrategy, MessageAck, List } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const { callbackMap, commandsMap, getGroup, getNextLevelExp } = require('./callback.js');
+const { callbackMap, commandsMap } = require('./callback.js');
+const { getNextLevelExp } = require('./level system');
 const db = require('./database');
-const { get } = require('superagent');
+const { getGroup } = require('./libs');
+
 
 const PokemonModule = require("./Modules/Pokemon/integration");
+
+const EpicFreeGameModule = require("./Modules/freeGames/main");
 
 const exp = [
     {
@@ -12,6 +16,10 @@ const exp = [
         multiplyer: 2.0
     }
 ]
+
+process.on("uncaughtException", (e) => {
+    console.warn("\n\nIA CRASHAR EM\n\n_________\n\n"+e+"\n\n__________\n\n");
+})
 
 const getExpMultply = () => {
     var date = new Date();
@@ -27,8 +35,9 @@ const getExpMultply = () => {
 
 const bot = new Client({
     puppeteer: {
-        args:["--no-sandbox"]
+        executablePath: "/usr/bin/google-chrome-stable"
     },
+    ffmpegPath: '/usr/bin/ffmpeg',
     authStrategy: new LocalAuth(),
 })
 
@@ -60,9 +69,10 @@ bot.on('disconnected', () => {
     console.log('BOT DESCONECTADO')
 })
 
-bot.on('ready', () => {
+bot.on('ready', async () => {
     console.log("BOT ONLINE")
-    PokemonModule.initPokemonModule(bot);
+    await PokemonModule.initPokemonModule(bot);
+    EpicFreeGameModule.init(bot);
 })
 
 bot.on('group_leave', (notification) => {
@@ -93,7 +103,7 @@ bot.on('message', async msg => {
         if (msg.body.startsWith('!')){
             global.modules.forEach(e => {
                 e.mod.commands.forEach(e => {
-                    if(msg.body.toLowerCase().includes(e.name)) {
+                    if(msg.body.toLowerCase().includes(`${e.name} `) || msg.body == e.name) {
                         e.callback(msg);
                     }
                 })
@@ -101,7 +111,7 @@ bot.on('message', async msg => {
 
             for (value of commandsMap) {
                 var key = value[0];
-                if (msg.body.toLowerCase().includes(key)) {
+                if (msg.body.toLowerCase().includes(`${key} `) || msg.body == key) {
                     var _callback = value[1];
                     _callback(msg, bot);
                     break;
@@ -110,8 +120,8 @@ bot.on('message', async msg => {
         } else {
             msgCallback(msg, group);
         }
-
-        if (group) { //Coleta de EXP
+        //Coleta de EXP
+        if (group) {
             var groupId = group.id._serialized;
             var groupName = group.name;
             let contact = await msg.getContact();
@@ -145,7 +155,7 @@ bot.on('message', async msg => {
                         group: groupId,
                         groupName,
                         nextLevelExp
-                    }).then(newFodase => {}).catch(console.error);
+                    }).then(x => {}).catch(console.error);
                 }
                 else {
                     Exp.create({ 
@@ -164,7 +174,9 @@ bot.on('message', async msg => {
 
         global.modules.forEach(e => {
             if(e.mod.enabled) {
-                e.mod.callbacks.onMessage(msg);
+                if(e.mod.callbacks.onMessage){
+                    e.mod.callbacks.onMessage(msg);
+                }
             }
         })
     } catch (err) {

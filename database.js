@@ -22,7 +22,8 @@ class Database {
             playing: Boolean,
             pokemon: Array,
             itens: Array,
-            coins: Number
+            coins: Number,
+            hasStarter: Boolean
         }, {
             collection: 'PokemonPlayerModule'
         }));
@@ -32,6 +33,12 @@ class Database {
             pokemon: Array
         }, {
             collection: 'PokemonBoxModule'
+        }));
+        this.connection.model('Cache', new mongoose.Schema({
+            info:  Object,
+            name: String
+        }, {
+            collection: 'Cache'
         }));
     };
 
