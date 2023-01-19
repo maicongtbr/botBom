@@ -9,10 +9,10 @@ const { MessageMedia } = require('whatsapp-web.js');
 
 const init = async () => {
     let defaults = {
-        font: await jimp.loadFont("/home/life4gamming2/bot-aop/font/tome_48.fnt"),
-        levelFont: await jimp.loadFont("/home/life4gamming2/bot-aop/font/tome_24.fnt"),
-        bcoinFont: await jimp.loadFont("/home/life4gamming2/bot-aop/font/tome_32.fnt"),
-        playerNameFont: await jimp.loadFont("/home/life4gamming2/bot-aop/font/tome_64.fnt"),
+        font: await jimp.loadFont("/home/maiconkekw/bot-aop/font/tome_48.fnt"),
+        levelFont: await jimp.loadFont("/home/maiconkekw/bot-aop/font/tome_24.fnt"),
+        bcoinFont: await jimp.loadFont("/home/maiconkekw/bot-aop/font/tome_32.fnt"),
+        playerNameFont: await jimp.loadFont("/home/maiconkekw/bot-aop/font/tome_64.fnt"),
         pokeCoords: [
             {
                 pokeName: { x: 6, y: 445 }, // -10
@@ -68,7 +68,7 @@ const init = async () => {
 }
 
 const getPokemonPartyImage = async (player, party) => {
-    var template = await jimp.read('/home/life4gamming2/bot-aop/Modules/Pokemon/img/background.png');
+    var template = await jimp.read('/home/maiconkekw/bot-aop/Modules/Pokemon/img/background.png');
     var int = getRandomInt(99999);
     var playerCoords = global.PartyConfig.playerCoords;
     var font = global.PartyConfig.font;
@@ -94,7 +94,7 @@ const getPokemonPartyImage = async (player, party) => {
         let pokeBody = await superagent.get("https://pokeapi.co/api/v2/pokemon/" + pokemon.name.toLowerCase())
         pokeBody = pokeBody._body;
         var image = getCorrectImage(pokeBody.sprites, pokemon.gender == "Fêmea", pokemon.shiny);
-        var iconLocation = "/home/life4gamming2/bot-aop/Modules/Pokemon/img/temp"+int+int+".png";
+        var iconLocation = "/home/maiconkekw/bot-aop/Modules/Pokemon/img/temp"+int+int+".png";
         await download.image(({
             url: image,
             dest: iconLocation,
@@ -127,7 +127,7 @@ const getPokemonPartyImage = async (player, party) => {
 
 const getHealthBar = async (health) => {
     let healthPercentage = (100 * health.current) / health.max;
-    var healthBar = await jimp.read('/home/life4gamming2/bot-aop/Modules/Pokemon/img/healthBarTemplate.png');
+    var healthBar = await jimp.read('/home/maiconkekw/bot-aop/Modules/Pokemon/img/healthBarTemplate.png');
 
     if(healthPercentage <= 50 && healthPercentage >= 10) {
         await healthBar.color([
