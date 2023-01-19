@@ -481,8 +481,8 @@ const getPokemon = async (msg, private, force) => {
     }
 
     var rng = getRandomIntRange(0, 9999);
-    var imgName = `/home/maiconkekw/bot-aop/temp/out${id}${rng}.gif`;
-    var imgNameWebp = `/home/maiconkekw/bot-aop/temp/out${id}${rng}.webp`;
+    var imgName = `/home/maiconkekw/BotAop/temp/out${id}${rng}.gif`;
+    var imgNameWebp = `/home/maiconkekw/BotAop/temp/out${id}${rng}.webp`;
     download.image({
         url: pokemon.image,
         dest: imgName,
