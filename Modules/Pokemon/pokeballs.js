@@ -24,7 +24,7 @@ const updatePokeballCache = async () => {
                 body = item._body;
 
                 var name = body.names.find(x => x.language.name == "en");
-                console.log(name);
+                if (!name) continue;
                 let retItem = {
                     price: parseInt(body.cost),
                     name: name.name,
