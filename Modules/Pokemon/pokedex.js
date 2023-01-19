@@ -31,7 +31,7 @@ const getPokedex = async (msg) => {
         }
     
         var rng = getRandomInt(999999);
-        var imgName = `/home/maiconkekw/BotAop/temp/dex${rng}.gif`;
+        var imgName = `/home/maiconkekw/BotAOP/temp/dex${rng}.gif`;
 
         download.image({
             url: imagePath,
