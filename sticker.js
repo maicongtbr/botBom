@@ -30,14 +30,12 @@ const sendSticker = async (msg, fileName, bot) => {
 const makeSticker = async (msg) => {
     if (msg.hasQuotedMsg){
         let quotedMsg = await msg.getQuotedMessage();
-        console.log(quotedMsg.type);
         if (quotedMsg.type != 'image' && quotedMsg.type != 'video' && !quotedMsg.isGif) return msg.reply('O comando de Sticker só funciona com arquivos de imagem ou Gif.');
     }
     else {
         if (msg.type != 'image' && msg.type != 'video') return msg.reply('O comando de Sticker só funciona com arquivos de imagem ou Gif.');
     }
 
-    console.log(msg.type);
     var media = await downloadMessageMedia(msg);
     msg.reply(media, undefined, {
         sendMediaAsSticker:true,
