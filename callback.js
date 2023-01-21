@@ -220,9 +220,9 @@ const commandList = (msg, bot) => {
                 title: "Comandos gerais",
                 rows: [
                     { id: "sticker", title: "!s", description: "Cria uma figurinha a partir da imagem enviada ou mencionada." },
-                    { id: "img", title: "!img [palavra para pesquisar]", description: "Pesquisa uma imagem e retorna ela."},
+                    // { id: "img", title: "!img [palavra para pesquisar]", description: "Pesquisa uma imagem e retorna ela."}, //desativado momentaneamente
                     { id: "encaminhado", title: "!encaminhado", description: "Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada."},
-                    { id: "gratis", title: "!gratis", description: "Retorna os jogos grátis na Epic Games da semana atual e da próxima."},
+                    { id: "epicgames", title: "!gratis", description: "Retorna os jogos grátis na Epic Games da semana atual e da próxima."},
                     { id: "tabela", title: "!tabela", description: "Retorna a tabela atualizada do Brasileirão Serie A."},
                     { id: "level", title: "!level", description: "Retorna seu level no grupo atual (Se enviado no PV do bot, retorna seu level em todos os grupos que o bot participa)."},
                     { id: "ranking", title: "!ranking", description: "Retorna o Top 10 do grupo."}
