@@ -106,7 +106,7 @@ const getPokemonPartyImage = async (player, party) => {
         icon.resize(230, 230);
 
         template.blit(icon, coords.pokeIcon.x, coords.pokeIcon.y);
-        console.log(' \n' + pokemon + ' \n');
+        console.log(' \n' + JSON.stringify(pokemon) + ' \n');
         let healthBar = await getHealthBar(pokemon.hp);
         template.blit(healthBar, coords.pokeHealthBar.x, coords.pokeHealthBar.y);
     }
