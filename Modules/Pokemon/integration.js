@@ -479,7 +479,9 @@ const getPokemon = async (msg, private, force) => {
         havePokemon[id] = false
         return;
     }
+
     console.log('ALOW');
+    
     var rng = getRandomIntRange(0, 9999);
     var imgName = `/home/maiconkekw/BotAOP/temp/out${id}${rng}.gif`;
     var imgNameWebp = `/home/maiconkekw/BotAOP/temp/out${id}${rng}.webp`;
