@@ -147,6 +147,7 @@ const getHealthBar = async (health) => {
         healthPercentage = 1;
     }
 
+    
     console.log(' \n' + health.current + ' \n');
     console.log(health.max + ' \n');
     
