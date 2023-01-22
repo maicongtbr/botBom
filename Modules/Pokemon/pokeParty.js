@@ -106,7 +106,9 @@ const getPokemonPartyImage = async (player, party) => {
         icon.resize(230, 230);
 
         template.blit(icon, coords.pokeIcon.x, coords.pokeIcon.y);
-        console.log(' \n' + JSON.stringify(pokemon) + ' \n');
+
+        console.log(' \n' + JSON.stringify(pokemon) + ' \n'); //retorna um objeto HP vazio
+
         let healthBar = await getHealthBar(pokemon.hp);
         template.blit(healthBar, coords.pokeHealthBar.x, coords.pokeHealthBar.y);
     }
@@ -148,6 +150,9 @@ const getHealthBar = async (health) => {
         healthPercentage = 1;
     }
 
+    if(!health){
+        healthPercentage = 100;
+    }
 
     console.log(' \n' + health.current + ' \n');
     console.log(' \n' + console.log(JSON.stringify(health)) + ' \n');
