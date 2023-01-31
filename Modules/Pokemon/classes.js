@@ -118,4 +118,4 @@ const Conditions = {
     Fish: 4
 }
 
-module.exports = { Pokemon, Conditions, createPokemon };
+module.exports = { Pokemon, Conditions, createPokemon, PlayerPokemon };
