@@ -197,7 +197,6 @@ const showPokemon = async (msg) => {
         let Pokemon = [];
         for (let index = 0; index < player.pokemon.length; index++) {
             const e = player.pokemon[index];
-            console.log(e);
             Pokemon.push({name: e.name, level: e.level, hp: { current: e.currentHp, max: e.maxHp }, shiny: e.shiny });
         }
 
