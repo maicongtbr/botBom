@@ -11,19 +11,21 @@ PokemonPlayerDB.find().then(async res => {
             return;
          }
 
+         if (e.pokemon.length >= 7) console.log(e);
+
          // console.log("running migration for ", e)
-         var newPokemon = [];
-         e.pokemon.forEach(pokemon => {
-            if(!pokemon.maxHp || !pokemon.currentHp)
-            {
-               var _pokemon = new PlayerPokemon (
-                  ...pokemon
-               )
+         // var newPokemon = [];
+         // e.pokemon.forEach(pokemon => {
+         //    if(!pokemon.maxHp || !pokemon.currentHp)
+         //    {
+         //       var _pokemon = new PlayerPokemon (
+         //          ...pokemon
+         //       )
                
-               console.log(_pokemon);
+         //       console.log(_pokemon);
                
-            }
-         });
+         //    }
+         // });
 
          // console.log(newPokemon);
          // PokemonPlayerDB.updateOne({
