@@ -312,8 +312,6 @@ const trigger = [
         callback: (msg, bot) => sendSticker(msg, 'img/a ana entortou.webp', bot)},
     { name: 'ancap',
         callback: (msg, bot) => sendSticker(msg, 'img/ancap.webp', bot)},
-    { names: ['churrasco', 'churras'],
-        callback: (msg, bot) => sendSticker(msg, 'img/churrasco.webp', bot)},
     { names: ['nargas', 'narga', 'narguile'],
         callback: (msg, bot) => sendSticker(msg, 'img/e o narga.webp', bot)},
     { name: 'fofo',
@@ -450,9 +448,11 @@ const trigger = [
     { names: ['corinthians', 'coringão', 'timão'], callback: (msg, bot) => sendRandomSticker(msg,
         ['img/corinthians2.webp',
         'img/corinthians.webp'], 2, bot)},
-    {names: ['galo', 'atletico mg', 'Galão da Massa', 'Galo Doido'], callback: (msg, bot) => sendSticker(msg, 'img/galo.webp', bot)},
-    {names: ['fortaleza', 'leão', 'tricolaço', 'laion'], callback: (msg, bot) => sendSticker(msg, 'img/fortaleza.webp', bot)},
-    {names: ['santos' ,'peixão', 'peixao', 'big fish', 'santástico', 'santastico'], callback: (msg, bot) => sendSticker(msg, 'img/santos.webp', bot)}
+    { names: ['galo', 'atletico mg', 'Galão da Massa', 'Galo Doido'], callback: (msg, bot) => sendSticker(msg, 'img/galo.webp', bot)},
+    { names: ['fortaleza', 'leão', 'tricolaço', 'laion'], callback: (msg, bot) => sendSticker(msg, 'img/fortaleza.webp', bot)},
+    { names: ['santos' ,'peixão', 'peixao', 'big fish', 'santástico', 'santastico'], callback: (msg, bot) => sendSticker(msg, 'img/santos.webp', bot)},
+    { names: ['churrasco', 'churras'],
+    callback: (msg, bot) => sendRandomSticker(msg, ['img/churrasco.webp', 'img/churrasco2.webp'], bot)},
 ]
 
 commands.forEach((value) => {
