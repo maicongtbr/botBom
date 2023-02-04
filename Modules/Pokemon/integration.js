@@ -415,7 +415,7 @@ const getDaily = async (msg) => {
 
 var commands = [
     { name:'!capturar', callback: (msg) => tryCatch(msg) },
-    { name:'!pokemon', callback: (msg) => showPokemon(msg) },
+    { name:'!pokebom', callback: (msg) => showPokemon(msg) },
     { name:'!boxpokemon', callback: (msg) => showBox(msg) },
     { name: "!inicial", callback: (msg) => getStarter(msg) },
     { name: "!pokedex", callback: (msg) => getPokedex(msg) },
