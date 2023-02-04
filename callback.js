@@ -451,8 +451,8 @@ const trigger = [
     { names: ['galo', 'atletico mg', 'Galão da Massa', 'Galo Doido'], callback: (msg, bot) => sendSticker(msg, 'img/galo.webp', bot)},
     { names: ['fortaleza', 'leão', 'tricolaço', 'laion'], callback: (msg, bot) => sendSticker(msg, 'img/fortaleza.webp', bot)},
     { names: ['santos' ,'peixão', 'peixao', 'big fish', 'santástico', 'santastico'], callback: (msg, bot) => sendSticker(msg, 'img/santos.webp', bot)},
-    { names: ['churrasco', 'churras'],
-    callback: (msg, bot) => sendRandomSticker(msg, ['img/churrasco.webp', 'img/churrasco2.webp'], bot)},
+    { names: ['churrasco', 'churras'], callback: (msg, bot) => sendRandomSticker(msg, ['img/churrasco.webp', 'img/churrasco2.webp'], 2, bot)}, 
+    
 ]
 
 commands.forEach((value) => {
