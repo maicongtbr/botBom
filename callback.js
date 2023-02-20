@@ -167,12 +167,12 @@ const imgSearch = async (msg, bot) => {
     const palavraChave = msg.body.slice(4);
 
     if (palavraChave.length <= 0) {
-        msg.reply('Você deve usar !img [palavra chave]\n(_sem o []_)');
+        msg.reply('Você deve usar !img [palavra chave]');
         return;
     }
 
     try {
-        const image = await google.image(palavraChave.replace(/[\u0300-\u036f]/g, ""), { safe: true });
+        const image = await google.image(palavraChave, { safe: true });
         const foundImage = image[getRandomInt(10)];
         const img = await MessageMedia.fromUrl(foundImage.url, {
             unsafeMime: true
@@ -182,7 +182,6 @@ const imgSearch = async (msg, bot) => {
             caption: `Origem da Imagem: ${foundImage.origin?.title}`
         })
     } catch(e) {
-        bot.sendMessage(msg.from, "Deu ruim aqui mané");
         console.error(e);
         return;
     }
