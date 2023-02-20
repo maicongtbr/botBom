@@ -172,9 +172,8 @@ const imgSearch = async (msg, bot) => {
     }
 
     try {
-        const image = await google.image(keyWord);
+        const image = await google.image(keyWord, { safe: true });
         const foundImage = image[getRandomInt(10)];
-        console.log(foundImage + '\n' + image + '\n' + keyWord);
         const img = await MessageMedia.fromUrl(foundImage.url, {
             unsafeMime: true
         });
