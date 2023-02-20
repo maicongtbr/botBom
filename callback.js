@@ -164,17 +164,17 @@ const forwardingScore = (msg) => {
 }
 
 const imgSearch = async (msg, bot) => {
-    const palavraChave = msg.body.slice(4);
+    const keyWord = msg.body.slice(5);
 
-    if (palavraChave.length <= 0) {
+    if (keyWord.length <= 0) {
         msg.reply('Você deve usar !img [palavra chave]');
         return;
     }
 
     try {
-        const image = await google.image(palavraChave, { safe: true });
+        const image = await google.image(keyWord, { safe: true });
         const foundImage = image[getRandomInt(10)];
-        console.log(foundImage + '\n' + image + '\n' + palavraChave);
+        console.log(foundImage + '\n' + image + '\n' + keyWord);
         const img = await MessageMedia.fromUrl(foundImage.url, {
             unsafeMime: true
         });
