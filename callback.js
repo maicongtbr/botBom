@@ -173,7 +173,7 @@ const imgSearch = async (msg, bot) => {
 
     const processImageData = async (error, results) => {
         if (error) {
-            console.log('\n\n' + error + '\n\n');
+            console.log('\n\n' + '[Google Image Search] ' + error + '\n\n');
             msg.reply('Ocorreu um erro. Tente novamente.');
         }
         else {
@@ -186,7 +186,7 @@ const imgSearch = async (msg, bot) => {
                 unsafeMime:false
             });
 
-            bot.reply(foundImage)
+            msg.reply(foundImage)
         }
     }
 
