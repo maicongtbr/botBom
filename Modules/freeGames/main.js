@@ -53,7 +53,6 @@ const mainLoop = async () => {
             games.forEach(element => {
                 if(element.startDate > time) {
                     nextTime = element.startDate.getTime() - time.getTime();
-                    console.log('\n' + element.startDate.getTime() + '\n' + time.getTime + '\n' + nextTime);
                 }
             });
             scheduleMainLoop(); // marca para 10min
@@ -72,7 +71,7 @@ const mainLoop = async () => {
         databaseGames.push(e.id);
     } 
 
-   await Cache.updateOne({
+    await Cache.updateOne({
         name: "EpicGames"
     },
     {
