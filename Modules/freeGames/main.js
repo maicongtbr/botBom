@@ -81,14 +81,14 @@ const mainLoop = async () => {
 
     const message = await getFreeGameMessage();
 
-   const aop = await myModule.bot.getChats();
-   for ( var i = 0; i < aop.length; i++)
-   {
+    const aop = await myModule.bot.getChats();
+    for ( var i = 0; i < aop.length; i++)
+    {
         let group =aop[i]
         if(group.isGroup) {
             group.sendMessage(message);
         }
-   }
+    }
 
    log("Jogos atualizados!");
 
