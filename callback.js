@@ -181,7 +181,7 @@ const imgSearch = async (msg, bot) => {
             for (let i = 0; i <= 7; i++) {
                 images.push(results[i]);
             }
-            const foundImage = images[getRandomInt(7)];
+            var foundImage = images[getRandomInt(7)];
             foundImage = await MessageMedia.fromUrl(foundImage.url, {
                 unsafeMime:false
             });
