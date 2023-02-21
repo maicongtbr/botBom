@@ -1,6 +1,6 @@
 const { MessageMedia, List } = require('whatsapp-web.js');
 const { getGames } = require ('epic-free-games');
-const google = require('googlethis');
+const gis = require('g-i-s');
 const { tts } = require('./tts');
 const { getTabela } = require('./tabela brasileirao');
 const { getRandomInt, getRandomIntRange, userIsAdmin, getGroup } = require('./libs');
@@ -171,18 +171,27 @@ const imgSearch = async (msg, bot) => {
         return;
     }
 
-    try {
-        const image = await google.image(keyWord);
-        const foundImage = image[getRandomInt(10)];
-        const img = await MessageMedia.fromUrl(foundImage.url);
+    const processImageData = async (error, results) => {
+        if (error) {
+            console.log('\n\n' + error + '\n\n');
+            msg.reply('Ocorreu um erro. Tente novamente.');
+        }
+        else {
+            var images = []
+            for (let i = 0; i <= 7; i++) {
+                images.push(results[i]);
+            }
+            const foundImage = images[getRandomInt(7)];
+            foundImage = await MessageMedia.fromUrl(foundImage.url, {
+                unsafeMime:false
+            });
 
-        bot.sendMessage(msg.from, img, {
-            caption: `Origem da Imagem: ${foundImage.origin?.title}`
-        })
-    } catch(e) {
-        console.error(e);
-        return;
+            bot.reply(foundImage)
+        }
     }
+
+    gis(keyWord, processImageData);
+
 }
 
 // -- Ainda em teste
