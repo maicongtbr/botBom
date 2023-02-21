@@ -53,7 +53,7 @@ const mainLoop = async () => {
             games.forEach(element => {
                 if(element.startDate > time) {
                     nextTime = element.startDate.getTime() - time.getTime();
-                    console.log(nextTime);
+                    console.log('\n' + element.startDate.getTime() + '\n' + time.getTime + '\n' + nextTime);
                 }
             });
             scheduleMainLoop(); // marca para 10min
