@@ -32,7 +32,7 @@ const changeModuleState = async (msg) => {
                 msg.reply('O modulo da Epic Games está desabilitado.');
                 console.log(`[freeGames] Modulo desabilitado para o grupo ${groupName}`);
             }
-            else{
+            else if(group.epicGames = false){
                 if(msg.body.toLowerCase().includes('!epicgames off')) return msg.reply('O modulo já está desabilitado.');
 
                 Switch.updateOne({groupId: groupId}, {epicGames: true});
