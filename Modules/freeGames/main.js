@@ -10,7 +10,7 @@ var myModule;
 var log;
 
 var commands = [
-    { name:'!epicgames', callback: (msg) => freeGames(msg) },
+    { name:'!epicfreegames', callback: (msg) => freeGames(msg) },
     { name:'!epicgames on', callback: (msg) => changeModuleState(msg) },
     { name:'!epicgames off', callback: (msg) => changeModuleState(msg) },
 ]
@@ -34,7 +34,7 @@ const changeModuleState = async (msg) => {
             }
             else{
                 if(msg.body.toLowerCase().includes('!epicgames off')) return msg.reply('O modulo já está habilitado.');
-                
+
                 Switch.updateOne({groupId: groupId}, {epicGames: true});
                 msg.reply('O modulo da Epic Games está habilitado.');
                 console.log(`[freeGames] Modulo habilitado para o grupo ${groupName}`);
