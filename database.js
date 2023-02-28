@@ -40,6 +40,14 @@ class Database {
         }, {
             collection: 'Cache'
         }));
+        this.connection.model('ModuleSwitch', new mongoose.Schema({
+            groupId: String,
+            groupName: String,
+            epicGames: Boolean,
+            pokeBom: Boolean,
+        }, {
+            collection: 'ModuleSwitch'
+        }));
     };
 
     getModel(name){

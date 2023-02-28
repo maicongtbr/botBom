@@ -1,16 +1,46 @@
 const superagent = require('superagent');
 const {Module} = require("../mod");
 const db = require("../../database");
+const { getGroup } = require("../../libs");
 
 const Cache = db.getModel('Cache');
-
+const Switch = db.getModel('ModuleSwitch');
 
 var myModule;
 var log;
 
 var commands = [
     { name:'!epicgames', callback: (msg) => freeGames(msg) },
+    { name:'!epicgames on', callback: (msg) => changeModuleState(msg) },
+    { name:'!epicgames off', callback: (msg) => changeModuleState(msg) },
 ]
+
+const changeModuleState = () => {
+    var group = getGroup(msg);
+    if(!group) return msg.reply('Este comando só pode ser usado em grupos.');
+
+    var groupId = group.id._serialized;
+    var groupName = group.name;
+
+    Switch.findOne({groupId: groupId})
+    .then((group) => {
+        if(group) {
+            if(group.epicGames = true){
+                Switch.updateOne({groupId: groupId}, {epicGames: false});
+            }
+            else{
+                Switch.updateOne({groupId: groupId}, {epicGames: true});
+            }
+        }
+        else{
+            Switch.create({
+                groupId: groupId,
+                groupName,
+                epicGames: true,
+            })
+        }
+    })
+}
 
 const init = async (bot) => {
     myModule = new Module("freeGames", bot, { }, commands);
@@ -75,19 +105,19 @@ const mainLoop = async () => {
         name: "EpicGames"
     },
     {
-        info : { games: databaseGames  }
+        info: { games: databaseGames  }
     },
     { upsert: true });
 
     const message = await getFreeGameMessage();
 
+    const enabledGroups = Switch.find({epicGames: true});
+
     const aop = await myModule.bot.getChats();
-    for ( var i = 0; i < aop.length; i++)
+    for (var i = 0; i < enabledGroups.length; i++)
     {
-        let group =aop[i]
-        if(group.isGroup) {
-            group.sendMessage(message);
-        }
+        let groupId = enabledGroups[i].groupId;
+        myModule.bot.sendMessage(groupId, message);
     }
 
    log("Jogos atualizados!");
