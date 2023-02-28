@@ -28,16 +28,18 @@ const changeModuleState = async (msg) => {
             if(group.epicGames = true){
                 if(msg.body.toLowerCase().includes('!epicgames on')) return msg.reply('O modulo já está habilitado.');
 
-                Switch.updateOne({groupId: groupId}, {epicGames: false});
-                msg.reply('O modulo da Epic Games está desabilitado.');
-                console.log(`[freeGames] Modulo desabilitado para o grupo ${groupName}`);
+                Switch.updateOne({ groupId: groupId }, { epicGames: false }).then(x => {
+                    msg.reply('O modulo da Epic Games está desabilitado.');
+                    console.log(`[freeGames] Modulo desabilitado para o grupo ${groupName}`);
+                }).catch(console.error);
             }
             else if(group.epicGames = false){
                 if(msg.body.toLowerCase().includes('!epicgames off')) return msg.reply('O modulo já está desabilitado.');
 
-                Switch.updateOne({groupId: groupId}, {epicGames: true});
-                msg.reply('O modulo da Epic Games está habilitado.');
-                console.log(`[freeGames] Modulo habilitado para o grupo ${groupName}`);
+                Switch.updateOne({ groupId: groupId }, { epicGames: true }).then(x => {
+                    msg.reply('O modulo da Epic Games está habilitado.');
+                    console.log(`[freeGames] Modulo habilitado para o grupo ${groupName}`);
+                }).catch(console.error);
             }
         }
         else{
