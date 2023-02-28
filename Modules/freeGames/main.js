@@ -27,9 +27,11 @@ const changeModuleState = () => {
         if(group) {
             if(group.epicGames = true){
                 Switch.updateOne({groupId: groupId}, {epicGames: false});
+                console.log(`[freeGames] Modulo desabilitado para o grupo ${groupName}`);
             }
             else{
                 Switch.updateOne({groupId: groupId}, {epicGames: true});
+                console.log(`[freeGames] Modulo habilitado para o grupo ${groupName}`);
             }
         }
         else{
@@ -38,6 +40,7 @@ const changeModuleState = () => {
                 groupName,
                 epicGames: true,
             })
+            console.log(`[freeGames] Modulo habilitado para o grupo ${groupName}`);
         }
     })
 }
