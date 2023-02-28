@@ -15,8 +15,8 @@ var commands = [
     { name:'!epicgames off', callback: (msg) => changeModuleState(msg) },
 ]
 
-const changeModuleState = () => {
-    var group = getGroup(msg);
+const changeModuleState = async (msg) => {
+    var group = await getGroup(msg);
     if(!group) return msg.reply('Este comando só pode ser usado em grupos.');
 
     var groupId = group.id._serialized;
@@ -26,11 +26,17 @@ const changeModuleState = () => {
     .then((group) => {
         if(group) {
             if(group.epicGames = true){
+                if(msg.body.toLowerCase().includes('!epicgames on')) return msg.reply('O modulo já está habilitado.');
+
                 Switch.updateOne({groupId: groupId}, {epicGames: false});
+                msg.reply('O modulo da Epic Games está desabilitado.');
                 console.log(`[freeGames] Modulo desabilitado para o grupo ${groupName}`);
             }
             else{
+                if(msg.body.toLowerCase().includes('!epicgames off')) return msg.reply('O modulo já está habilitado.');
+                
                 Switch.updateOne({groupId: groupId}, {epicGames: true});
+                msg.reply('O modulo da Epic Games está habilitado.');
                 console.log(`[freeGames] Modulo habilitado para o grupo ${groupName}`);
             }
         }
