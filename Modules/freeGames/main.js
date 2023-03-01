@@ -48,6 +48,7 @@ const changeEpicModuleState = async (msg) => {
                 groupName,
                 epicGames: true,
             })
+            msg.reply('✔️ O modulo da Epic Games está habilitado. \nEste grupo irá receber atualizações de novos jogos de graça na Epic Games.');
             console.log(`[freeGames] Modulo habilitado para o grupo ${groupName}`);
         }
     })
