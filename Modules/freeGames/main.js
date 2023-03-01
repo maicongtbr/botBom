@@ -1,7 +1,7 @@
 const superagent = require('superagent');
 const {Module} = require("../mod");
 const db = require("../../database");
-const { getGroup } = require("../../libs");
+const { getGroup, userIsAdmin } = require("../../libs");
 
 const Cache = db.getModel('Cache');
 const Switch = db.getModel('ModuleSwitch');
@@ -18,6 +18,7 @@ var commands = [
 const changeEpicModuleState = async (msg) => {
     var group = await getGroup(msg);
     if(!group) return msg.reply('Este comando só pode ser usado em grupos.');
+    if(!await userIsAdmin(group, msg.author)) return msg.reply('Você não é Admin.');
 
     var groupId = group.id._serialized;
     var groupName = group.name;
