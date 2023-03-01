@@ -24,7 +24,6 @@ const changeEpicModuleState = async (msg) => {
 
     Switch.findOne({groupId: groupId})
     .then((group) => {
-        console.log('group.epicGames = ' + group.epicGames);
         if(group) {
             if(group.epicGames){
                 if(msg.body.toLowerCase().includes('!epicgames on')) return msg.reply('O modulo já está habilitado.');
