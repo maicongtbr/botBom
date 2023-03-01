@@ -226,9 +226,9 @@ const commandList = (msg, bot) => {
                 title: "Comandos gerais",
                 rows: [
                     { id: "sticker", title: "!s", description: "Cria uma figurinha a partir da imagem enviada ou mencionada." },
-                    // { id: "img", title: "!img [palavra para pesquisar]", description: "Pesquisa uma imagem e retorna ela."}, //desativado momentaneamente
+                    { id: "img", title: "!img [palavra para pesquisar]", description: "Pesquisa uma imagem e retorna ela."},
                     { id: "encaminhado", title: "!encaminhado", description: "Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada."},
-                    { id: "epicgames", title: "!gratis", description: "Retorna os jogos grátis na Epic Games da semana atual e da próxima."},
+                    { id: "epicfreegames", title: "!epicfreegames", description: "Retorna os jogos grátis na Epic Games da semana atual e da próxima."},
                     { id: "tabela", title: "!tabela", description: "Retorna a tabela atualizada do Brasileirão Serie A."},
                     { id: "level", title: "!level", description: "Retorna seu level no grupo atual (Se enviado no PV do bot, retorna seu level em todos os grupos que o bot participa)."},
                     { id: "ranking", title: "!ranking", description: "Retorna o Top 10 do grupo."}
@@ -241,6 +241,8 @@ const commandList = (msg, bot) => {
                     { id: "up", title: "!up [membro]", description: "Remove o membro marcado ou da mensagem mencionada."},
                     { id: "down", title: "!down [membro]", description: "Rebaixa o membro marcado ou da mensagem mencionada."},
                     { id: "level", title: "!level [membro]", description: "Retorna o level do membro marcado."},
+                    { id: "epicgames [on/off]", title: "!epicgames [on/off]", description: "Habilita ou desabilita o envio automático de novos jogos de graça na Epic Games"},
+
                 ]
             },
             {
