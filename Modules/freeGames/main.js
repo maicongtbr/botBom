@@ -24,9 +24,9 @@ const changeModuleState = async (msg) => {
 
     Switch.findOne({groupId: groupId})
     .then((group) => {
-        console.log(group.epicGames);
+        console.log('group.epicGames = ' + group.epicGames);
         if(group) {
-            if(group.epicGames = true){
+            if(group.epicGames){
                 if(msg.body.toLowerCase().includes('!epicgames on')) return msg.reply('O modulo já está habilitado.');
 
                 Switch.updateOne({ groupId: groupId }, { epicGames: false }).then(x => {
@@ -34,7 +34,7 @@ const changeModuleState = async (msg) => {
                     console.log(`[freeGames] Modulo desabilitado para o grupo ${groupName}`);
                 }).catch(console.error);
             }
-            else if(group.epicGames = false){
+            else if(!group.epicGames){
                 if(msg.body.toLowerCase().includes('!epicgames off')) return msg.reply('O modulo já está desabilitado.');
 
                 Switch.updateOne({ groupId: groupId }, { epicGames: true }).then(x => {
