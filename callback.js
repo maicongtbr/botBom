@@ -462,8 +462,7 @@ const trigger = [
     { names: ['churrasco', 'churras'], callback: (msg, bot) => sendRandomSticker(msg, ['img/churrasco.webp', 'img/churrasco2.webp'], 2, bot)}, 
     { name: 'abib', callback: async (msg, bot) => {
         var group = await getGroup(msg);
-        console.log(group);
-        if (group === "120363026886886705@g.us"){
+        if (group.id._serialized === "120363026886886705@g.us"){
             sendSticker(msg, 'img/abib.webp', bot)
         }
     }}, 
