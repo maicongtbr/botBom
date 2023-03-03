@@ -46,9 +46,9 @@ const banMember = (msg, bot) => {
                     }
                     if (hasMentions){
                         msg.getMentions().then((mentionedUsers) => {
+                            console.log(mentionedUsers[i].PrivateContact.id._serialized);
+                            console.log(mentionedUsers);
                             for (let i = 0; i <= mentionedUsers.length; i++){
-                                console.log(mentionedUsers[i].PrivateContact.id._serialized);
-                                console.log(mentionedUsers);
                                 if (mentionedUsers[i].PrivateContact.id._serialized === '5521991241118@c.us') {
                                     console.log('mencionou o bot');
                                     msg.reply('*JAMAIS TENTE ISSO*');
