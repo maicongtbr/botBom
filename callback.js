@@ -461,9 +461,11 @@ const trigger = [
     { names: ['santos' ,'peixão', 'peixao', 'big fish', 'santástico', 'santastico'], callback: (msg, bot) => sendSticker(msg, 'img/santos.webp', bot)},
     { names: ['churrasco', 'churras'], callback: (msg, bot) => sendRandomSticker(msg, ['img/churrasco.webp', 'img/churrasco2.webp'], 2, bot)}, 
     { name: 'abib', callback: async (msg, bot) => {
-        let group = await getGroup(msg)
+        let group = await getGroup(msg);
+        console.log(group);
         if ( group === "120363026886886705@g.us"){
-            sendSticker(msg, 'img/abib.webp', bot)};
+            sendSticker(msg, 'img/abib.webp', bot)
+        }
     }}, 
 ]
 
