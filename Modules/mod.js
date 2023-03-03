@@ -23,7 +23,7 @@ class Module {
         if(!this.canLog) return;
         console.log(`[${this.name}]`, args.join(", "));
     }
-
+ 
 
     disableLog(msg) {
         this.canLog = false

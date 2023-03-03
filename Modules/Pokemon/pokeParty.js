@@ -115,7 +115,7 @@ const getPokemonPartyImage = async (player, party) => {
 
     await template.writeAsync(`./img/temp/party${int}${int}.png`);
 
-    var ret = await MessageMedia.fromFilePath(`./img/temp/party${int}${int}.png`);
+    var ret = MessageMedia.fromFilePath(`./img/temp/party${int}${int}.png`);
 
     fs.unlink(`./img/temp/party${int}${int}.png`, (err) => { //delete partyImg
         if (err) return;

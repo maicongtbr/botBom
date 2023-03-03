@@ -1,0 +1,219 @@
+const { getRandomInt, getRandomIntRange, userIsAdmin, getGroup } = require('./libs');
+const gis = require('g-i-s');
+const { MessageMedia } = require('whatsapp-web.js');
+
+const banMember = (msg, bot) => { 
+    var hasMentions = msg.getMentions();
+    if (!msg.hasQuotedMsg && !hasMentions){
+        return msg.reply('Para banir, você deve mencionar um usuário ou responder a mensagem do usuário a ser banido.');
+    }
+
+    getGroup(msg).then((group) => {
+        if (!group){
+            return msg.reply('Você precisa estar em um grupo para isso');
+        }
+
+        userIsAdmin(group, msg.author).then((isAdmin) => {
+            if (!isAdmin) {
+                return msg.reply('Você não é Admin.');
+            }
+
+            userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+                if (!botIsAdmin){
+                    return msg.reply('O Bot não é Admin.');
+                }
+
+                sendSticker(msg, './img/delete this5.webp', bot).then(() => { 
+                    if (msg.hasQuotedMsg){
+                        msg.getQuotedMessage().then((quotedMsg) => {
+                            if (quotedMsg && quotedMsg.author === '5521991241118@c.us') {
+                                console.log('mencionou a msg do bot');
+                                msg.reply('*JAMAIS TENTE ISSO!*');
+                                group.removeParticipants([msg.author]);
+                                return;
+                            }
+                            let usersToBan = [quotedMsg.author];
+                            return group.removeParticipants(usersToBan);
+                        })
+                    }
+                    if (hasMentions){
+                        msg.getMentions().then((mentionedUsers) => {
+                            for (var i = 0; i < mentionedUsers.length; i++){
+                                if (mentionedUsers[i].id._serialized === '5521991241118@c.us') {
+                                    console.log('mencionou o bot');
+                                    msg.reply('*JAMAIS TENTE ISSO*');
+                                    group.removeParticipants([msg.author]);
+                                    return;
+                                }
+                            }
+                            let usersToBan = [];
+                            mentionedUsers.forEach((element) => {
+                                usersToBan.push(element.id._serialized);
+                            })
+                            return group.removeParticipants(usersToBan);
+                        })
+                        return;
+                    }
+                    msg.reply('Você precisa marcar ou mencionar um membro para ser banido.');
+                })
+            })
+        })
+    })
+}
+
+const promoteMember = (msg, bot) => {
+    var hasMentions = msg.getMentions();
+    if (!msg.hasQuotedMsg && !hasMentions){
+        return msg.reply('Para promover alguém para Admin você deve mencionar um usuário ou responder a mensagem do usuário a ser promovido.');
+    }
+
+    getGroup(msg).then((group) => {
+        if (!group){
+            return msg.reply('Você precisa estar em um grupo para isso.');
+        }
+        userIsAdmin(group, msg.author).then((isAdmin) => {
+            if (!isAdmin) {
+                return msg.reply('Você não é Admin.');
+            }
+
+            userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+                if (!botIsAdmin){
+                    return msg.reply('O Bot não é Admin.');
+                }
+
+                if (msg.hasQuotedMsg){
+                    msg.getQuotedMessage().then((quotedMsg) => {
+                        let usersToUp = [quotedMsg.author];
+                        group.promoteParticipants(usersToUp);
+                    })
+                }
+                else {
+                    msg.getMentions().then((mentionedUsers) => {
+                        var usersToUp = [];
+                        mentionedUsers.forEach((element) => {
+                            usersToUp.push(element.id._serialized);
+                        })
+                        group.promoteParticipants(usersToUp);
+                })
+                }
+            })
+        })
+    })
+}
+
+const demoteMember = (msg, bot) => {
+    var hasMentions = msg.getMentions();
+    if (!hasMentions && !msg.hasQuotedMsg){
+        return msg.reply('Para rebaixar alguém você deve mencionar um usuário ou responder a mensagem do usuário a ser rebaixado.');
+    }
+    getGroup(msg).then((group) => {
+        if (!group){
+            return msg.reply('Você precisa estar em um grupo para isso.');
+        }
+        userIsAdmin(group, msg.author).then((isAdmin) => {
+            if (!isAdmin){
+                return msg.reply('Você não é Admin.');
+            }
+            userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+                if (!botIsAdmin){
+                    return msg.reply('O Bot não é Admin.');
+                }
+            
+                if (msg.hasQuotedMsg){
+                    msg.getQuotedMessage().then((quotedMsg) => {
+                        let usersToDown = [quotedMsg.author];
+                        group.demoteParticipants(usersToDown);
+                    })
+                }
+                else {
+                    msg.getMentions().then((mentionedUsers) => {
+                        var usersToDown = [];
+                        mentionedUsers.forEach((element) => {
+                            usersToDown.push(element.id._serialized);
+                        })
+                        group.demoteParticipants(usersToDown);
+                    })
+                }
+            })
+        })
+    })
+}
+
+const forwardingScore = (msg) => {
+    msg.getQuotedMessage().then((quotedMsg) => {
+        if (!quotedMsg) return msg.reply('Você precisa mencionar uma mensagem.'); 
+        var score = quotedMsg.forwardingScore;
+        if (score === 1){
+            msg.reply('Essa mensagem foi encaminhada ' + score + ' vez.', undefined);
+        }
+        else if (score === 0){
+            msg.reply('Essa mensagem nunca foi encaminhada', undefined);
+        }
+        else {
+            msg.reply('Essa mensagem foi encaminhada ' + score + ' vezes.', undefined);
+        }
+    })
+}
+
+const imgSearch = async (msg, bot) => {
+    var keyWord = msg.body.slice(5);
+
+    if (keyWord.length <= 0) {
+        msg.reply('Você deve usar !img [palavra chave]');
+        return;
+    }
+
+    const processImageData = async (error, results) => {
+        if (error) {
+            console.log('\n\n' + '[Google Image Search] ' + error + '\n\n');
+            msg.reply('Ocorreu um erro. Tente novamente.');
+        }
+        else {
+            var images = []
+            for (let i = 0; i <= 7; i++) {
+                images.push(results[i]);
+            }
+            var foundImage = images[getRandomInt(7)];
+            foundImage = await MessageMedia.fromUrl(foundImage.url, {
+                unsafeMime:false
+            });
+
+            msg.reply(foundImage)
+        }
+    }
+
+    gis(keyWord, processImageData);
+}
+
+const update = async (msg) => {
+    const { exec } = require("child_process");
+    if(!userIsAdmin(await msg.getChat(), msg.authorId)) return;
+    exec("git pull", (err) => {
+        if(err) console.warn(err);
+    })
+}
+
+// -- Ainda em teste
+const roletaRussa = async (msg, bot) => {
+    // iniciar o jogo
+    bot.sendMessage(msg.from, 'A ROLETA RUSSA COMEÇOU \nEnvie !atirar para testar sua sorte.');
+    bot.on('message', async message => {
+        if (message === '!roleta') {
+            bot.sendMessage(message.from, 'A ROLETA RUSSA ACABOU');
+            return;
+        }
+        else if (message === '!atirar') {
+            if (getRandomInt(5) === 1) {
+                // group.removeParticipants(message.author);
+                bot.sendMessage(message.from, 'Alguma mensagem dizendo que vc morreu + um gif'); //encerrar o jogo aqui
+                return;
+            }
+            else {
+                message.reply('A arma falhou!');
+            }
+        }
+    });
+}
+// --
+
+module.exports = { demoteMember, promoteMember, banMember, imgSearch, forwardingScore, update };
