@@ -5,7 +5,7 @@ const { MessageMedia } = require('whatsapp-web.js');
 const banMember = (msg, bot) => { 
     var hasMentions = msg.getMentions();
     if (!msg.hasQuotedMsg && !hasMentions){
-        return msg.reply('Para banir, você deve mencionar um usuário ou responder a mensagem do usuário a ser banido.');
+        return msg.reply('Para banir, você deve mencionar um usuário ou mencionar a mensagem do usuário a ser banido.');
     }
 
     getGroup(msg).then((group) => {
@@ -52,7 +52,6 @@ const banMember = (msg, bot) => {
                             })
                             return group.removeParticipants(usersToBan);
                         })
-                        return;
                     }
                     msg.reply('Você precisa marcar ou mencionar um membro para ser banido.');
                 })
@@ -87,7 +86,7 @@ const promoteMember = (msg, bot) => {
                         group.promoteParticipants(usersToUp);
                     })
                 }
-                else {
+                if (hasMentions){
                     msg.getMentions().then((mentionedUsers) => {
                         var usersToUp = [];
                         mentionedUsers.forEach((element) => {
