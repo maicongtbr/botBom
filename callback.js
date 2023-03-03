@@ -460,12 +460,12 @@ const trigger = [
     { names: ['fortaleza', 'leão', 'tricolaço', 'laion'], callback: (msg, bot) => sendSticker(msg, 'img/fortaleza.webp', bot)},
     { names: ['santos' ,'peixão', 'peixao', 'big fish', 'santástico', 'santastico'], callback: (msg, bot) => sendSticker(msg, 'img/santos.webp', bot)},
     { names: ['churrasco', 'churras'], callback: (msg, bot) => sendRandomSticker(msg, ['img/churrasco.webp', 'img/churrasco2.webp'], 2, bot)}, 
-    { name: 'abib', callback: async (msg, bot) => {
+    { name: 'abib', callback: async (msg, bot) => { //Trigger exclusivo para o grupo do Caio
         var group = await getGroup(msg);
-        if (group.id._serialized === "120363026886886705@g.us"){
+        if (group.id._serialized === "5524993337620-1596406363@g.us"){
             sendSticker(msg, 'img/abib.webp', bot)
         }
-    }}, 
+    }},
 ]
 
 commands.forEach((value) => {
