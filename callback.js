@@ -8,6 +8,39 @@ const { demoteMember, promoteMember, banMember, imgSearch, forwardingScore, upda
 const callbackMap = new Map();
 const commandsMap = new Map();
 
+const comandos = [ //Provisório enquanto as listas do Wpp estão bugadas
+        "➡️*Comandos Gerais:*",
+        "\n\n*!s -* Cria uma figurinha a partir da imagem enviada ou mencionada.",
+        "\n*!img [palavra para pesquisar] -* Pesquisa uma imagem no google.",
+        "\n*!encaminhado -* Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada.",
+        "\n*!epicfreegames -* Retorna os jogos grátis na Epic Games da semana atual e da próxima.",
+        "\n*!tabela -* Retorna a tabela atualizada do Brasileirão Serie A.",
+        "\n*!level -* Retorna seu level no grupo atual (Se enviado no PV do bot, retorna seu level em todos os grupos que o bot participa).",
+        "\n*!ranking -* Retorna o Top 10 do grupo.",
+
+        "\n\n➡️*Comandos de Administrador:*",
+        "\n\n*!ban [membro] -* Bane o membro marcado.",
+        "\n*!up [membro] -* Promove á Admin o membro marcado ou da mensagem mencionada.",
+        "\n*!down [membro] -* Rebaixa o membro marcado ou da mensagem mencionada.",
+        "\n*!level [membro] -* Retorna o level do membro marcado.",
+        "\n*!epicgames [on/off]* - Habilita ou desabilita o envio automático de novos jogos de graça na Epic Games",
+
+        "\n\n➡️*Comandos PokeBom:*",
+        "\n\n!capturar [nome do Pokémon] - Tenta capturar um pokemón.",
+        "\n!pokebom - Retorna sua party de Pokémon.",
+        "\nboxpokemon - Retorna sua box de Pokémon.",
+        "\n!inicial - Para escolher seu Pokémon inicial.",
+        "\n!pokedex [nome do Pokémon] - Retorna as informações da Pokédex do Pokémon citado.",
+        "\n!pokestop - Ativar ou desativar o módulo do PokéBom. *SOMENTE ADMS*",
+        "\n!pokespawnrate [%] - Alterar a chance de aparição de Pokémon. *SOMENTE ADMS*",
+        "\n!pokesummon - Forçar a aparição de Pokémon. *SOMENTE ADMS*"
+    ]
+
+const sendCommands = (msg, bot) =>{
+    var commands = comandos.toString();
+    bot.sendMessage(msg.from, commands);
+}
+
 const commandList = (msg, bot) => {
     const _commandList = new List(
         "Esta é a lista de comandos do Bot Bom.",
@@ -17,7 +50,7 @@ const commandList = (msg, bot) => {
                 title: "Comandos gerais",
                 rows: [
                     { id: "sticker", title: "!s", description: "Cria uma figurinha a partir da imagem enviada ou mencionada." },
-                    { id: "img", title: "!img [palavra para pesquisar]", description: "Pesquisa uma imagem e retorna ela."},
+                    { id: "img", title: "!img [palavra para pesquisar]", description: "Pesquisa uma imagem no google."},
                     { id: "encaminhado", title: "!encaminhado", description: "Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada."},
                     { id: "epicfreegames", title: "!epicfreegames", description: "Retorna os jogos grátis na Epic Games da semana atual e da próxima."},
                     { id: "tabela", title: "!tabela", description: "Retorna a tabela atualizada do Brasileirão Serie A."},
@@ -29,7 +62,7 @@ const commandList = (msg, bot) => {
                 title: "Comandos de Administrador",
                 rows: [
                     { id: "ban", title: "!ban [membro]", description: "Bane o membro marcado ou da mensagem mencionada."},
-                    { id: "up", title: "!up [membro]", description: "Remove o membro marcado ou da mensagem mencionada."},
+                    { id: "up", title: "!up [membro]", description: "Promove á Admin o membro marcado ou da mensagem mencionada."},
                     { id: "down", title: "!down [membro]", description: "Rebaixa o membro marcado ou da mensagem mencionada."},
                     { id: "level", title: "!level [membro]", description: "Retorna o level do membro marcado."},
                     { id: "epicgames [on/off]", title: "!epicgames [on/off]", description: "Habilita ou desabilita o envio automático de novos jogos de graça na Epic Games"},
@@ -67,7 +100,7 @@ const commands = [
     { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
     { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)},
-    { name: '!comandos', callback: (msg, bot) => commandList(msg, bot)},
+    { name: '!comandos', callback: (msg, bot) => sendCommands(msg, bot)},
     { name: '!roleta', callback: (msg, bot) => roletaRussa(msg, bot)},
     { name: "!update", callback: (msg) => update(msg) }
 ]
