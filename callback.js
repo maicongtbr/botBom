@@ -46,10 +46,7 @@ const banMember = (msg, bot) => {
                     }
                     if (hasMentions){
                         msg.getMentions().then((mentionedUsers) => {
-                            console.log(mentionedUsers);
                             for (var i = 0; i < mentionedUsers.length; i++){
-                                console.log(i);
-                                console.log('mentionedUsers.length = ' + mentionedUsers.length);
                                 if (mentionedUsers[i].id._serialized === '5521991241118@c.us') {
                                     console.log('mencionou o bot');
                                     msg.reply('*JAMAIS TENTE ISSO*');
@@ -78,31 +75,31 @@ const promoteMember = (msg, bot) => {
         return msg.reply('Para promover alguém para Admin você deve mencionar um usuário ou responder a mensagem do usuário a ser promovido.');
     }
 
-    const group = getGroup(msg).then((group) => {
+    getGroup(msg).then((group) => {
         if (!group){
             return msg.reply('Você precisa estar em um grupo para isso.');
         }
-        const isAdmin = userIsAdmin(group, msg.author).then((isAdmin) => {
+        userIsAdmin(group, msg.author).then((isAdmin) => {
             if (!isAdmin) {
                 return msg.reply('Você não é Admin.');
             }
 
-            const botIsAdmin = userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+            userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
                 if (!botIsAdmin){
                     return msg.reply('O Bot não é Admin.');
                 }
 
                 if (msg.hasQuotedMsg){
-                    let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
+                    msg.getQuotedMessage().then((quotedMsg) => {
                         let usersToUp = [quotedMsg.author];
                         group.promoteParticipants(usersToUp);
                     })
                 }
                 else {
-                    var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
+                    msg.getMentions().then((mentionedUsers) => {
                         var usersToUp = [];
                         mentionedUsers.forEach((element) => {
-                            usersToUp.push(element.PrivateContact.id._serialized);
+                            usersToUp.push(element.id._serialized);
                         })
                         group.promoteParticipants(usersToUp);
                 })
@@ -117,30 +114,30 @@ const demoteMember = (msg, bot) => {
     if (!hasMentions && !msg.hasQuotedMsg){
         return msg.reply('Para rebaixar alguém você deve mencionar um usuário ou responder a mensagem do usuário a ser rebaixado.');
     }
-    const group = getGroup(msg).then((group) => {
+    getGroup(msg).then((group) => {
         if (!group){
             return msg.reply('Você precisa estar em um grupo para isso.');
         }
-        const isAdmin = userIsAdmin(group, msg.author).then((isAdmin) => {
+        userIsAdmin(group, msg.author).then((isAdmin) => {
             if (!isAdmin){
                 return msg.reply('Você não é Admin.');
             }
-            const botIsAdmin = userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
+            userIsAdmin(group, bot.info.wid._serialized).then((botIsAdmin) => {
                 if (!botIsAdmin){
                     return msg.reply('O Bot não é Admin.');
                 }
             
                 if (msg.hasQuotedMsg){
-                    let quotedMsg = msg.getQuotedMessage().then((quotedMsg) => {
+                    msg.getQuotedMessage().then((quotedMsg) => {
                         let usersToDown = [quotedMsg.author];
                         group.demoteParticipants(usersToDown);
                     })
                 }
                 else {
-                    var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
+                    msg.getMentions().then((mentionedUsers) => {
                         var usersToDown = [];
                         mentionedUsers.forEach((element) => {
-                            usersToDown.push(element.PrivateContact.id._serialized);
+                            usersToDown.push(element.id._serialized);
                         })
                         group.demoteParticipants(usersToDown);
                     })
