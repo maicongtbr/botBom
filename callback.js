@@ -28,7 +28,7 @@ const comandos = [ //Provisório enquanto as listas do Wpp estão bugadas
         "\n\n➡️*Comandos PokeBom:*",
         "\n\n*!capturar [nome do Pokémon] -* Tenta capturar um pokemón.",
         "\n*!pokebom -* Retorna sua party de Pokémon.",
-        "\n*boxpokemon -* Retorna sua box de Pokémon.",
+        "\n*!boxpokemon -* Retorna sua box de Pokémon.",
         "\n*!inicial -* Para escolher seu Pokémon inicial.",
         "\n*!pokedex [nome do Pokémon] -* Retorna as informações da Pokédex do Pokémon citado.",
         "\n*!pokestop -* Ativar ou desativar o módulo do PokéBom. *SOMENTE ADMS*",
