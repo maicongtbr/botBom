@@ -15,14 +15,14 @@ const init = async () => {
         playerNameFont: await jimp.loadFont("/home/maiconkekw/BotAOP/font/tome_64.fnt"),
         pokeCoords: [
             {
-                pokeName: { x: 6, y: 445 }, // -10
+                pokeName: { x: 6, y: 445 },
                 pokeHp: { x: 56, y: 515 },
                 pokeLvl: { x: 56, y: 539 },
                 pokeIcon: { x: 300, y: 390 },
                 pokeHealthBar: { x: 8, y: 500 }
             }, 
             {
-                pokeName: { x: 6, y: 640 }, //y diff = 195
+                pokeName: { x: 6, y: 640 },
                 pokeHp: { x: 56, y: 717-8 }, 
                 pokeLvl: { x: 56, y: 742-9 }, 
                 pokeIcon: { x: 300, y: 585 }, 
@@ -126,22 +126,20 @@ const getPokemonPartyImage = async (player, party) => {
     return ret;
 }
 
-//308
-
 const getHealthBar = async (health) => {
     let healthPercentage = (100 * health.current) / health.max;
     var healthBar = await jimp.read('/home/maiconkekw/BotAOP/Modules/Pokemon/img/healthBarTemplate.png');
 
     if(healthPercentage <= 50 && healthPercentage >= 10) {
-        await healthBar.color([
+        healthBar.color([
             { apply: 'mix', params: [{r: 255, g: 234, b: 0}] },
         ]);
     } else if(healthPercentage <= 10) {
-        await healthBar.color([
+        healthBar.color([
             { apply: 'mix', params: [{r: 255, g: 0, b: 0}] },
         ]);
     } else if ( healthPercentage > 50) {
-        await healthBar.color([
+        healthBar.color([
             { apply: 'mix', params: [{r: 143, g: 255, b: 75}] },
         ]);
     }
