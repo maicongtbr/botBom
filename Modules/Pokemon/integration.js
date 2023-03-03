@@ -102,7 +102,7 @@ const addPokemonToPlayer = async (msg, pokemon, isStarter) => {
     }
 
     if(!pokemon.name) {
-        throw "Pokemon sem nome, tentnado adicionar para " + await msg.getContact().pushname;
+        throw "Pokemon sem nome, tentando adicionar para " + await msg.getContact().pushname;
     }
 
     if (isStarter) {
@@ -187,7 +187,7 @@ const showPokemon = async (msg) => {
             })
 
             const list = new List(`B$: ${player.coins}\nPokémon na Party: ${pokemonList[0].rows.length}\nClique abaixo para conferir a party`,
-            `Conferir Party de ${contact.pushname}`, pokemonList, `Party de ${contact.pushname}`,"Formato reduzido ara evitar spam em grupos, para imagem use o privado do bot!");
+            `Conferir Party de ${contact.pushname}`, pokemonList, `Party de ${contact.pushname}`,"Formato reduzido para evitar spam em grupos. Para a versão completa use o privado do bot!");
 
             await msg.reply(list);
             return;
@@ -387,7 +387,7 @@ const dailies = [];
 const dayTime = 1000 * 60 * 60 * 24;
 const getDaily = async (msg) => {
     var chat = await msg.getChat();
-    if(chat.isGroup) return await msg.reply("Esse comando nào pode ser usado em grupos.");
+    if(chat.isGroup) return await msg.reply("Esse comando não pode ser usado em grupos.");
 
     const id = msg.author || msg.from;
     const date = new Date();
@@ -523,7 +523,7 @@ const getPokemon = async (msg, private, force) => {
             await bot.sendMessage(id, pokemonGif, {
                 sendMediaAsSticker:true
             });
-            await bot.sendMessage(id, "O *primeiro* a acertar o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!");
+            await bot.sendMessage(id, "O *primeiro* a acertar o nome do Pokémon com o comando \"!capturar <nome do pokemon\" irá captura-lo!\n O Pokemon irá fugir em 5 minutos.");
             fs.unlink(imgName, (err) => {
                 if (!err) return;
                 log(err)
