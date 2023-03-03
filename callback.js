@@ -49,6 +49,7 @@ const banMember = (msg, bot) => {
                             console.log(mentionedUsers[0]);
                             console.log(mentionedUsers[0].id._serialized);
                             for (let i = 0; i <= mentionedUsers.length; i++){
+                                console.log(i);
                                 if (mentionedUsers[i].id._serialized === '5521991241118@c.us') {
                                     console.log('mencionou o bot');
                                     msg.reply('*JAMAIS TENTE ISSO*');
