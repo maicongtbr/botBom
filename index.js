@@ -3,7 +3,7 @@ const qrcode = require('qrcode-terminal');
 const { callbackMap, commandsMap } = require('./callback.js');
 const { getNextLevelExp } = require('./level system');
 const db = require('./database');
-const { getGroup } = require('./libs');
+const { getGroup, sendSticker, getRandomInt } = require('./libs');
 
 
 const PokemonModule = require("./Modules/Pokemon/integration");
@@ -41,18 +41,6 @@ const bot = new Client({
     authStrategy: new LocalAuth(),
 })
 
-const sendSticker = async (msg, filePath) => {
-    var filePath;
-    media = MessageMedia.fromFilePath(filePath);
-    await bot.sendMessage(msg.from ? msg.from:msg.chatId, media, {
-        sendMediaAsSticker:true
-    })
-}
-
-const randomNumber = (max) => {
-    return Math.floor(Math.random() * (max - 1 + 1));
-}
-
 bot.on('qr', (qr) => {
     qrcode.generate(qr, {small: true});
 })
@@ -76,11 +64,11 @@ bot.on('ready', async () => {
 })
 
 bot.on('group_leave', (notification) => {
-    const stickersSaiu = 
+    var stickersSaiu = 
     ['./img/saiu.webp',
     './img/saiu2.webp',
     './img/saiu3.webp'];
-    sendSticker(notification, stickersSaiu[randomNumber(3)]);
+    sendSticker(notification, stickersSaiu[getRandomInt(3)]);
 });
 
 const msgCallback = (msg, group) => {
