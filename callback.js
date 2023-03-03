@@ -46,6 +46,7 @@ const banMember = (msg, bot) => {
                     }
                     if (hasMentions){
                         msg.getMentions().then((mentionedUsers) => {
+                            console.log(mentionedUsers);
                             for (let i = 0; i <= mentionedUsers.length; i++){
                                 if (mentionedUsers[i].id._serialized === '5521991241118@c.us') {
                                     console.log('mencionou o bot');
