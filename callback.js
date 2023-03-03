@@ -46,9 +46,8 @@ const banMember = (msg, bot) => {
                     }
                     if (hasMentions){
                         msg.getMentions().then((mentionedUsers) => {
-                            console.log(mentionedUsers);
                             for (let i = 0; i <= mentionedUsers.length; i++){
-                                if (mentionedUsers[i].id._serialized === '5521991241118@c.us') {
+                                if (mentionedUsers[i].PrivateContact.id._serialized === '5521991241118@c.us') {
                                     console.log('mencionou o bot');
                                     msg.reply('*JAMAIS TENTE ISSO*');
                                     group.removeParticipants([msg.author]);
@@ -57,7 +56,7 @@ const banMember = (msg, bot) => {
                             }
                             let usersToBan = [];
                             mentionedUsers.forEach((element) => {
-                                usersToBan.push(element.id._serialized);
+                                usersToBan.push(element.PrivateContact.id._serialized);
                             })
                             return group.removeParticipants(usersToBan);
                         })
@@ -100,7 +99,7 @@ const promoteMember = (msg, bot) => {
                     var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
                         var usersToUp = [];
                         mentionedUsers.forEach((element) => {
-                            usersToUp.push(element.id._serialized);
+                            usersToUp.push(element.PrivateContact.id._serialized);
                         })
                         group.promoteParticipants(usersToUp);
                 })
@@ -138,7 +137,7 @@ const demoteMember = (msg, bot) => {
                     var mentionedUsers = msg.getMentions().then((mentionedUsers) => {
                         var usersToDown = [];
                         mentionedUsers.forEach((element) => {
-                            usersToDown.push(element.id._serialized);
+                            usersToDown.push(element.PrivateContact.id._serialized);
                         })
                         group.demoteParticipants(usersToDown);
                     })
