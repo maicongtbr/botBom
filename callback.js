@@ -273,6 +273,13 @@ const trigger = [
             sendSticker(msg, 'img/abib.webp', bot)
         }
     }},
+    { names: ['molejo', 'russin'], callback: async (msg, bot) => { //Trigger exclusivo para o grupo do Caio
+        var group = await getGroup(msg);
+        if (group.id._serialized === "5524993337620-1596406363@g.us"){
+            sendSticker(msg, 'img/russin molejo.webp', bot)
+        }
+    }},
+    { names: ['alguém', 'alguem'], callback: (msg, bot) => sendSticker(msg, 'img/alguem.jpg', bot)},
 ]
 
 commands.forEach((value) => {
