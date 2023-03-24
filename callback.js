@@ -137,8 +137,6 @@ const trigger = [
         callback: (msg, bot) => sendSticker(msg, 'img/kekw.webp', bot)},
     { name: 'maluco',
         callback: (msg, bot) => sendSticker(msg, 'img/maluco.webp', bot)},
-    { name: 'muie',
-        callback: (msg, bot) => sendSticker(msg, 'img/misoginia.webp', bot)},
     { names: ['foi de base', 'foi de b', 'nao tankou', 'não tankou', 'foi encontrado morto', 'morri'],
         callback: (msg, bot) => sendSticker(msg, 'img/morri.webp', bot)},
     { name: 'neymar', 
@@ -280,6 +278,9 @@ const trigger = [
         }
     }},
     { names: ['alguém', 'alguem'], callback: (msg, bot) => sendSticker(msg, 'img/alguem.jpg', bot)},
+    { name: 'baiano', callback: (msg, bot) => sendSticker(msg, 'img/baiano.webp', bot)},
+    { name: 'canalha', callback: (msg, bot) => sendSticker(msg, 'img/canalha.webp', bot)},
+    { name: 'muie', callback: (msg, bot) => sendRandomSticker(msg, ['img/misoginia.webp', 'muie2.webp'], 2, bot)},
 ]
 
 commands.forEach((value) => {
