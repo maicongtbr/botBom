@@ -23,7 +23,6 @@
     "superagent": "^8.0.2",
     "text-to-speech-js": "^1.1.10",
     "uuid": "^9.0.0",
-    "webp-converter": "^2.3.3",
-    "whatsapp-web": "^1.0.3"
+    "webp-converter": "^2.3.3"
   }
 }
