@@ -141,6 +141,7 @@ const mainLoop = async () => {
 const freeEpicGames = async () => {
     const freeGames = [];
     const res = await superagent.get('https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?country=BR');
+    console.log(res);
     const resElements = res?._body?.data?.Catalog.searchStore.elements;
     for (let i = 0; i <= resElements.length-1; i++){
         let element = resElements[i];
