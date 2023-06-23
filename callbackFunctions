@@ -168,7 +168,6 @@ const imgSearch = async (msg, bot) => {
             msg.reply('Ocorreu um erro. Tente novamente.');
         }
         else {
-            console.log(results);
             var images = []
             for (let i = 0; i <= 7; i++) {
                 images.push(results[i]);
