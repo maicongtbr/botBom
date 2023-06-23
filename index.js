@@ -35,7 +35,7 @@ const getExpMultply = () => {
 
 const bot = new Client({
     puppeteer: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox'],
     },
     ffmpegPath: '/usr/bin/ffmpeg',
     authStrategy: new LocalAuth(),
