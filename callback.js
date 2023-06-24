@@ -281,6 +281,7 @@ const trigger = [
     { name: 'baiano', callback: (msg, bot) => sendSticker(msg, 'img/baiano.webp', bot)},
     { name: 'canalha', callback: (msg, bot) => sendSticker(msg, 'img/canalha.webp', bot)},
     { name: 'muie', callback: (msg, bot) => sendRandomSticker(msg, ['img/misoginia.webp', 'img/muie2.webp'], 2, bot)},
+    { name: 'ahoy', callback: (msg, bot) => bot.sendMessage(msg.from, 'Ahoy!')},
 ]
 
 commands.forEach((value) => {
