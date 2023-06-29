@@ -187,7 +187,7 @@ const imgSearch = async (msg, bot) => {
 const update = async (msg) => {
     const { exec } = require("child_process");
     if(!userIsAdmin(await msg.getChat(), msg.authorId)) return;
-    exec("npm run init", (err) => {
+    exec("git pull", (err) => {
         if(err) console.warn(err);
     })
 }
