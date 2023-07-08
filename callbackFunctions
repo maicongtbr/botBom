@@ -165,6 +165,9 @@ const imgSearch = async (msg, bot) => {
     const processImageData = async (error, results) => {
         if (error) {
             console.log('\n\n' + '[Google Image Search] ' + error + '\n\n');
+            process.on("uncaughtException", (e) => {
+                console.warn('\n\n' + '[Google Image Search] ' + error + '\n\n');
+            })
             msg.reply('Ocorreu um erro. Tente novamente.');
         }
         else {
@@ -172,6 +175,8 @@ const imgSearch = async (msg, bot) => {
             for (let i = 0; i <= 7; i++) {
                 images.push(results[i]);
             }
+            console.log(images);
+            
             var foundImage = images[getRandomInt(7)];
             foundImage = await MessageMedia.fromUrl(foundImage.url, {
                 unsafeMime:false
