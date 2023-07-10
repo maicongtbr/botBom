@@ -265,13 +265,15 @@ const trigger = [
     { names: ['fortaleza', 'leão', 'tricolaço', 'laion'], callback: (msg, bot) => sendSticker(msg, 'img/fortaleza.webp', bot)},
     { names: ['santos' ,'peixão', 'peixao', 'big fish', 'santástico', 'santastico'], callback: (msg, bot) => sendSticker(msg, 'img/santos.webp', bot)},
     { names: ['churrasco', 'churras'], callback: (msg, bot) => sendRandomSticker(msg, ['img/churrasco.webp', 'img/churrasco2.webp'], 2, bot)}, 
-    { name: 'abib', callback: async (msg, bot) => { //Trigger exclusivo para o grupo do Caio
+    //Trigger exclusivo para o grupo do Caio
+    { name: 'abib', callback: async (msg, bot) => { 
         var group = await getGroup(msg);
         if (group.id._serialized === "5524993337620-1596406363@g.us"){
             sendSticker(msg, 'img/abib.webp', bot)
         }
     }},
-    { names: ['molejo', 'russin'], callback: async (msg, bot) => { //Trigger exclusivo para o grupo do Caio
+    //Trigger exclusivo para o grupo do Caio
+    { names: ['molejo', 'russin'], callback: async (msg, bot) => { 
         var group = await getGroup(msg);
         if (group.id._serialized === "5524993337620-1596406363@g.us"){
             sendSticker(msg, 'img/russin molejo.webp', bot)
@@ -283,6 +285,13 @@ const trigger = [
     { name: 'paia', callback: (msg, bot) => sendSticker(msg, 'img/paia.webp', bot)},
     { name: 'muie', callback: (msg, bot) => sendRandomSticker(msg, ['img/misoginia.webp', 'img/muie2.webp'], 2, bot)},
     { name: 'ahoy', callback: (msg, bot) => bot.sendMessage(msg.from, 'Ahoy!')},
+    //Trigger exclusivo para o grupo do Caio
+    { names: ['cruzeiro', 'cabuloso'], callback: async (msg, bot) => { 
+        var group = await getGroup(msg);
+        if (group.id._serialized === "5524993337620-1596406363@g.us"){
+            sendSticker(msg, 'img/cruzeiro.webp', bot)
+        }
+    }},
 ]
 
 commands.forEach((value) => {
