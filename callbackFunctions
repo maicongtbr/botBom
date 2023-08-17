@@ -181,9 +181,10 @@ const imgSearch = async (msg, bot) => {
                     foundImage = await MessageMedia.fromUrl(foundImage.url, {
                         unsafeMime:false
                     });
+                    
+                    msg.reply(foundImage)
                 }
     
-                msg.reply(foundImage)
             }
         }
 
