@@ -3,7 +3,7 @@ const qrcode = require('qrcode-terminal');
 const { callbackMap, commandsMap } = require('./callback.js');
 const { getNextLevelExp } = require('./level system');
 const db = require('./database');
-const { getGroup, sendSticker, getRandomInt } = require('./libs');
+const { getGroup, sendSticker, getRandomInt, getTimeStamp } = require('./libs');
 
 
 const PokemonModule = require("./Modules/Pokemon/integration");
@@ -18,15 +18,9 @@ const exp = [
 ]
 
 process.on("uncaughtException", (e) => {
-    let currentdate = new Date();
-    let timestamp = currentdate.getDate() + "/"
-        + (currentdate.getMonth()+1)  + "/" 
-        + currentdate.getFullYear() + " @ "  
-        + currentdate.getHours() + ":"  
-        + currentdate.getMinutes() + ":" 
-        + currentdate.getSeconds();
+    let timeStamp = getTimeStamp();
 
-    console.warn("\n\n" + timestamp + "[ERRO]:\n" + e + "\n\n");
+    console.warn("\n\n[" + timeStamp + "][ERRO]:\n" + e + "\n\n");
 })
 
 const getExpMultply = () => {

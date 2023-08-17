@@ -1,4 +1,4 @@
-const { getRandomInt, getRandomIntRange, userIsAdmin, getGroup } = require('./libs');
+const { getRandomInt, getRandomIntRange, userIsAdmin, getGroup, getTimeStamp } = require('./libs');
 const gis = require('g-i-s');
 const { MessageMedia } = require('whatsapp-web.js');
 
@@ -161,14 +161,7 @@ const imgSearch = async (msg, bot) => {
         msg.reply('Você deve usar !img [palavra chave]');
         return;
     }
-
-    try {
-        gis(keyWord, processImageData);
-    } catch (error) {
-        console.warn('\n\n' + '[Google Image Search] ' + error + '\n\n');
-        msg.reply('Ocorreu um erro. Tente novamente.');
-    }
-
+    
     const processImageData = async (error, results) => {
         if (error) {
             console.log('\n\n' + '[Google Image Search] ' + error + '\n\n');
@@ -190,6 +183,15 @@ const imgSearch = async (msg, bot) => {
             msg.reply(foundImage)
         }
     }
+    
+    try {
+        gis(keyWord, processImageData);
+    } catch (error) {
+        let timeStamp = getTimeStamp();
+        console.warn('\n\n[' + timeStamp + '][Google Image Search] ' + error + '\n\n');
+        msg.reply('Ocorreu um erro. Tente novamente.');
+    }
+
 
 }
 

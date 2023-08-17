@@ -97,4 +97,16 @@ const getRandomIntRange = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
 } 
 
-module.exports = { getUserStorage, UserStorage, StorageTypes, Storage, getStorage, getStorageValue, getRandomInt, getRandomIntRange, userIsAdmin, getGroup }
+const getTimeStamp = () => {
+    let currentdate = new Date();
+    let timeStamp = currentdate.getDate() + "/"
+        + (currentdate.getMonth()+1)  + "/" 
+        + currentdate.getFullYear() + " @ "  
+        + currentdate.getHours() + ":"  
+        + currentdate.getMinutes() + ":" 
+        + currentdate.getSeconds();
+    
+    return timeStamp;
+}
+
+module.exports = { getTimeStamp, getUserStorage, UserStorage, StorageTypes, Storage, getStorage, getStorageValue, getRandomInt, getRandomIntRange, userIsAdmin, getGroup }
