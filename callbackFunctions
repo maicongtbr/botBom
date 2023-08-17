@@ -164,11 +164,9 @@ const imgSearch = async (msg, bot) => {
     
     const processImageData = async (error, results) => {
         if (error) {
-            console.log('\n\n' + '[Google Image Search] ' + error + '\n\n');
-            process.on("uncaughtException", (e) => {
-                console.warn('\n\n' + '[Google Image Search] ' + error + '\n\n');
-            })
             msg.reply('Ocorreu um erro. Tente novamente.');
+            
+            console.log('\n\n' + '[Google Image Search] ' + error + '\n\n');
         }
         else {
             var images = []
@@ -183,13 +181,14 @@ const imgSearch = async (msg, bot) => {
             msg.reply(foundImage)
         }
     }
-    
+
     try {
         gis(keyWord, processImageData);
     } catch (error) {
         let timeStamp = getTimeStamp();
-        console.warn('\n\n[' + timeStamp + '][Google Image Search] ' + error + '\n\n');
+
         msg.reply('Ocorreu um erro. Tente novamente.');
+        console.warn('\n\n[' + timeStamp + '][Google Image Search] ' + error + '\n\n');
     }
 
 
