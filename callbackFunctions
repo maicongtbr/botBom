@@ -162,6 +162,13 @@ const imgSearch = async (msg, bot) => {
         return;
     }
 
+    try {
+        gis(keyWord, processImageData);
+    } catch (error) {
+        console.warn('\n\n' + '[Google Image Search] ' + error + '\n\n');
+        msg.reply('Ocorreu um erro. Tente novamente.');
+    }
+
     const processImageData = async (error, results) => {
         if (error) {
             console.log('\n\n' + '[Google Image Search] ' + error + '\n\n');
@@ -184,7 +191,6 @@ const imgSearch = async (msg, bot) => {
         }
     }
 
-    gis(keyWord, processImageData);
 }
 
 const update = async (msg) => {

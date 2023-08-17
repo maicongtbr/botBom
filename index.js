@@ -17,9 +17,17 @@ const exp = [
     }
 ]
 
-// process.on("uncaughtException", (e) => {
-//     console.warn("\n\nIA CRASHAR EM\n\n_________\n\n"+e+"\n\n__________\n\n");
-// })
+process.on("uncaughtException", (e) => {
+    let currentdate = new Date();
+    let timestamp = currentdate.getDate() + "/"
+        + (currentdate.getMonth()+1)  + "/" 
+        + currentdate.getFullYear() + " @ "  
+        + currentdate.getHours() + ":"  
+        + currentdate.getMinutes() + ":" 
+        + currentdate.getSeconds();
+
+    console.warn("\n\n" + timestamp + "[ERRO]:\n" + e + "\n\n");
+})
 
 const getExpMultply = () => {
     var date = new Date();
