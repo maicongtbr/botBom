@@ -178,11 +178,15 @@ const imgSearch = async (msg, bot) => {
                 var foundImage = images[getRandomInt(7)];
 
                 if (foundImage){
-                    foundImage = await MessageMedia.fromUrl(foundImage.url, {
-                        unsafeMime:false
-                    });
-                    
-                    msg.reply(foundImage)
+                    try {
+                        foundImage = await MessageMedia.fromUrl(foundImage.url, {
+                            unsafeMime:false
+                        });
+    
+                        msg.reply(foundImage);
+                    } catch (error) {
+                        console.log("Coloca aqui msg de erro");
+                    }
                 }
     
             }
