@@ -104,7 +104,7 @@ const commands = [
     { name: '!comandos', callback: (msg, bot) => commandList(msg, bot)},
     { name: '!roleta', callback: (msg, bot) => roletaRussa(msg, bot)},
     { name: "!update", callback: (msg) => update(msg) },
-    { name: "!epicgames", callback: (msg) => freeGames(msg) }
+    { name: "!epicgames", callback: (msg, bot) => freeGames(msg, bot) }
 ]
 
 const trigger = [

@@ -180,8 +180,8 @@ const getFreeGameMessage = async () => {
     return message;
 }
 
-const freeGames = async (msg) => {
-    myModule.bot.sendMessage(msg.from, await getFreeGameMessage());
+const freeGames = async (msg, bot) => {
+    bot.sendMessage(msg.from, await getFreeGameMessage());
 }
 
 module.exports = { init, freeGames };
