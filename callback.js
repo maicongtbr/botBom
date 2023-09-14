@@ -13,7 +13,7 @@ const comandos = [ //Provisório enquanto as listas do Wpp estão bugadas
         "\n\n*!s -* Cria uma figurinha a partir da imagem enviada ou mencionada.",
         "\n*!img [palavra para pesquisar] -* Pesquisa uma imagem no google.",
         "\n*!encaminhado -* Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada.",
-        "\n*!epicfreegames -* Retorna os jogos grátis na Epic Games da semana atual e da próxima.",
+        "\n*!epicgames -* Retorna os jogos grátis na Epic Games da semana atual e da próxima.",
         "\n*!tabela -* Retorna a tabela atualizada do Brasileirão Serie A.",
         "\n*!level -* Retorna seu level no grupo atual (Se enviado no PV do bot, retorna seu level em todos os grupos que o bot participa).",
         "\n*!ranking -* Retorna o Top 10 do grupo.",
@@ -52,7 +52,7 @@ const commandList = (msg, bot) => {
                     { id: "sticker", title: "!s", description: "Cria uma figurinha a partir da imagem enviada ou mencionada." },
                     { id: "img", title: "!img [palavra para pesquisar]", description: "Pesquisa uma imagem no google."},
                     { id: "encaminhado", title: "!encaminhado", description: "Retorna a quantidade de vezes que a mensagem mencionada foi encaminhada."},
-                    { id: "epicfreegames", title: "!epicfreegames", description: "Retorna os jogos grátis na Epic Games da semana atual e da próxima."},
+                    { id: "epicgames", title: "!epicgames", description: "Retorna os jogos grátis na Epic Games da semana atual e da próxima."},
                     { id: "tabela", title: "!tabela", description: "Retorna a tabela atualizada do Brasileirão Serie A."},
                     { id: "level", title: "!level", description: "Retorna seu level no grupo atual (Se enviado no PV do bot, retorna seu level em todos os grupos que o bot participa)."},
                     { id: "ranking", title: "!ranking", description: "Retorna o Top 10 do grupo."}
@@ -100,9 +100,10 @@ const commands = [
     { name: '!img', callback: (msg, bot) => imgSearch(msg, bot)},
     { name: '!level', callback: (msg, bot) => getLevel(msg, bot)},
     { name: '!ranking', callback: (msg, bot) => getRanking(msg, bot)},
-    { name: '!comandos', callback: (msg, bot) => sendCommands(msg, bot)},
+    { name: '!comandos', callback: (msg, bot) => commandList(msg, bot)},
     { name: '!roleta', callback: (msg, bot) => roletaRussa(msg, bot)},
-    { name: "!update", callback: (msg) => update(msg) }
+    { name: "!update", callback: (msg) => update(msg) },
+    { name: "!epicgames", callback: (msg) => freeGames(msg) }
 ]
 
 const trigger = [

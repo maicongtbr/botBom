@@ -184,4 +184,4 @@ const freeGames = async (msg) => {
     myModule.bot.sendMessage(msg.from, await getFreeGameMessage());
 }
 
-module.exports = { init };
+module.exports = { init, freeGames };
