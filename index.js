@@ -95,6 +95,7 @@ bot.on('message', async msg => {
                 e.mod.commands.forEach(e => {
                     if(msg.body.toLowerCase().includes(`${e.name} `) || msg.body == e.name) {
                         e.callback(msg);
+                        console.log('Chequie');
                     }
                 })
             });
