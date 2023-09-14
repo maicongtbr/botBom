@@ -15,7 +15,7 @@ const getTabela = async (msg, bot) => {
     */
 
     var tabela = await superagent.get('https://api.api-futebol.com.br/v1/campeonatos/10/tabela').set('Authorization', 'Bearer live_5da0f7f9ac2040f89d6bd1d862a39d');
-    var teamStats = `⚽️Campeonato Brasileiro Série A⚽️\n\n🔵${tabela._body[0].posicao}° - ${tabela._body[0].time.nome_popular} ▶️Pts: ${tabela._body[0].pontos}\n`;
+    var teamStats = `⚽️Tabela Campeonato Brasileiro Série A⚽️\n\n🔵${tabela._body[0].posicao}° - ${tabela._body[0].time.nome_popular} ▶️Pts: ${tabela._body[0].pontos}\n`;
 
     for (let i = 1; i <= 19; i++) {
         var team = tabela._body[i].time.nome_popular;

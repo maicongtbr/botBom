@@ -10,7 +10,7 @@ var myModule;
 var log;
 
 var commands = [
-    { name:'!epicfreegames', callback: (msg) => freeGames(msg) },
+    { name:'!epicgames', callback: (msg) => freeGames(msg) },
     { name:'!epicgames on', callback: (msg) => changeEpicModuleState(msg) },
     { name:'!epicgames off', callback: (msg) => changeEpicModuleState(msg) },
 ]
