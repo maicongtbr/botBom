@@ -4,7 +4,7 @@ const { getTabela } = require('./tabela brasileirao');
 const { getRanking, getLevel } = require('./level system');
 const { sendRandomSticker, sendSticker, makeSticker } = require('./sticker');
 const { demoteMember, promoteMember, banMember, imgSearch, forwardingScore, update } = require('./callbackFunctions');
-const freeGames = require("./Modules/freeGames/main");
+const { freeGames } = require("./Modules/freeGames/main");
 
 const callbackMap = new Map();
 const commandsMap = new Map();
