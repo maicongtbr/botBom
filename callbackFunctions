@@ -1,4 +1,5 @@
 const { getRandomInt, getRandomIntRange, userIsAdmin, getGroup, getTimeStamp } = require('./libs');
+const { sendSticker } = require('./sticker');
 const gis = require('g-i-s');
 const { MessageMedia } = require('whatsapp-web.js');
 
