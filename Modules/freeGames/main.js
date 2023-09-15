@@ -150,7 +150,7 @@ const freeEpicGames = async () => {
     for (let i = 0; i < resElements.length; i++){
         let element = resElements[i];
 
-        console.log(element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage);
+        let discountPercentage = element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage;
 
         if (!element.promotions){
             continue;
@@ -161,7 +161,7 @@ const freeEpicGames = async () => {
             }
         }
 
-        if(element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage){
+        if(discountPercentage = 0){
             promotionalOffers = element.promotions.promotionalOffers[0].promotionalOffers[0]
         }else{
             promotionalOffers = element.promotions.upcomingPromotionalOffers[0].promotionalOffers[0]
