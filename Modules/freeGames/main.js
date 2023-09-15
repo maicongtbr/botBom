@@ -8,7 +8,6 @@ const Switch = db.getModel('ModuleSwitch');
 
 var myModule;
 var log;
-
 var commands = [
     { name:'!epicgames', callback: (msg) => freeGames(msg) },
     { name:'!epicgames on', callback: (msg) => changeEpicModuleState(msg) },
@@ -148,11 +147,13 @@ const freeEpicGames = async () => {
     const freeGames = [];
     const res = await superagent.get('https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?country=BR');
     const resElements = res?._body?.data?.Catalog.searchStore.elements;
-    for (let i = 0; i <= resElements.length-1; i++){
+    for (let i = 0; i < resElements.length; i++){
         let element = resElements[i];
+        
         if (!element.promotions){
             continue;
         }
+        
         let promotionalOffers = element.promotions.promotionalOffers.length > 0 ? element.promotions.promotionalOffers[0] : element.promotions.upcomingPromotionalOffers[0];
 
         promotionalOffers = promotionalOffers.promotionalOffers[0];
