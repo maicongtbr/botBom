@@ -7,7 +7,6 @@ const { getGroup, sendSticker, getRandomInt, getTimeStamp } = require('./libs');
 
 
 const PokemonModule = require("./Modules/Pokemon/integration");
-
 const EpicFreeGameModule = require("./Modules/freeGames/main.js");
 
 const exp = [
@@ -61,7 +60,7 @@ bot.on('disconnected', () => {
 
 bot.on('ready', async () => {
     console.log("BOT ONLINE")
-    await PokemonModule.initPokemonModule(bot);
+    // await PokemonModule.initPokemonModule(bot);
     await EpicFreeGameModule.init(bot);
 })
 
