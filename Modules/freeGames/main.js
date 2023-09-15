@@ -161,7 +161,12 @@ const freeEpicGames = async () => {
             }
         }
 
-        let promotionalOffers = element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage = 0 ? element.promotions.promotionalOffers[0].promotionalOffers[0] : element.promotions.upcomingPromotionalOffers[0].promotionalOffers[0];
+        if(element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage = 0){
+            promotionalOffers = element.promotions.promotionalOffers[0].promotionalOffers[0]
+        }else{
+            promotionalOffers = element.promotions.upcomingPromotionalOffers[0].promotionalOffers[0]
+        }
+        // let promotionalOffers = element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage = 0 ? element.promotions.promotionalOffers[0].promotionalOffers[0] : element.promotions.upcomingPromotionalOffers[0].promotionalOffers[0];
 
         let obj = {
             title: element.title,
