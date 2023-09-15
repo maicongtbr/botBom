@@ -167,6 +167,7 @@ const freeEpicGames = async () => {
         }
         freeGames.push(obj);
     }
+    console.log(freeGames);
     return freeGames;
 }
 
