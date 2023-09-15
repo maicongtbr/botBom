@@ -149,9 +149,7 @@ const freeEpicGames = async () => {
     const resElements = res?._body?.data?.Catalog.searchStore.elements;
     for (let i = 0; i < resElements.length; i++){
         let element = resElements[i];
-
-        let discountPercentage = element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage;
-
+        
         if (!element.promotions){
             continue;
         }
@@ -160,7 +158,9 @@ const freeEpicGames = async () => {
                 continue;
             }
         }
-
+        
+        let discountPercentage = element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage;
+        
         if(discountPercentage = 0){
             promotionalOffers = element.promotions.promotionalOffers[0].promotionalOffers[0]
         }else{
