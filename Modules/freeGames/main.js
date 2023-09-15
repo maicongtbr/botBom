@@ -150,6 +150,8 @@ const freeEpicGames = async () => {
     for (let i = 0; i < resElements.length; i++){
         let element = resElements[i];
         
+        console.log(i);
+
         if (!element.promotions){
             continue;
         }
