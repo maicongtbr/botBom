@@ -8,7 +8,7 @@ const { getGroup, sendSticker, getRandomInt, getTimeStamp } = require('./libs');
 
 const PokemonModule = require("./Modules/Pokemon/integration");
 
-const EpicFreeGameModule = require("./Modules/freeGames/main");
+const EpicFreeGameModule = require("./Modules/freeGames/main.js");
 
 const exp = [
     {
