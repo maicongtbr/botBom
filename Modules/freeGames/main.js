@@ -88,17 +88,20 @@ const mainLoop = async () => {
                 newGame = true;
                 break;
             }
-        } 
+        }
         if(!newGame) {
             log("Nenhum jogo novo.");
             var nextTime = 0;
-            const time = new Date();
+            var time = new Date();
             games.forEach(element => {
                 if(element.startDate > time) {
                     nextTime = element.startDate.getTime() - time.getTime();
+                    console.log("NextTime = " + nextTime);
                 }
             });
+
             scheduleMainLoop(); // marca para 10min
+
             if(newGameLoop){
                 clearTimeout(newGameLoop);
             }

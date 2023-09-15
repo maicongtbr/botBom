@@ -62,7 +62,7 @@ bot.on('disconnected', () => {
 bot.on('ready', async () => {
     console.log("BOT ONLINE")
     await PokemonModule.initPokemonModule(bot);
-    EpicFreeGameModule.init(bot);
+    await EpicFreeGameModule.init(bot);
 })
 
 bot.on('group_leave', (notification) => {
