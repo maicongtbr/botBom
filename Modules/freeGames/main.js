@@ -168,6 +168,7 @@ const freeEpicGames = async () => {
             startDate: new Date (promotionalOffers.startDate || ''),
             endDate: new Date (promotionalOffers.endDate || '')
         }
+        console.log(obj);
         freeGames.push(obj);
     }
     console.log(freeGames);
