@@ -6,6 +6,7 @@ const { getGroup, userIsAdmin } = require("../../libs");
 const Cache = db.getModel('Cache');
 const Switch = db.getModel('ModuleSwitch');
 
+var timeNow;
 var myModule;
 var log;
 var commands = [
@@ -55,11 +56,12 @@ const changeEpicModuleState = async (msg) => {
 }
 
 const init = async (bot) => {
+    console.log('Alow check');
+    
     myModule = new Module("freeGames", bot, { }, commands);
 
     log = (...args) => myModule.log(args);
 
-    console.log('Alow check');
 
     await mainLoop();
 }
@@ -67,8 +69,8 @@ const init = async (bot) => {
 const MAIN_LOOP_TIME = 10 * 60 * 1000; // 10min
 var newGameLoop;
 
-const scheduleMainLoop = (time) => {
-    var next = time || MAIN_LOOP_TIME
+const scheduleMainLoop = (timeNow) => {
+    var next = timeNow || MAIN_LOOP_TIME
     log(`Tempo para nova checagem: ${new Date(new Date().getTime()  + next).toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })}`)
     return setTimeout(mainLoop, next);
 }
@@ -94,10 +96,10 @@ const mainLoop = async () => {
         if(!newGame) {
             log("Nenhum jogo novo.");
             var nextTime = 0;
-            var time = new Date();
+            timeNow = new Date();
             games.forEach(element => {
-                if(element.startDate > time) {
-                    nextTime = element.startDate.getTime() - time.getTime();
+                if(element.startDate > timeNow) {
+                    nextTime = element.startDate.getTime() - timeNow.getTime();
                     console.log("NextTime = " + nextTime);
                 }
             });
@@ -131,9 +133,7 @@ const mainLoop = async () => {
 
     const enabledGroups = Switch.find({epicGames: true});
 
-    const aop = await myModule.bot.getChats();
-    for (var i = 0; i < enabledGroups.length; i++)
-    {
+    for (var i = 0; i < enabledGroups.length; i++){
         let groupId = enabledGroups[i].groupId;
         myModule.bot.sendMessage(groupId, message);
     }
@@ -153,10 +153,13 @@ const freeEpicGames = async () => {
         if (!element.promotions){
             continue;
         }
-        
-        let promotionalOffers = element.promotions.promotionalOffers.length > 0 ? element.promotions.promotionalOffers[0] : element.promotions.upcomingPromotionalOffers[0];
+        if(element.promotions.promotionalOffers.length = 0){
+            if(element.promotions.upcomingPromotionalOffers.length = 0){
+                continue;
+            }
+        }
 
-        promotionalOffers = promotionalOffers.promotionalOffers[0];
+        let promotionalOffers = element.promotions.promotionalOffers.promotionalOffers.discountSetting.discountPercentage = 0 ? element.promotions.promotionalOffers[0].promotionalOffers[0] : element.promotions.upcomingPromotionalOffers[0].promotionalOffers[0];
 
         let obj = {
             title: element.title,
