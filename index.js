@@ -7,7 +7,6 @@ const { getGroup, sendSticker, getRandomInt, getTimeStamp } = require('./libs');
 
 
 const PokemonModule = require("./Modules/Pokemon/integration");
-
 const EpicFreeGameModule = require("./Modules/freeGames/main.js");
 
 const exp = [
@@ -17,11 +16,11 @@ const exp = [
     }
 ]
 
-process.on("uncaughtException", (e) => {
-    let timeStamp = getTimeStamp();
+// process.on("uncaughtException", (e) => {
+//     let timeStamp = getTimeStamp();
 
-    console.warn("\n\n[" + timeStamp + "][ERRO]:\n" + e + "\n\n");
-})
+//     console.warn("\n\n[" + timeStamp + "][ERRO]:\n" + e + "\n\n");
+// })
 
 const getExpMultply = () => {
     var date = new Date();
@@ -95,7 +94,6 @@ bot.on('message', async msg => {
                 e.mod.commands.forEach(e => {
                     if(msg.body.toLowerCase().includes(`${e.name} `) || msg.body == e.name) {
                         e.callback(msg);
-                        console.log('Chequie');
                     }
                 })
             });

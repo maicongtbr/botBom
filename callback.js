@@ -4,7 +4,6 @@ const { getTabela } = require('./tabela brasileirao');
 const { getRanking, getLevel } = require('./level system');
 const { sendRandomSticker, sendSticker, makeSticker } = require('./sticker');
 const { demoteMember, promoteMember, banMember, imgSearch, forwardingScore, update } = require('./callbackFunctions');
-const { freeGames } = require("./Modules/freeGames/main");
 
 const callbackMap = new Map();
 const commandsMap = new Map();
@@ -104,7 +103,6 @@ const commands = [
     { name: '!comandos', callback: (msg, bot) => sendCommands(msg, bot)},
     { name: '!roleta', callback: (msg, bot) => roletaRussa(msg, bot)},
     { name: "!update", callback: (msg) => update(msg) },
-    { name: "!epicgames", callback: (msg, bot) => freeGames(msg, bot) }
 ]
 
 const trigger = [

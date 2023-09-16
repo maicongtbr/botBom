@@ -6,9 +6,9 @@ const { getGroup, userIsAdmin } = require("../../libs");
 const Cache = db.getModel('Cache');
 const Switch = db.getModel('ModuleSwitch');
 
+var timeNow;
 var myModule;
 var log;
-
 var commands = [
     { name:'!epicgames', callback: (msg) => freeGames(msg) },
     { name:'!epicgames on', callback: (msg) => changeEpicModuleState(msg) },
@@ -60,16 +60,14 @@ const init = async (bot) => {
 
     log = (...args) => myModule.log(args);
 
-    console.log('Alow check');
-
     await mainLoop();
 }
 
 const MAIN_LOOP_TIME = 10 * 60 * 1000; // 10min
 var newGameLoop;
 
-const scheduleMainLoop = (time) => {
-    var next = time || MAIN_LOOP_TIME
+const scheduleMainLoop = (timeNow) => {
+    var next = timeNow || MAIN_LOOP_TIME
     log(`Tempo para nova checagem: ${new Date(new Date().getTime()  + next).toLocaleString('pt-BR', { timeZone: "America/Sao_Paulo" })}`)
     return setTimeout(mainLoop, next);
 }
@@ -95,11 +93,11 @@ const mainLoop = async () => {
         if(!newGame) {
             log("Nenhum jogo novo.");
             var nextTime = 0;
-            var time = new Date();
+            timeNow = new Date();
             games.forEach(element => {
-                if(element.startDate > time) {
-                    nextTime = element.startDate.getTime() - time.getTime();
-                    console.log("NextTime = " + nextTime);
+                if(element.startDate > timeNow) {
+                    nextTime = element.startDate.getTime() - timeNow.getTime();
+                    if(nextTime > 2147483647) nextTime = 2147483646;
                 }
             });
 
@@ -132,9 +130,7 @@ const mainLoop = async () => {
 
     const enabledGroups = Switch.find({epicGames: true});
 
-    const aop = await myModule.bot.getChats();
-    for (var i = 0; i < enabledGroups.length; i++)
-    {
+    for (var i = 0; i < enabledGroups.length; i++){
         let groupId = enabledGroups[i].groupId;
         myModule.bot.sendMessage(groupId, message);
     }
@@ -148,14 +144,25 @@ const freeEpicGames = async () => {
     const freeGames = [];
     const res = await superagent.get('https://store-site-backend-static.ak.epicgames.com/freeGamesPromotions?country=BR');
     const resElements = res?._body?.data?.Catalog.searchStore.elements;
-    for (let i = 0; i <= resElements.length-1; i++){
+    for (let i = 0; i < resElements.length; i++){
         let element = resElements[i];
+        
         if (!element.promotions){
             continue;
         }
-        let promotionalOffers = element.promotions.promotionalOffers.length > 0 ? element.promotions.promotionalOffers[0] : element.promotions.upcomingPromotionalOffers[0];
-
-        promotionalOffers = promotionalOffers.promotionalOffers[0];
+        if(element.promotions.promotionalOffers.length = 0){
+            if(element.promotions.upcomingPromotionalOffers.length = 0){
+                continue;
+            }
+        }
+        
+        let discountPercentage = element.promotions.promotionalOffers[0]?.promotionalOffers[0]?.discountSetting.discountPercentage;
+        
+        if(discountPercentage && (discountPercentage = 0)){
+            promotionalOffers = element.promotions.promotionalOffers[0].promotionalOffers[0]
+        }else{
+            promotionalOffers = element.promotions.upcomingPromotionalOffers[0].promotionalOffers[0]
+        }
 
         let obj = {
             title: element.title,
@@ -187,7 +194,7 @@ const getFreeGameMessage = async () => {
 }
 
 const freeGames = async (msg, bot) => {
-    bot.sendMessage(msg.from, await getFreeGameMessage());
+    myModule.bot.sendMessage(msg.from, await getFreeGameMessage());
 }
 
 module.exports = { init, freeGames };
