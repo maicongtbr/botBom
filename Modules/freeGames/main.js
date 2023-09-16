@@ -100,9 +100,7 @@ const mainLoop = async () => {
             games.forEach(element => {
                 if(element.startDate > timeNow) {
                     nextTime = element.startDate.getTime() - timeNow.getTime();
-                    console.log("timeNow = " + timeNow);
-                    console.log("NextTime = " + nextTime);
-                    console.log("element.startDate = " + element.startDate);
+                    if(nextTime > 2147483647) nextTime = 2147483646;
                 }
             });
 
