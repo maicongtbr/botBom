@@ -100,7 +100,9 @@ const mainLoop = async () => {
             games.forEach(element => {
                 if(element.startDate > timeNow) {
                     nextTime = element.startDate.getTime() - timeNow.getTime();
+                    console.log("timeNow = " + timeNow);
                     console.log("NextTime = " + nextTime);
+                    console.log("element.startDate = " + element.startDate);
                 }
             });
 
@@ -166,7 +168,6 @@ const freeEpicGames = async () => {
         }else{
             promotionalOffers = element.promotions.upcomingPromotionalOffers[0].promotionalOffers[0]
         }
-        // let promotionalOffers = element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage = 0 ? element.promotions.promotionalOffers[0].promotionalOffers[0] : element.promotions.upcomingPromotionalOffers[0].promotionalOffers[0];
 
         let obj = {
             title: element.title,
@@ -175,10 +176,8 @@ const freeEpicGames = async () => {
             startDate: new Date (promotionalOffers.startDate || ''),
             endDate: new Date (promotionalOffers.endDate || '')
         }
-        console.log(obj);
         freeGames.push(obj);
     }
-    console.log(freeGames);
     return freeGames;
 }
 
