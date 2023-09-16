@@ -56,12 +56,9 @@ const changeEpicModuleState = async (msg) => {
 }
 
 const init = async (bot) => {
-    console.log('Alow check');
-    
     myModule = new Module("freeGames", bot, { }, commands);
 
     log = (...args) => myModule.log(args);
-
 
     await mainLoop();
 }
