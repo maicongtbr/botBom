@@ -159,9 +159,9 @@ const freeEpicGames = async () => {
             }
         }
         
-        let discountPercentage = element.promotions.promotionalOffers[0].promotionalOffers[0].discountSetting.discountPercentage;
+        let discountPercentage = element.promotions.promotionalOffers[0]?.promotionalOffers[0]?.discountSetting.discountPercentage;
         
-        if(discountPercentage = 0){
+        if(discountPercentage && (discountPercentage = 0)){
             promotionalOffers = element.promotions.promotionalOffers[0].promotionalOffers[0]
         }else{
             promotionalOffers = element.promotions.upcomingPromotionalOffers[0].promotionalOffers[0]
