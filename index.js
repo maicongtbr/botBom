@@ -16,11 +16,11 @@ const exp = [
     }
 ]
 
-// process.on("uncaughtException", (e) => {
-//     let timeStamp = getTimeStamp();
+process.on("uncaughtException", (e) => {
+    let timeStamp = getTimeStamp();
 
-//     console.warn("\n\n[" + timeStamp + "][ERRO]:\n" + e + "\n\n");
-// })
+    console.warn("\n\n[" + timeStamp + "][ERRO]:\n" + e + "\n\n");
+})
 
 const getExpMultply = () => {
     var date = new Date();
