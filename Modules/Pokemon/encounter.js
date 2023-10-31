@@ -111,12 +111,12 @@ const getEncounter = async (msg, private, index) => {
         var canCatch = true;
         switch(pokemon.condition.condition) {
             case(Conditions.Day):
-                if(hours >= 18 || hours <= 06 ) {
+                if(hours >= 18 || hours <= 6 ) {
                     canCatch = false;
                 }
                 break;
             case(Conditions.Night):
-                if(hours <= 18 || hours >= 06 ) {
+                if(hours <= 18 || hours >= 6 ) {
                     canCatch = false;
                 }
                 break;
