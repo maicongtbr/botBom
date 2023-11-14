@@ -6,7 +6,7 @@ const { MessageMedia } = require('whatsapp-web.js');
 const banMember = (msg, bot) => { 
     var hasMentions = msg.getMentions();
     if (!msg.hasQuotedMsg && !hasMentions){
-        return msg.reply('Para banir, você deve mencionar um usuário ou mencionar a mensagem do usuário a ser banido.');
+        return msg.reply('Para banir, você deve mencionar um usuário ou mencionar a mensagem do usuário que deseja banir.');
     }
 
     getGroup(msg).then((group) => {
@@ -27,7 +27,7 @@ const banMember = (msg, bot) => {
                 sendSticker(msg, './img/delete this5.webp', bot).then(() => { 
                     if (msg.hasQuotedMsg){
                         msg.getQuotedMessage().then((quotedMsg) => {
-                            if (quotedMsg && quotedMsg.author === '5521991241118@c.us') {
+                            if (quotedMsg && quotedMsg.author === '5521994963423@c.us') {
                                 console.log('mencionou a msg do bot');
                                 msg.reply('*JAMAIS TENTE ISSO!*');
                                 group.removeParticipants([msg.author]);
@@ -40,12 +40,12 @@ const banMember = (msg, bot) => {
                     if (hasMentions){
                         msg.getMentions().then((mentionedUsers) => {
                             for (var i = 0; i < mentionedUsers.length; i++){
-                                if (mentionedUsers[i].id._serialized === '5521991241118@c.us') {
+                                if (mentionedUsers[i].id._serialized === '5521994963423@c.us') {
                                     console.log('mencionou o bot');
                                     msg.reply('*JAMAIS TENTE ISSO*');
                                     group.removeParticipants([msg.author]);
                                     return;
-                                }
+                                } 
                             }
                             let usersToBan = [];
                             mentionedUsers.forEach((element) => {
@@ -54,7 +54,6 @@ const banMember = (msg, bot) => {
                             return group.removeParticipants(usersToBan);
                         })
                     }
-                    msg.reply('Você precisa marcar ou mencionar um membro para ser banido.');
                 })
             })
         })
