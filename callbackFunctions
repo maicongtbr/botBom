@@ -186,6 +186,7 @@ const imgSearch = async (msg, bot) => {
     
                         msg.reply(foundImage);
                     } catch (err) {
+                        msg.reply('Ocorreu um erro. Tente novamente.');
                         console.log('[Google Image Search] ' + err);
                     }
                 }
