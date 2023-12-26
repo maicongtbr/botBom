@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const { dbUrl } = require('./dbUrl.js');
 
 class Database {
     connection =  undefined;
     constructor(){
-        var url = 'mongodb+srv://maicomgtbr:1999123@cluster0.rrpqtsf.mongodb.net/botBom?retryWrites=true&w=majority';
+        var url = dbUrl;
         this.connection = mongoose.createConnection(url);
         this.connection.model('Experiencia', new mongoose.Schema({
             id: String,
