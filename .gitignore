@@ -7,3 +7,4 @@ tokens/*
 ./*.icloud
 .wwebjs_auth/
 .vscode/settings.json
+dbUrl.js
