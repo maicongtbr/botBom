@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const { dbUrl } = require('./dbUrl.js');
+require('dotenv').config()
 
 class Database {
     connection =  undefined;
     constructor(){
-        var url = dbUrl;
+        var url = process.env.DB_PASS;
         this.connection = mongoose.createConnection(url);
         this.connection.model('Experiencia', new mongoose.Schema({
             id: String,

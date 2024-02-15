@@ -1,4 +1,4 @@
-./package-lock.json
+package-lock.json
 node_modules/
 tokes/.
 tokens/*
@@ -8,3 +8,4 @@ tokens/*
 .wwebjs_auth/
 .vscode/settings.json
 dbUrl.js
+.env
