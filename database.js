@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { dbUrl } = require('./dbUrl.js');
 require('dotenv').config()
 
 class Database {
